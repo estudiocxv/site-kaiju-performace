@@ -9,6 +9,5 @@ export function whatsappUrl(message?: string) {
 export const messages = {
   default: 'Olá, Kaiju! Vim pelo site e quero fazer um orçamento.',
   remap: (car: string) => `Olá, Kaiju! Quero um orçamento de remap para o meu ${car}.`,
-  project: (car: string) => `Olá, Kaiju! Vi o projeto ${car} no site e quero conversar sobre o meu carro.`,
   service: (name: string) => `Olá, Kaiju! Quero um orçamento de ${name.toLowerCase()}.`,
 };

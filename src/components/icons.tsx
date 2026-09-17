@@ -23,7 +23,13 @@ export const Instagram = ({ size = 20, className }: P) => (
   </svg>
 );
 
-export const MapPin = ({ size = 20, className }: P) => (
+export const Star = ({ size = 16, className }: P) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true" className={className}>
+    <path fill="currentColor" d="m12 2.5 2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8L12 2.5Z" />
+  </svg>
+);
+
+export const MapPin =({ size = 20, className }: P) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true" className={className}>
     <path d="M12 21s-7-6.2-7-12a7 7 0 1 1 14 0c0 5.8-7 12-7 12Z" stroke="currentColor" strokeWidth="1.8" />
     <circle cx="12" cy="9" r="2.5" stroke="currentColor" strokeWidth="1.8" />

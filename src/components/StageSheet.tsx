@@ -1,39 +1,33 @@
-import type { StageFigures, Vehicle } from '@/content/types';
-import { formatKgfm, gain } from '@/content/vehicles';
+import type { Vehicle } from '@/content/types';
+import { cvText, gain, kgfmText } from '@/content/vehicles';
 import styles from './StageSheet.module.css';
-
-const ROWS = [
-  { key: 'original', label: 'Original' },
-  { key: 'stage1', label: 'Stage 1' },
-  { key: 'stage2', label: 'Stage 2' },
-] as const;
 
 type Metric = 'cv' | 'kgfm';
 
+const rowClass = (name: string) =>
+  name === 'Original' ? styles.original : name === 'Stage 1' ? styles.stage1 : name === 'Stage 2' ? styles.stage2 : styles.stage3;
+
 function Meter({ vehicle, metric }: { vehicle: Vehicle; metric: Metric }) {
-  const max = vehicle.stage2[metric];
-  const base = vehicle.original[metric];
-  const unit = metric === 'cv' ? 'cv' : 'kgfm';
-  const fmt = (f: StageFigures) => (metric === 'cv' ? `${f.cv}${f.cvPlus ? '+' : ''}` : formatKgfm(f.kgfm));
+  const max = Math.max(...vehicle.stages.map((s) => s[metric]));
+  const base = vehicle.stages[0][metric];
 
   return (
     <div className={styles.meter}>
       <p className={`label ${styles.metric}`}>{metric === 'cv' ? 'Potência' : 'Torque'}</p>
       <dl className={styles.rows}>
-        {ROWS.map(({ key, label }) => {
-          const f = vehicle[key];
-          const pct = (f[metric] / max) * 100;
-          const g = key === 'original' ? null : gain(base, f[metric]);
+        {vehicle.stages.map((s, i) => {
+          const g = i === 0 ? null : gain(base, s[metric]);
           return (
-            <div key={key} className={`${styles.row} ${styles[key]}`}>
-              <dt className={`label ${styles.rowLabel}`}>{label}</dt>
+            <div key={s.name} className={`${styles.row} ${rowClass(s.name)}`}>
+              <dt className={`label ${styles.rowLabel}`}>{s.name}</dt>
               <dd className={styles.track} aria-hidden="true">
-                <span className={styles.bar} style={{ width: `${pct}%` }} />
+                <span className={styles.bar} style={{ width: `${(s[metric] / max) * 100}%` }} />
               </dd>
               <dd className={styles.value}>
-                <span className={styles.num}>{fmt(f)}</span> <span className={styles.unit}>{unit}</span>
+                <span className={styles.num}>{metric === 'cv' ? cvText(s) : kgfmText(s)}</span>{' '}
+                <span className={styles.unit}>{metric === 'cv' ? 'cv' : 'kgfm'}</span>
               </dd>
-              <dd className={`label ${styles.gain}`}>{g === null ? '—' : `+${g}%`}</dd>
+              <dd className={`label ${styles.gain}`}>{g === null || g <= 0 ? '—' : `+${g}%`}</dd>
             </div>
           );
         })}
@@ -53,12 +47,14 @@ export function StageSheet({
   hideTitle?: boolean;
 }) {
   const H = `h${headingLevel}` as 'h2' | 'h3';
+  const withUpgrades = vehicle.stages.filter((s) => s.upgrades?.length);
+
   return (
     <div className={styles.sheet}>
       <header className={styles.top}>
-        <p className="label">Ficha de ganhos · publicada pela Kaiju</p>
+        <p className="label">Ficha de ganhos</p>
         <H className={hideTitle ? 'visually-hidden' : `display ${styles.model}`}>
-          {vehicle.brand} {vehicle.model} <span>{vehicle.engine}</span>
+          {vehicle.brand} <span>{vehicle.version}</span>
         </H>
         {vehicle.years && <p className="label">{vehicle.years}</p>}
       </header>
@@ -68,14 +64,22 @@ export function StageSheet({
         <Meter vehicle={vehicle} metric="kgfm" />
       </div>
 
-      <div className={styles.upgrades}>
-        <p className="label">Stage 2 recomendado com</p>
-        <ul>
-          {vehicle.stage2Upgrades.map((u) => (
-            <li key={u}>{u}</li>
+      {withUpgrades.length > 0 && (
+        <dl className={styles.upgrades}>
+          {withUpgrades.map((s) => (
+            <div key={s.name}>
+              <dt className="label">{s.name} com</dt>
+              <dd>
+                <ul>
+                  {s.upgrades!.map((u) => (
+                    <li key={u}>{u}</li>
+                  ))}
+                </ul>
+              </dd>
+            </div>
           ))}
-        </ul>
-      </div>
+        </dl>
+      )}
     </div>
   );
 }

@@ -5,13 +5,12 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  grid-template-rows: auto auto;
   column-gap: clamp(16px, 2vw, 32px);
 }
 
 .text {
   grid-column: 1 / span 5;
-  grid-row: 1 / span 2;
+  grid-row: 1;
   display: grid;
   align-content: start;
   gap: 28px;
@@ -28,6 +27,39 @@
   color: #d4d1ca;
 }
 
+.motto {
+  font-family: var(--f-display);
+  font-style: italic;
+  font-weight: 700;
+  font-stretch: 75%;
+  font-size: clamp(22px, 2vw, 28px);
+  line-height: 1.1;
+  text-transform: uppercase;
+  color: var(--giz);
+  padding-left: 14px;
+  border-left: 3px solid var(--vermelho);
+}
+
+.signature {
+  display: grid;
+  gap: 6px;
+  color: var(--cinza);
+}
+
+.signatureName {
+  font-family: var(--f-display);
+  font-style: italic;
+  font-weight: 800;
+  font-stretch: 70%;
+  font-size: 26px;
+  text-transform: uppercase;
+  color: var(--giz);
+}
+
+.signatureLine {
+  font-size: 15px;
+}
+
 .facts {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -42,11 +74,25 @@
   line-height: 1.4;
 }
 
-.main {
-  grid-column: 7 / -1;
+/* fotos acompanham o texto longo enquanto a página rola */
+.visual {
+  grid-column: 6 / -1;
   grid-row: 1;
+  align-self: start;
+  position: sticky;
+  top: calc(var(--header-h) + 32px);
+  display: grid;
+}
+
+.main {
+  margin-left: 14%;
   display: grid;
   gap: 10px;
+}
+
+/* a legenda fica à direita, fora do letreiro que sobe sobre a foto */
+.main figcaption {
+  text-align: right;
 }
 
 .mainImg {
@@ -57,8 +103,7 @@
 }
 
 .neon {
-  grid-column: 6 / span 4;
-  grid-row: 2;
+  width: 58%;
   margin-top: -90px;
   position: relative;
   z-index: 1;
@@ -160,15 +205,17 @@
 
 @media (max-width: 900px) {
   .text,
-  .main,
-  .neon,
+  .visual,
   .processHead,
   .steps {
     grid-column: 1 / -1;
     grid-row: auto;
   }
+  .visual {
+    position: static;
+  }
   .main {
-    margin-top: 48px;
+    margin: 48px 0 0;
   }
   .neon {
     width: 62%;

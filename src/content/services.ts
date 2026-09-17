@@ -22,7 +22,7 @@ export const services: Service[] = [
     lead: 'Do kit turbo ao acerto final. Motor montado com cuidado em cada medida.',
     items: [
       'Instalação de turbo e kit sob medida',
-      'Injeção programável FuelTech: instalação, configuração e acerto',
+      'Injeção programável FuelTech, Octtane e Injepro: instalação, configuração e acerto',
       'Carburadores bem acertados',
       'Preparação de motores: brunimento, bielas, pistões e bloc guard',
       'Upgrades de freios, suspensão e escapamento',
@@ -35,7 +35,7 @@ export const services: Service[] = [
     name: 'Mecânica e revisão',
     lead: 'Performance sem manutenção em dia não se sustenta. Do popular ao esportivo, do nacional ao importado.',
     items: [
-      'Troca de óleo com lubrificantes Petronas',
+      'Troca de óleo com Shell, Valvoline, Liqui Moly e Motul',
       'Freios, embreagem e suspensão',
       'Sistema de arrefecimento',
       'Revisão completa',
@@ -52,10 +52,23 @@ export const services: Service[] = [
       'Scanner e checagem eletrônica',
       'Máquina de fumaça para encontrar vazamentos e ar falso',
       'Elétrica completa e reparo de chicote',
-      'Ar-condicionado: diagnóstico, higienização, carga de gás e reparos',
     ],
     photo: { src: '/media/oficina/equipe-trabalhando.jpg', alt: 'Equipe da Kaiju Performance trabalhando no box' },
     cta: 'diagnóstico',
+  },
+  {
+    id: 'ar-condicionado',
+    name: 'Ar-condicionado',
+    lead: 'Ar que não gela, cheiro ruim ou demora para esfriar. Diagnóstico completo e conserto, sem esperar piorar.',
+    items: [
+      'Diagnóstico completo do sistema',
+      'Higienização',
+      'Carga de gás',
+      'Reparos e manutenção especializada',
+      'Linha nacional e importada',
+    ],
+    photo: { src: '/media/servicos/ar-condicionado.jpg', alt: 'Painel com o botão do ar-condicionado ligado' },
+    cta: 'ar-condicionado',
   },
   {
     id: 'importados',

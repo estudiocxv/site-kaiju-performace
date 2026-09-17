@@ -18,7 +18,7 @@ export function SiteFooter() {
           <p className="label muted">Site</p>
           <Link href="/#servicos">Serviços</Link>
           <Link href="/remap">Remap por modelo</Link>
-          <Link href="/projetos">Projetos</Link>
+          <Link href="/#avaliacoes">Avaliações</Link>
           <Link href="/#oficina">A oficina</Link>
           <Link href="/#contato">Contato</Link>
         </nav>
@@ -37,7 +37,7 @@ export function SiteFooter() {
       </div>
 
       <div className={`wrap ${styles.bottom}`}>
-        <p className="label muted">© {new Date().getFullYear()} Kaiju Performance · Bauru/SP</p>
+        <p className="label muted">© {new Date().getFullYear()} Kaiju Performance · Bauru/SP · CNPJ {site.cnpj}</p>
         <p className="label muted">Ganhos de potência são aproximados e variam conforme o veículo.</p>
       </div>
     </footer>

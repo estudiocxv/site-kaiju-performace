@@ -1,0 +1,195 @@
+.tools {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.search {
+  width: 100%;
+  max-width: 560px;
+  min-height: 52px;
+  padding: 0 16px;
+  border: 0;
+  border-bottom: 2px solid var(--giz);
+  border-radius: 0;
+  background: var(--grafite);
+  color: var(--giz);
+  font: inherit;
+  font-size: 17px;
+}
+
+.search::placeholder {
+  color: var(--cinza);
+}
+
+.brands {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.brand {
+  border: 1px solid var(--linha);
+  background: transparent;
+  padding: 6px 10px;
+  font-family: var(--f-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: var(--giz);
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.brand:hover {
+  border-color: var(--giz);
+}
+
+.brand[aria-pressed='true'] {
+  background: var(--giz);
+  border-color: var(--giz);
+  color: var(--piche);
+}
+
+.count {
+  text-transform: none;
+}
+
+.tableWrap {
+  overflow-x: auto;
+  border-top: 2px solid var(--giz);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 860px;
+  font-size: 15px;
+}
+
+.table thead th {
+  text-align: left;
+  font-weight: 500;
+  color: var(--cinza);
+  padding: 14px 12px 14px 0;
+  border-bottom: 1px solid var(--linha);
+}
+
+.brandRow th {
+  text-align: left;
+  font-size: 34px;
+  padding: 34px 0 10px;
+}
+
+.row th,
+.row td {
+  text-align: left;
+  padding: 12px 12px 12px 0;
+  border-bottom: 1px solid var(--linha);
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.row th a {
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.row th small {
+  font-weight: 400;
+  color: var(--cinza);
+}
+
+.row td small {
+  display: block;
+  font-family: var(--f-mono);
+  font-size: 12px;
+  color: var(--cinza);
+}
+
+.row:hover {
+  background: var(--grafite);
+}
+
+.row:hover th a {
+  text-decoration: underline;
+  text-decoration-color: var(--vermelho);
+  text-underline-offset: 4px;
+}
+
+td.hot {
+  font-weight: 700;
+}
+
+thead .hot {
+  color: var(--vermelho) !important;
+}
+
+.none {
+  color: var(--linha);
+}
+
+.empty {
+  padding: 24px 0;
+  color: var(--cinza);
+}
+
+/* celular: cada versão vira um bloco com os números lado a lado */
+@media (max-width: 760px) {
+  .tableWrap {
+    overflow: visible;
+  }
+  .table {
+    min-width: 0;
+  }
+  .table thead {
+    display: none;
+  }
+  .table tbody,
+  .brandRow,
+  .brandRow th {
+    display: block;
+  }
+  .brandRow th {
+    font-size: 30px;
+    padding-top: 28px;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px 8px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--linha);
+  }
+  .row th,
+  .row td {
+    border: 0;
+    padding: 0;
+    white-space: normal;
+    font-size: 14px;
+  }
+  .row th {
+    grid-column: 1 / -1;
+    margin-bottom: 6px;
+    font-size: 16px;
+  }
+  .type {
+    display: none;
+  }
+  .row td::before {
+    content: attr(data-label);
+    display: block;
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--cinza);
+    margin-bottom: 2px;
+  }
+  td.hot::before {
+    color: var(--vermelho);
+  }
+  .row td small {
+    font-size: 11px;
+  }
+}

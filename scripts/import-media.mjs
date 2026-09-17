@@ -37,12 +37,7 @@ const IMAGES = {
   f45_3: 'oficina/opala-ss-lavagem',
   f48_1: 'oficina/acerto-de-mapa',
   91: 'oficina/fueltech-carburador',
-
-  // Projetos
-  ...series('projetos/monza-turbo', ['56_1', '56_0', '56_2', '56_8', '56_6', '56_3', '56_5', '56_7', '56_4']),
-  ...series('projetos/gol-copa-turbo', ['52_6', '52_0', '52_5', '52_1', '52_2', '52_3', '52_4', '52_7']),
-  ...series('projetos/caravan-1979', ['55_0', '55_1', '55_2', '55_5', '55_3', '55_4', '55_6']),
-  ...series('projetos/bmw-320i-gp', ['62_0', '62_6', '62_1', '62_2', '62_3', '62_4', '62_5', '62_7', '62_8', '62_9']),
+  'ac-painel': 'servicos/ar-condicionado', // quadro do vídeo de ar-condicionado, sem a legenda
 
   // Eventos
   ...series('eventos/inauguracao', ['80_0', '80_14', '80_12', '80_13', '80_17', '80_15', '78_1']),
@@ -94,6 +89,24 @@ async function images() {
       .jpeg({ quality: 80, mozjpeg: true, progressive: true })
       .toFile(dest);
     manifest[`/media/${to}.jpg`] = { width: info.width, height: info.height };
+  }
+  return manifest;
+}
+
+/** Fotos das avaliações do Google (baixadas em _research/avaliacoes). */
+async function reviews() {
+  const dir = path.join(root, '..', '_research', 'avaliacoes');
+  const manifest = {};
+  if (!fs.existsSync(dir)) return manifest;
+  for (const file of fs.readdirSync(dir).filter((f) => f.endsWith('.jpg'))) {
+    const dest = path.join(OUT, 'avaliacoes', file);
+    ensureDir(dest);
+    const info = await sharp(path.join(dir, file))
+      .rotate()
+      .resize(1600, 1600, { fit: 'inside', withoutEnlargement: true })
+      .jpeg({ quality: 80, mozjpeg: true, progressive: true })
+      .toFile(dest);
+    manifest[`/media/avaliacoes/${file}`] = { width: info.width, height: info.height };
   }
   return manifest;
 }
@@ -175,6 +188,7 @@ async function brandAssets() {
 const only = process.argv[2];
 const dims = {
   ...(only && only !== 'images' ? {} : await images()),
+  ...(only && only !== 'reviews' ? {} : await reviews()),
   ...(only && only !== 'logo' ? {} : await logo()),
   ...(only && only !== 'brand' ? {} : await brandAssets()),
   ...(only && only !== 'videos' ? {} : await videos()),

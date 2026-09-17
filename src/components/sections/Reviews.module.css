@@ -1,0 +1,136 @@
+.section {
+  padding-block: clamp(80px, 11vw, 150px);
+}
+
+.head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 420px);
+  gap: 18px 48px;
+  align-items: end;
+  margin-bottom: clamp(40px, 6vw, 72px);
+}
+
+.head > :first-child {
+  grid-column: 1 / -1;
+}
+
+.title {
+  font-size: clamp(48px, 7vw, 112px);
+}
+
+.intro {
+  color: #cfccc5;
+}
+
+/* colunas de alturas livres: textos curtos e longos se acomodam */
+.grid {
+  columns: 3 320px;
+  column-gap: clamp(16px, 2.4vw, 40px);
+}
+
+.review {
+  break-inside: avoid;
+  display: grid;
+  gap: 16px;
+  margin-bottom: clamp(16px, 2.4vw, 40px);
+  padding-top: 18px;
+  border-top: 2px solid var(--giz);
+}
+
+.stars {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.on {
+  color: var(--vermelho);
+}
+
+.off {
+  color: var(--linha);
+}
+
+.text {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--giz);
+}
+
+.text p::before {
+  content: '“';
+}
+
+.text p::after {
+  content: '”';
+}
+
+.photos {
+  display: grid;
+  gap: 6px;
+}
+
+.many {
+  grid-template-columns: 1fr 1fr;
+}
+
+.photo {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--grafite);
+}
+
+.img {
+  object-fit: cover;
+  transition: transform 0.8s var(--ease-out);
+}
+
+.photo:hover .img {
+  transform: scale(1.04);
+}
+
+.author {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--linha);
+}
+
+.name {
+  font-family: var(--f-display);
+  font-style: italic;
+  font-weight: 700;
+  font-stretch: 75%;
+  font-size: 22px;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.author a {
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+}
+
+.author a:hover {
+  color: var(--vermelho);
+}
+
+.more {
+  margin-top: clamp(24px, 3vw, 40px);
+}
+
+@media (max-width: 900px) {
+  .head {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .more :global(.btn) {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -12,7 +12,7 @@ import styles from './SiteHeader.module.css';
 const nav = [
   { href: '/#servicos', label: 'Serviços' },
   { href: '/remap', label: 'Remap por modelo' },
-  { href: '/projetos', label: 'Projetos' },
+  { href: '/#avaliacoes', label: 'Avaliações' },
   { href: '/#oficina', label: 'A oficina' },
   { href: '/#contato', label: 'Contato' },
 ];

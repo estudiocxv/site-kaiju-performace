@@ -35,6 +35,10 @@ export function Contact() {
               <dd>{site.schedule}</dd>
             </div>
             <div>
+              <dt className="label muted">CNPJ</dt>
+              <dd>{site.cnpj}</dd>
+            </div>
+            <div>
               <dt className="label muted">Redes</dt>
               <dd className={styles.social}>
                 <a href={site.social.instagram} target="_blank" rel="noopener noreferrer">

@@ -18,29 +18,37 @@ export type Photo = {
   credit?: string; // @perfil quando a foto é de terceiros
 };
 
-export type StageFigures = {
+export type VehicleCategory = 'turbo-gasolina' | 'diesel' | 'aspirado';
+
+export type StageName = 'Original' | 'Stage 1' | 'Stage 2' | 'Stage 3';
+
+export type Stage = {
+  name: StageName;
+  /** maior valor, usado nas barras e no ganho percentual */
   cv: number;
   kgfm: number;
-  /** "300+ cv" — a Kaiju publicou só o piso */
-  cvPlus?: boolean;
+  /** texto exibido quando não é um número simples: "380/440", "300+", "56,1" */
+  cvText?: string;
+  kgfmText?: string;
+  /** modificações indicadas para a etapa */
+  upgrades?: string[];
 };
-
-export type VehicleCategory = 'turbo-gasolina' | 'diesel' | 'aspirado';
 
 export type Vehicle = {
   slug: string;
   brand: string;
-  model: string;
-  engine: string;
+  /** modelo para agrupar versões: "Golf", "Série 3", "A3 / S3 / RS3" */
+  family: string;
+  /** nome exibido, sem a marca: "Golf GTI 2.0 TSI", "M340i (G20)" */
+  version: string;
   years?: string;
   category: VehicleCategory;
-  /** ficha original publicada: câmbio, tração, código do motor... */
-  specs: { label: string; value: string }[];
-  original: StageFigures;
-  stage1: StageFigures;
-  stage2: StageFigures;
-  /** upgrades indicados pela Kaiju para o Stage 2 */
-  stage2Upgrades: string[];
+  /** ficha do motor em texto corrido */
+  engine?: string;
+  /** ficha em tópicos: câmbio, tração, código do motor... */
+  specs?: { label: string; value: string }[];
+  /** sempre começa por Original */
+  stages: Stage[];
   notes?: string[];
   /** resultado de um carro real publicado pela Kaiju, quando existir */
   publishedResult?: {
@@ -48,23 +56,9 @@ export type Vehicle = {
     text: string;
     source: InstagramSource;
   };
-  poster: Photo; // arte técnica publicada no Instagram
-  source: InstagramSource;
-};
-
-export type Project = {
-  slug: string;
-  /** nome curto exibido no letreiro (ex.: "Monza 89") */
-  lettering?: string;
-  car: string;
-  kind: 'Preparação' | 'Stage 2' | 'Revisão' | 'Carro antigo';
-  summary: string;
-  work: string[];
-  highlight?: string; // número/resultado publicado
-  cover: Photo;
-  photos: Photo[];
-  source: InstagramSource;
-  featured?: boolean;
+  /** arte técnica publicada no Instagram (só fichas da Kaiju) */
+  poster?: Photo;
+  source?: InstagramSource;
 };
 
 export type Service = {
@@ -84,4 +78,13 @@ export type KaijuEvent = {
   text: string;
   photos: Photo[];
   source: InstagramSource;
+};
+
+export type Review = {
+  author: string;
+  rating: 1 | 2 | 3 | 4 | 5;
+  text: string;
+  photos: Photo[];
+  /** link da avaliação no Google Maps */
+  url: string;
 };

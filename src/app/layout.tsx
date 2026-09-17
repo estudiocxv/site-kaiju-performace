@@ -65,6 +65,7 @@ const localBusiness = {
   url: site.url,
   image: `${site.url}/og.jpg`,
   telephone: '+55 14 99836-4764',
+  taxID: site.cnpj,
   address: {
     '@type': 'PostalAddress',
     streetAddress: site.address.street,
@@ -74,7 +75,7 @@ const localBusiness = {
     addressCountry: 'BR',
   },
   areaServed: 'Bauru e região',
-  sameAs: [site.social.instagram, site.social.facebook],
+  sameAs: [site.social.instagram, site.social.facebook, site.social.googleReviews],
 };
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {

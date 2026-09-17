@@ -5,8 +5,8 @@ import styles from './About.module.css';
 const facts = [
   { term: 'Sede', value: 'Vila Industrial, Bauru/SP. Inaugurada em 1º de maio de 2025' },
   { term: 'Atendimento', value: 'Com hora marcada' },
-  { term: 'Lubrificantes', value: 'Parceira oficial Petronas' },
-  { term: 'Injeção programável', value: 'Linha FuelTech' },
+  { term: 'Lubrificantes', value: 'Shell, Valvoline, Liqui Moly e Motul' },
+  { term: 'Injeção programável', value: 'FuelTech, Octtane e Injepro' },
 ];
 
 export function About() {
@@ -19,16 +19,27 @@ export function About() {
             Não trocamos peças no chute.
           </h2>
           <div className={`reveal ${styles.body}`}>
+            <p>A Kaiju Performance nasceu da paixão por carros e por fazer as coisas do jeito certo.</p>
             <p>
-              A Kaiju é uma oficina de performance em Bauru. Cada carro que entra recebe diagnóstico preciso, atenção de
-              verdade e a solução certa. Do original que precisa voltar a funcionar perfeitamente ao projeto que busca
-              mais potência, torque e resposta.
+              Somos uma oficina que une mecânica, diagnóstico eletrônico, elétrica e performance. Trabalhamos desde a
+              manutenção e solução de defeitos até remap, Stage 1, Stage 2, preparação de motores e projetos especiais.
             </p>
             <p>
-              Aqui a gente gosta tanto do carburador quanto da injeção. Opala com Weber, Monza com FuelTech, BMW com Stage
-              2: a ideia é o dono sair sorrindo, com o carro preparado ou original andando direito.
+              Aqui, a gente não gosta de simplesmente trocar peças. Gostamos de entender o problema, diagnosticar, testar e
+              encontrar a melhor solução para cada carro.
             </p>
+            <p>
+              Seja para deixar um carro original funcionando perfeitamente ou para transformar um projeto em algo mais
+              forte, rápido e divertido, fazemos aquilo que realmente gostamos:
+            </p>
+            <p className={styles.motto}>resolver problemas, preparar carros e transformar ideias em projetos.</p>
           </div>
+
+          <p className={`reveal ${styles.signature}`}>
+            <span className={styles.signatureName}>🐉 Kaiju Performance</span>
+            <span className="label">Mecânica • Tecnologia • Performance</span>
+            <span className={styles.signatureLine}>Fazemos carros porque é o que gostamos de fazer.</span>
+          </p>
 
           <dl className={`reveal ${styles.facts}`}>
             {facts.map((f) => (
@@ -40,28 +51,33 @@ export function About() {
           </dl>
         </div>
 
-        <figure className={styles.main}>
-          <div className={`reveal-img ${styles.mainImg}`}>
-            <Photo
-              photo={{ src: '/media/oficina/equipe-trabalhando.jpg', alt: 'Equipe da Kaiju Performance trabalhando no box, com o painel da marca ao fundo' }}
-              fill
-              sizes="(max-width: 900px) 100vw, 55vw"
-              className={styles.cover}
-            />
-          </div>
-          <figcaption className="label muted">Box da Kaiju, Vila Industrial</figcaption>
-        </figure>
+        <div className={styles.visual}>
+          <figure className={styles.main}>
+            <div className={`reveal-img ${styles.mainImg}`}>
+              <Photo
+                photo={{
+                  src: '/media/oficina/equipe-trabalhando.jpg',
+                  alt: 'Equipe da Kaiju Performance trabalhando no box, com o painel da marca ao fundo',
+                }}
+                fill
+                sizes="(max-width: 900px) 100vw, 55vw"
+                className={styles.cover}
+              />
+            </div>
+            <figcaption className="label muted">Box da Kaiju, Vila Industrial</figcaption>
+          </figure>
 
-        <figure className={styles.neon}>
-          <div className={`reveal-img ${styles.neonImg}`}>
-            <Photo
-              photo={{ src: '/media/oficina/letreiro-neon.jpg', alt: 'Letreiro neon Kaiju Performance dentro da oficina' }}
-              fill
-              sizes="(max-width: 900px) 60vw, 26vw"
-              className={styles.cover}
-            />
-          </div>
-        </figure>
+          <figure className={styles.neon}>
+            <div className={`reveal-img ${styles.neonImg}`}>
+              <Photo
+                photo={{ src: '/media/oficina/letreiro-neon.jpg', alt: 'Letreiro neon Kaiju Performance dentro da oficina' }}
+                fill
+                sizes="(max-width: 900px) 60vw, 26vw"
+                className={styles.cover}
+              />
+            </div>
+          </figure>
+        </div>
       </div>
 
       <div className={`wrap ${styles.process}`}>

@@ -1,552 +1,101 @@
-import type { Photo, Vehicle } from './types';
+import type { Stage, Vehicle, VehicleCategory } from './types';
+import { kaijuVehicles, type KaijuVehicle } from './vehicles-kaiju';
+import armada from './data/armada.json';
 
 /**
- * Ganhos de remap publicados pela Kaiju Performance no Instagram (setembro/2026).
- * Os números são exatamente os das legendas. Nada aqui é estimativa do site.
- *
- * Para cadastrar um modelo novo, copie um item e ajuste. O slug vira a URL
- * /remap/<slug>.
+ * Catálogo de remap do site: fichas publicadas pela Kaiju (vehicles-kaiju.ts)
+ * + versões do catálogo da Armada Performance (data/armada.json, gerado por
+ * `npm run armada`). Onde as duas tinham a mesma versão, ficou a da Kaiju.
  */
 
-const poster = (file: string, alt: string): Photo => ({
-  src: `/media/remap/${file}.jpg`,
-  alt: `Arte técnica da Kaiju Performance: ${alt}`,
-});
+/** Agrupamento das fichas da Kaiju nos mesmos modelos do catálogo. */
+const KAIJU_FAMILY: Record<string, string> = {
+  'volkswagen-golf-gti-2-0-tsi': 'Golf',
+  'volkswagen-jetta-2-0-tsi': 'Jetta',
+  'volkswagen-polo-1-0-tsi': 'Polo',
+  'volkswagen-up-tsi': 'UP!',
+  'volkswagen-virtus-nivus-t-cross-200-tsi': 'Virtus',
+  'volkswagen-amarok-2-0-bitdi': 'Amarok',
+  'volkswagen-amarok-3-0-v6-tdi': 'Amarok',
+  'audi-a3-1-4-tfsi': 'A3 / S3 / RS3',
+  'bmw-320i-f30': 'Série 3',
+  'bmw-328i-f30': 'Série 3',
+  'bmw-118i-1-6-turbo': 'Série 1',
+  'mini-cooper-s-1-6-turbo': 'Cooper',
+  'peugeot-308-thp': '308',
+  'citroen-c4-lounge-thp': 'C4 Lounge',
+  'ford-fusion-2-0-ecoboost': 'Fusion',
+  'ford-ranger-3-2-duratorq': 'Ranger',
+  'ford-ranger-2-0-ecoblue': 'Ranger',
+  'chevrolet-camaro-ss-6-2': 'Camaro',
+  'chevrolet-cruze-1-4-turbo': 'Cruze',
+  'chevrolet-s10-2-8-ctdi': 'S10',
+  'toyota-hilux-3-0-d-4d': 'Hilux',
+  'toyota-sw4-3-0-d-4d': 'Hilux',
+  'mitsubishi-l200-triton-3-2-di-d': 'L200',
+  'mitsubishi-l200-triton-2-4-mivec': 'L200',
+  'nissan-frontier-2-5-dci': 'Frontier',
+  'nissan-frontier-2-3-bi-turbo': 'Frontier',
+  'jeep-compass-2-0-multijet': 'Compass',
+  'fiat-toro-2-0-multijet': 'Toro',
+};
 
-const UP_TURBO = ['Downpipe', 'Intake / filtro esportivo', 'Intercooler', 'Combustível de qualidade'];
-const UP_DIESEL = ['Downpipe', 'Intercooler', 'Intake / filtro esportivo', 'Escapamento de maior fluxo'];
+function fromKaiju(k: KaijuVehicle): Vehicle {
+  const stage = (name: Stage['name'], f: KaijuVehicle['original'], upgrades?: string[]): Stage => ({
+    name,
+    cv: f.cv,
+    kgfm: f.kgfm,
+    ...(f.cvPlus ? { cvText: `${f.cv}+` } : {}),
+    ...(upgrades ? { upgrades } : {}),
+  });
+  return {
+    slug: k.slug,
+    brand: k.brand,
+    family: KAIJU_FAMILY[k.slug] ?? k.model,
+    version: `${k.model} ${k.engine}`,
+    years: k.years,
+    category: k.category,
+    specs: k.specs,
+    stages: [stage('Original', k.original), stage('Stage 1', k.stage1), stage('Stage 2', k.stage2, k.stage2Upgrades)],
+    notes: k.notes,
+    publishedResult: k.publishedResult,
+    poster: k.poster,
+    source: k.source,
+  };
+}
 
-export const vehicles: Vehicle[] = [
-  // ——— Volkswagen ———
-  {
-    slug: 'volkswagen-golf-gti-2-0-tsi',
-    brand: 'Volkswagen',
-    model: 'Golf GTI',
-    engine: '2.0 TSI',
-    years: 'até 2020',
-    category: 'turbo-gasolina',
-    specs: [
-      { label: 'Motor', value: '2.0 TSI (EA888)' },
-      { label: 'Câmbio', value: 'DSG' },
-      { label: 'Tração', value: 'Dianteira' },
-    ],
-    original: { cv: 230, kgfm: 35.7 },
-    stage1: { cv: 290, kgfm: 44 },
-    stage2: { cv: 330, kgfm: 48 },
-    stage2Upgrades: UP_TURBO,
-    notes: ['Golf GTI e Jetta 2.0 TSI tiveram diferentes motores, ECUs e calibrações conforme ano e versão.'],
-    poster: poster('golf-gti-jetta-tsi', 'Golf GTI x Jetta TSI até 2020'),
-    source: { shortcode: 'DdHyM73D60T', date: '2026-09-10' },
-  },
-  {
-    slug: 'volkswagen-jetta-2-0-tsi',
-    brand: 'Volkswagen',
-    model: 'Jetta',
-    engine: '2.0 TSI',
-    years: 'até 2020',
-    category: 'turbo-gasolina',
-    specs: [
-      { label: 'Motor', value: '2.0 TSI (EA888)' },
-      { label: 'Câmbio', value: 'DSG / automático' },
-      { label: 'Tração', value: 'Dianteira' },
-    ],
-    original: { cv: 211, kgfm: 28.6 },
-    stage1: { cv: 260, kgfm: 39 },
-    stage2: { cv: 300, kgfm: 45 },
-    stage2Upgrades: UP_TURBO,
-    poster: poster('jetta-tsi-audi-a3', 'VW Jetta TSI x Audi A3'),
-    source: { shortcode: 'DdHyaxMD_Cx', date: '2026-09-10' },
-  },
-  {
-    slug: 'volkswagen-polo-1-0-tsi',
-    brand: 'Volkswagen',
-    model: 'Polo',
-    engine: '1.0 TSI',
-    category: 'turbo-gasolina',
-    specs: [{ label: 'Motor', value: '1.0 TSI turbo flex' }],
-    original: { cv: 116, kgfm: 20.4 },
-    stage1: { cv: 146, kgfm: 23.8 },
-    stage2: { cv: 165, kgfm: 26 },
-    stage2Upgrades: ['Downpipe', 'Intake / filtro', 'Melhorias no fluxo de admissão e escape'],
-    poster: poster('polo-up-tsi', 'Polo TSI e up! TSI'),
-    source: { shortcode: 'DdGEkezORih', date: '2026-09-10' },
-  },
-  {
-    slug: 'volkswagen-up-tsi',
-    brand: 'Volkswagen',
-    model: 'up!',
-    engine: '1.0 TSI',
-    category: 'turbo-gasolina',
-    specs: [{ label: 'Motor', value: '1.0 TSI turbo flex' }],
-    original: { cv: 105, kgfm: 16.8 },
-    stage1: { cv: 130, kgfm: 21 },
-    stage2: { cv: 150, kgfm: 24 },
-    stage2Upgrades: ['Downpipe', 'Intake / filtro', 'Melhorias no fluxo de admissão e escape'],
-    poster: poster('polo-up-tsi', 'Polo TSI e up! TSI'),
-    source: { shortcode: 'DdGEkezORih', date: '2026-09-10' },
-  },
-  {
-    slug: 'volkswagen-virtus-nivus-t-cross-200-tsi',
-    brand: 'Volkswagen',
-    model: 'Virtus, Nivus e T-Cross',
-    engine: '1.0 200 TSI',
-    category: 'turbo-gasolina',
-    specs: [
-      { label: 'Motor', value: '1.0 200 TSI turbo flex' },
-      { label: 'Combustível', value: 'Gasolina / etanol' },
-      { label: 'Câmbio', value: 'Automático ou manual, conforme versão' },
-    ],
-    original: { cv: 128, kgfm: 20.4 },
-    stage1: { cv: 150, kgfm: 23.5 },
-    stage2: { cv: 165, kgfm: 26 },
-    stage2Upgrades: ['Downpipe', 'Intake / filtro esportivo', 'Melhorias na admissão e no escape'],
-    notes: [
-      'Potência original varia conforme combustível e versão.',
-      'O T-Cross 250 TSI 1.4 é outro conjunto e tem números diferentes.',
-    ],
-    poster: poster('virtus-nivus-tcross', 'Virtus, Nivus e T-Cross TSI'),
-    source: { shortcode: 'DdHyQ7ID78C', date: '2026-09-10' },
-  },
-  {
-    slug: 'volkswagen-amarok-2-0-bitdi',
-    brand: 'Volkswagen',
-    model: 'Amarok',
-    engine: '2.0 BiTDI',
-    years: '2010 – 2019',
-    category: 'diesel',
-    specs: [
-      { label: 'Motor', value: 'EA189 2.0 biturbo diesel' },
-      { label: 'Potência', value: '180 cv a 4.000 rpm' },
-      { label: 'Torque', value: '42,8 kgfm de 1.750 a 2.250 rpm' },
-      { label: 'Câmbio', value: 'Automático de 8 marchas' },
-      { label: 'Tração', value: '4x4' },
-    ],
-    original: { cv: 180, kgfm: 42.8 },
-    stage1: { cv: 210, kgfm: 48 },
-    stage2: { cv: 230, kgfm: 52 },
-    stage2Upgrades: [...UP_DIESEL, 'EGR delete (opcional)', 'Swirl delete (opcional)'],
-    poster: poster('amarok', 'Volkswagen Amarok 2.0 BiTDI e 3.0 V6 TDI'),
-    source: { shortcode: 'DdHsfGgPUJ6', date: '2026-09-10' },
-  },
-  {
-    slug: 'volkswagen-amarok-3-0-v6-tdi',
-    brand: 'Volkswagen',
-    model: 'Amarok V6',
-    engine: '3.0 V6 TDI 258 cv',
-    years: '2018 – 2024',
-    category: 'diesel',
-    specs: [
-      { label: 'Motor', value: 'EA897 3.0 V6 turbo diesel' },
-      { label: 'Potência', value: '258 cv a 4.000 rpm' },
-      { label: 'Torque', value: '59,1 kgfm de 1.750 a 3.250 rpm' },
-      { label: 'Câmbio', value: 'Automático de 8 marchas' },
-      { label: 'Tração', value: '4x4' },
-    ],
-    original: { cv: 258, kgfm: 59.1 },
-    stage1: { cv: 290, kgfm: 66 },
-    stage2: { cv: 320, kgfm: 72 },
-    stage2Upgrades: [...UP_DIESEL, 'EGR delete (opcional)', 'Swirl delete (opcional)'],
-    notes: ['A Amarok V6 tem diferentes calibrações de fábrica conforme o ano/modelo.'],
-    poster: poster('amarok', 'Volkswagen Amarok 2.0 BiTDI e 3.0 V6 TDI'),
-    source: { shortcode: 'DdHsfGgPUJ6', date: '2026-09-10' },
-  },
+const collator = new Intl.Collator('pt-BR', { numeric: true, sensitivity: 'base' });
 
-  // ——— Audi ———
-  {
-    slug: 'audi-a3-1-4-tfsi',
-    brand: 'Audi',
-    model: 'A3',
-    engine: '1.4 TFSI',
-    category: 'turbo-gasolina',
-    specs: [
-      { label: 'Motor', value: '1.4 TFSI' },
-      { label: 'Câmbio', value: 'S tronic / automático' },
-      { label: 'Tração', value: 'Dianteira' },
-    ],
-    original: { cv: 150, kgfm: 25.5 },
-    stage1: { cv: 180, kgfm: 30 },
-    stage2: { cv: 200, kgfm: 33 },
-    stage2Upgrades: UP_TURBO,
-    poster: poster('jetta-tsi-audi-a3', 'VW Jetta TSI x Audi A3'),
-    source: { shortcode: 'DdHyaxMD_Cx', date: '2026-09-10' },
-  },
-
-  // ——— BMW ———
-  {
-    slug: 'bmw-320i-f30',
-    brand: 'BMW',
-    model: '320i F30',
-    engine: '2.0 Turbo N20',
-    category: 'turbo-gasolina',
-    specs: [
-      { label: 'Motor', value: 'N20 2.0 turbo' },
-      { label: 'Câmbio', value: 'ZF 8HP' },
-      { label: 'Tração', value: 'Traseira' },
-    ],
-    original: { cv: 184, kgfm: 27.5 },
-    stage1: { cv: 245, kgfm: 35 },
-    stage2: { cv: 280, kgfm: 40 },
-    stage2Upgrades: ['Downpipe', 'Intake / filtro esportivo', 'Intercooler', 'Demais upgrades conforme o projeto'],
-    publishedResult: {
-      title: 'F30 Stage 2 feita na Kaiju',
-      text: 'Com intake, downpipe, catback, DV+ e remap Stage 2, a 320i saiu de aproximadamente 184 cv e 27,5 kgfm para cerca de 290–300 cv e 42–45 kgfm, dependendo do combustível e da calibração.',
-      source: { shortcode: 'Dal8OIzPW_a', date: '2026-07-10' },
-    },
-    poster: poster('bmw-f30', 'BMW F30 320i vs 328i'),
-    source: { shortcode: 'DdGFMTQOaXU', date: '2026-09-10' },
-  },
-  {
-    slug: 'bmw-328i-f30',
-    brand: 'BMW',
-    model: '328i F30',
-    engine: '2.0 Turbo N20',
-    category: 'turbo-gasolina',
-    specs: [
-      { label: 'Motor', value: 'N20 2.0 turbo' },
-      { label: 'Câmbio', value: 'ZF 8HP' },
-      { label: 'Tração', value: 'Traseira' },
-    ],
-    original: { cv: 245, kgfm: 35.7 },
-    stage1: { cv: 280, kgfm: 42 },
-    stage2: { cv: 300, kgfm: 48, cvPlus: true },
-    stage2Upgrades: ['Downpipe', 'Intake / filtro esportivo', 'Intercooler', 'Demais upgrades conforme o projeto'],
-    notes: ['Uma 320i bem acertada pode superar a potência de uma 328i original.'],
-    poster: poster('bmw-f30', 'BMW F30 320i vs 328i'),
-    source: { shortcode: 'DdGFMTQOaXU', date: '2026-09-10' },
-  },
-  {
-    slug: 'bmw-118i-1-6-turbo',
-    brand: 'BMW',
-    model: '118i',
-    engine: '1.6 Turbo',
-    category: 'turbo-gasolina',
-    specs: [{ label: 'Motor', value: '1.6 turbo (família Prince)' }],
-    original: { cv: 170, kgfm: 25.5 },
-    stage1: { cv: 205, kgfm: 31 },
-    stage2: { cv: 225, kgfm: 34 },
-    stage2Upgrades: ['Downpipe', 'Intake / filtro', 'Intercooler', 'Melhorias no escape'],
-    poster: poster('familia-prince', 'família Prince turbo'),
-    source: { shortcode: 'DdGGLwGO21d', date: '2026-09-10' },
-  },
-
-  // ——— Mini ———
-  {
-    slug: 'mini-cooper-s-1-6-turbo',
-    brand: 'Mini',
-    model: 'Cooper S',
-    engine: '1.6 Turbo',
-    category: 'turbo-gasolina',
-    specs: [{ label: 'Motor', value: '1.6 turbo (família Prince)' }],
-    original: { cv: 184, kgfm: 24.5 },
-    stage1: { cv: 215, kgfm: 32 },
-    stage2: { cv: 235, kgfm: 36 },
-    stage2Upgrades: ['Downpipe', 'Intake / filtro', 'Intercooler', 'Melhorias no escape'],
-    poster: poster('familia-prince', 'família Prince turbo'),
-    source: { shortcode: 'DdGGLwGO21d', date: '2026-09-10' },
-  },
-
-  // ——— Peugeot / Citroën ———
-  {
-    slug: 'peugeot-308-thp',
-    brand: 'Peugeot',
-    model: '308',
-    engine: '1.6 THP',
-    category: 'turbo-gasolina',
-    specs: [{ label: 'Motor', value: '1.6 THP (família Prince)' }],
-    original: { cv: 173, kgfm: 24.5 },
-    stage1: { cv: 200, kgfm: 31 },
-    stage2: { cv: 220, kgfm: 34 },
-    stage2Upgrades: ['Downpipe', 'Intake / filtro', 'Intercooler', 'Melhorias no escape'],
-    poster: poster('familia-prince', 'família Prince turbo'),
-    source: { shortcode: 'DdGGLwGO21d', date: '2026-09-10' },
-  },
-  {
-    slug: 'citroen-c4-lounge-thp',
-    brand: 'Citroën',
-    model: 'C4 Lounge',
-    engine: '1.6 THP',
-    category: 'turbo-gasolina',
-    specs: [{ label: 'Motor', value: '1.6 THP (família Prince)' }],
-    original: { cv: 173, kgfm: 24.5 },
-    stage1: { cv: 200, kgfm: 31 },
-    stage2: { cv: 220, kgfm: 34 },
-    stage2Upgrades: ['Downpipe', 'Intake / filtro', 'Intercooler', 'Melhorias no escape'],
-    poster: poster('familia-prince', 'família Prince turbo'),
-    source: { shortcode: 'DdGGLwGO21d', date: '2026-09-10' },
-  },
-
-  // ——— Ford ———
-  {
-    slug: 'ford-fusion-2-0-ecoboost',
-    brand: 'Ford',
-    model: 'Fusion',
-    engine: '2.0 EcoBoost',
-    category: 'turbo-gasolina',
-    specs: [
-      { label: 'Motor', value: '2.0 turbo EcoBoost' },
-      { label: 'Câmbio', value: 'Automático' },
-    ],
-    original: { cv: 240, kgfm: 38 },
-    stage1: { cv: 270, kgfm: 44 },
-    stage2: { cv: 290, kgfm: 47 },
-    stage2Upgrades: ['Intake', 'Downpipe', 'Intercooler', 'Combustível de qualidade'],
-    publishedResult: {
-      title: 'Fusion 2.0 EcoBoost AWD Stage 2',
-      text: 'Resultado publicado pela Kaiju para o Fusion AWD: de 240 cv para até 300 cv e de 34,7 kgfm para até 46,5 kgfm de torque, com a tração integral aproveitando melhor a potência no chão.',
-      source: { shortcode: 'DaoBGv5Pffs', date: '2026-07-10' },
-    },
-    poster: poster('fusion-ecoboost', 'Ford Fusion 2.0 EcoBoost'),
-    source: { shortcode: 'DdHy_FVDz5y', date: '2026-09-10' },
-  },
-  {
-    slug: 'ford-ranger-3-2-duratorq',
-    brand: 'Ford',
-    model: 'Ranger',
-    engine: '3.2 Duratorq',
-    category: 'diesel',
-    specs: [
-      { label: 'Motor', value: '3.2 turbo diesel' },
-      { label: 'Câmbio', value: 'Manual / automático' },
-      { label: 'Tração', value: '4x4' },
-    ],
-    original: { cv: 200, kgfm: 47.9 },
-    stage1: { cv: 235, kgfm: 55 },
-    stage2: { cv: 255, kgfm: 60 },
-    stage2Upgrades: UP_DIESEL,
-    poster: poster('ranger', 'Ford Ranger 3.2 Duratorq x 2.0 EcoBlue'),
-    source: { shortcode: 'DdHyA1JD84I', date: '2026-09-10' },
-  },
-  {
-    slug: 'ford-ranger-2-0-ecoblue',
-    brand: 'Ford',
-    model: 'Ranger',
-    engine: '2.0 EcoBlue',
-    category: 'diesel',
-    specs: [
-      { label: 'Motor', value: '2.0 biturbo diesel' },
-      { label: 'Câmbio', value: 'Automático' },
-      { label: 'Tração', value: '4x4' },
-    ],
-    original: { cv: 213, kgfm: 51 },
-    stage1: { cv: 245, kgfm: 57 },
-    stage2: { cv: 270, kgfm: 63 },
-    stage2Upgrades: UP_DIESEL,
-    poster: poster('ranger', 'Ford Ranger 3.2 Duratorq x 2.0 EcoBlue'),
-    source: { shortcode: 'DdHyA1JD84I', date: '2026-09-10' },
-  },
-
-  // ——— Chevrolet ———
-  {
-    slug: 'chevrolet-camaro-ss-6-2',
-    brand: 'Chevrolet',
-    model: 'Camaro SS',
-    engine: '6.2 V8',
-    years: '2010 – 2015',
-    category: 'aspirado',
-    specs: [
-      { label: 'Motor', value: 'V8 6.2 aspirado' },
-      { label: 'Câmbio', value: 'Manual / automático' },
-    ],
-    original: { cv: 406, kgfm: 56.7 },
-    stage1: { cv: 430, kgfm: 60 },
-    stage2: { cv: 460, kgfm: 63 },
-    stage2Upgrades: ['Intake', 'Escapamento', 'Coletor', 'Combustível de alta octanagem'],
-    poster: poster('camaro-ss', 'Camaro SS 6.2 2010 a 2015'),
-    source: { shortcode: 'DdHt_9ND8mO', date: '2026-09-10' },
-  },
-  {
-    slug: 'chevrolet-cruze-1-4-turbo',
-    brand: 'Chevrolet',
-    model: 'Cruze',
-    engine: '1.4 Turbo',
-    category: 'turbo-gasolina',
-    specs: [
-      { label: 'Motor', value: '1.4 turbo flex' },
-      { label: 'Câmbio', value: 'Manual / automático' },
-    ],
-    original: { cv: 153, kgfm: 24.5 },
-    stage1: { cv: 180, kgfm: 30 },
-    stage2: { cv: 195, kgfm: 33 },
-    stage2Upgrades: ['Intake', 'Downpipe', 'Intercooler (opcional)', 'Combustível de qualidade'],
-    poster: poster('cruze', 'Chevrolet Cruze 1.4 Turbo'),
-    source: { shortcode: 'DdHu6__D7B-', date: '2026-09-10' },
-  },
-  {
-    slug: 'chevrolet-s10-2-8-ctdi',
-    brand: 'Chevrolet',
-    model: 'S10',
-    engine: '2.8 CTDI',
-    category: 'diesel',
-    specs: [
-      { label: 'Motor', value: '2.8 turbo diesel' },
-      { label: 'Câmbio', value: 'Manual / automático' },
-    ],
-    original: { cv: 200, kgfm: 51 },
-    stage1: { cv: 230, kgfm: 58 },
-    stage2: { cv: 250, kgfm: 62 },
-    stage2Upgrades: ['Intake', 'Downpipe', 'Intercooler', 'Escapamento', 'Manutenção em dia'],
-    poster: poster('s10', 'Chevrolet S10 2.8 CTDI'),
-    source: { shortcode: 'DdHx3VOj-GK', date: '2026-09-10' },
-  },
-
-  // ——— Toyota ———
-  {
-    slug: 'toyota-hilux-3-0-d-4d',
-    brand: 'Toyota',
-    model: 'Hilux',
-    engine: '3.0 D-4D',
-    years: '2005 – 2015',
-    category: 'diesel',
-    specs: [
-      { label: 'Motor', value: '3.0 turbo diesel' },
-      { label: 'Câmbio', value: 'Manual / automático' },
-      { label: 'Tração', value: '4x4' },
-    ],
-    original: { cv: 171, kgfm: 36.7 },
-    stage1: { cv: 200, kgfm: 43 },
-    stage2: { cv: 220, kgfm: 47 },
-    stage2Upgrades: [...UP_DIESEL, 'EGR delete (opcional)'],
-    poster: poster('hilux-sw4', 'Toyota Hilux x SW4 3.0'),
-    source: { shortcode: 'DdHtN1iTb1j', date: '2026-09-10' },
-  },
-  {
-    slug: 'toyota-sw4-3-0-d-4d',
-    brand: 'Toyota',
-    model: 'SW4',
-    engine: '3.0 D-4D',
-    years: '2005 – 2015',
-    category: 'diesel',
-    specs: [
-      { label: 'Motor', value: '3.0 turbo diesel' },
-      { label: 'Câmbio', value: 'Manual / automático' },
-      { label: 'Tração', value: '4x4' },
-    ],
-    original: { cv: 171, kgfm: 36.7 },
-    stage1: { cv: 200, kgfm: 43 },
-    stage2: { cv: 220, kgfm: 47 },
-    stage2Upgrades: [...UP_DIESEL, 'EGR delete (opcional)'],
-    poster: poster('hilux-sw4', 'Toyota Hilux x SW4 3.0'),
-    source: { shortcode: 'DdHtN1iTb1j', date: '2026-09-10' },
-  },
-
-  // ——— Mitsubishi ———
-  {
-    slug: 'mitsubishi-l200-triton-3-2-di-d',
-    brand: 'Mitsubishi',
-    model: 'L200 Triton',
-    engine: '3.2 DI-D',
-    category: 'diesel',
-    specs: [
-      { label: 'Motor', value: '3.2 turbo diesel' },
-      { label: 'Câmbio', value: 'Manual / automático' },
-      { label: 'Tração', value: '4x4' },
-    ],
-    original: { cv: 180, kgfm: 43.9 },
-    stage1: { cv: 210, kgfm: 49 },
-    stage2: { cv: 230, kgfm: 54 },
-    stage2Upgrades: UP_DIESEL,
-    poster: poster('l200-triton', 'Mitsubishi L200 Triton 3.2 x 2.4'),
-    source: { shortcode: 'DdHyGCyD8Ah', date: '2026-09-10' },
-  },
-  {
-    slug: 'mitsubishi-l200-triton-2-4-mivec',
-    brand: 'Mitsubishi',
-    model: 'L200 Triton',
-    engine: '2.4 MIVEC',
-    category: 'diesel',
-    specs: [
-      { label: 'Motor', value: '2.4 turbo diesel' },
-      { label: 'Câmbio', value: 'Manual / automático' },
-      { label: 'Tração', value: '4x4' },
-    ],
-    original: { cv: 190, kgfm: 43.9 },
-    stage1: { cv: 220, kgfm: 50 },
-    stage2: { cv: 240, kgfm: 55 },
-    stage2Upgrades: UP_DIESEL,
-    poster: poster('l200-triton', 'Mitsubishi L200 Triton 3.2 x 2.4'),
-    source: { shortcode: 'DdHyGCyD8Ah', date: '2026-09-10' },
-  },
-
-  // ——— Nissan ———
-  {
-    slug: 'nissan-frontier-2-5-dci',
-    brand: 'Nissan',
-    model: 'Frontier',
-    engine: '2.5 dCi',
-    category: 'diesel',
-    specs: [{ label: 'Motor', value: '2.5 turbo diesel' }],
-    original: { cv: 190, kgfm: 45.9 },
-    stage1: { cv: 215, kgfm: 52 },
-    stage2: { cv: 230, kgfm: 56 },
-    stage2Upgrades: [...UP_DIESEL, 'Outros ajustes conforme o projeto'],
-    poster: poster('frontier', 'Nissan Frontier 2.5 dCi vs 2.3 Bi-Turbo'),
-    source: { shortcode: 'DdHDdJ4uEHR', date: '2026-09-10' },
-  },
-  {
-    slug: 'nissan-frontier-2-3-bi-turbo',
-    brand: 'Nissan',
-    model: 'Frontier',
-    engine: '2.3 Bi-Turbo',
-    category: 'diesel',
-    specs: [{ label: 'Motor', value: '2.3 biturbo diesel' }],
-    original: { cv: 190, kgfm: 45.9 },
-    stage1: { cv: 225, kgfm: 54 },
-    stage2: { cv: 250, kgfm: 60 },
-    stage2Upgrades: [...UP_DIESEL, 'Outros ajustes conforme o projeto'],
-    poster: poster('frontier', 'Nissan Frontier 2.5 dCi vs 2.3 Bi-Turbo'),
-    source: { shortcode: 'DdHDdJ4uEHR', date: '2026-09-10' },
-  },
-
-  // ——— Jeep / Fiat ———
-  {
-    slug: 'jeep-compass-2-0-multijet',
-    brand: 'Jeep',
-    model: 'Compass',
-    engine: '2.0 Multijet diesel',
-    category: 'diesel',
-    specs: [{ label: 'Motor', value: '2.0 Multijet turbo diesel' }],
-    original: { cv: 170, kgfm: 35.7 },
-    stage1: { cv: 200, kgfm: 42 },
-    stage2: { cv: 220, kgfm: 46 },
-    stage2Upgrades: UP_DIESEL,
-    poster: poster('compass-toro', 'Jeep Compass x Fiat Toro 2.0 diesel'),
-    source: { shortcode: 'DdHsXa-PPqC', date: '2026-09-10' },
-  },
-  {
-    slug: 'fiat-toro-2-0-multijet',
-    brand: 'Fiat',
-    model: 'Toro',
-    engine: '2.0 Multijet diesel',
-    category: 'diesel',
-    specs: [{ label: 'Motor', value: '2.0 Multijet turbo diesel' }],
-    original: { cv: 170, kgfm: 35.7 },
-    stage1: { cv: 200, kgfm: 42 },
-    stage2: { cv: 220, kgfm: 46 },
-    stage2Upgrades: UP_DIESEL,
-    poster: poster('compass-toro', 'Jeep Compass x Fiat Toro 2.0 diesel'),
-    source: { shortcode: 'DdHsXa-PPqC', date: '2026-09-10' },
-  },
-];
+export const vehicles: Vehicle[] = [...kaijuVehicles.map(fromKaiju), ...(armada as unknown as Vehicle[])].sort(
+  (a, b) => collator.compare(a.brand, b.brand) || collator.compare(a.family, b.family) || collator.compare(a.version, b.version),
+);
 
 export const brands = Array.from(new Set(vehicles.map((v) => v.brand)));
 
-export const vehicleName = (v: Vehicle) => `${v.brand} ${v.model} ${v.engine}`;
+export const familiesOf = (brand: string) => Array.from(new Set(vehicles.filter((v) => v.brand === brand).map((v) => v.family)));
+
+export const versionsOf = (brand: string, family: string) => vehicles.filter((v) => v.brand === brand && v.family === family);
+
+export const vehicleName = (v: Vehicle) => `${v.brand} ${v.version}`;
 
 export const getVehicle = (slug: string) => vehicles.find((v) => v.slug === slug);
 
-/** Ganho percentual calculado a partir dos números publicados. */
+/** Ganho percentual calculado a partir dos números da ficha. */
 export const gain = (from: number, to: number) => Math.round(((to - from) / from) * 100);
 
 export const formatKgfm = (n: number) => n.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
-export const categoryLabel: Record<Vehicle['category'], string> = {
+export const cvText = (s: Stage) => s.cvText ?? String(s.cv);
+export const kgfmText = (s: Stage) => s.kgfmText ?? formatKgfm(s.kgfm);
+
+export const categoryLabel: Record<VehicleCategory, string> = {
   'turbo-gasolina': 'Turbo',
   diesel: 'Diesel',
   aspirado: 'Aspirado',
 };
 
 /** Benefícios que a Kaiju lista nas publicações de remap. */
-export const remapBenefits: Record<Vehicle['category'], string[]> = {
+export const remapBenefits: Record<VehicleCategory, string[]> = {
   'turbo-gasolina': [
     'Melhor resposta de pedal',
     'Retomadas mais fortes',
@@ -572,4 +121,4 @@ export const remapBenefits: Record<Vehicle['category'], string[]> = {
 };
 
 export const remapDisclaimer =
-  'Valores aproximados publicados pela Kaiju Performance. Os resultados podem variar conforme ano, versão, combustível, câmbio, condição mecânica e configuração dos upgrades.';
+  'Valores aproximados. Os resultados podem variar conforme ano, versão, combustível, câmbio, condição mecânica e configuração dos upgrades.';

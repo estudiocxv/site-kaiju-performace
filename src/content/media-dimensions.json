@@ -119,142 +119,6 @@
     "width": 720,
     "height": 1280
   },
-  "/media/projetos/monza-turbo/01.jpg": {
-    "width": 1440,
-    "height": 1440
-  },
-  "/media/projetos/monza-turbo/02.jpg": {
-    "width": 1440,
-    "height": 1440
-  },
-  "/media/projetos/monza-turbo/03.jpg": {
-    "width": 1440,
-    "height": 1440
-  },
-  "/media/projetos/monza-turbo/04.jpg": {
-    "width": 1440,
-    "height": 1440
-  },
-  "/media/projetos/monza-turbo/05.jpg": {
-    "width": 1440,
-    "height": 1439
-  },
-  "/media/projetos/monza-turbo/06.jpg": {
-    "width": 1440,
-    "height": 1440
-  },
-  "/media/projetos/monza-turbo/07.jpg": {
-    "width": 1440,
-    "height": 1440
-  },
-  "/media/projetos/monza-turbo/08.jpg": {
-    "width": 1440,
-    "height": 1440
-  },
-  "/media/projetos/monza-turbo/09.jpg": {
-    "width": 1440,
-    "height": 1440
-  },
-  "/media/projetos/gol-copa-turbo/01.jpg": {
-    "width": 1440,
-    "height": 1440
-  },
-  "/media/projetos/gol-copa-turbo/02.jpg": {
-    "width": 1440,
-    "height": 1440
-  },
-  "/media/projetos/gol-copa-turbo/03.jpg": {
-    "width": 1440,
-    "height": 1440
-  },
-  "/media/projetos/gol-copa-turbo/04.jpg": {
-    "width": 1440,
-    "height": 1440
-  },
-  "/media/projetos/gol-copa-turbo/05.jpg": {
-    "width": 1440,
-    "height": 1440
-  },
-  "/media/projetos/gol-copa-turbo/06.jpg": {
-    "width": 1440,
-    "height": 1440
-  },
-  "/media/projetos/gol-copa-turbo/07.jpg": {
-    "width": 1440,
-    "height": 1440
-  },
-  "/media/projetos/gol-copa-turbo/08.jpg": {
-    "width": 1440,
-    "height": 1440
-  },
-  "/media/projetos/caravan-1979/01.jpg": {
-    "width": 962,
-    "height": 723
-  },
-  "/media/projetos/caravan-1979/02.jpg": {
-    "width": 962,
-    "height": 723
-  },
-  "/media/projetos/caravan-1979/03.jpg": {
-    "width": 963,
-    "height": 727
-  },
-  "/media/projetos/caravan-1979/04.jpg": {
-    "width": 963,
-    "height": 727
-  },
-  "/media/projetos/caravan-1979/05.jpg": {
-    "width": 963,
-    "height": 727
-  },
-  "/media/projetos/caravan-1979/06.jpg": {
-    "width": 963,
-    "height": 727
-  },
-  "/media/projetos/caravan-1979/07.jpg": {
-    "width": 963,
-    "height": 727
-  },
-  "/media/projetos/bmw-320i-gp/01.jpg": {
-    "width": 1440,
-    "height": 1439
-  },
-  "/media/projetos/bmw-320i-gp/02.jpg": {
-    "width": 1440,
-    "height": 1440
-  },
-  "/media/projetos/bmw-320i-gp/03.jpg": {
-    "width": 1440,
-    "height": 1440
-  },
-  "/media/projetos/bmw-320i-gp/04.jpg": {
-    "width": 1440,
-    "height": 1440
-  },
-  "/media/projetos/bmw-320i-gp/05.jpg": {
-    "width": 1440,
-    "height": 1440
-  },
-  "/media/projetos/bmw-320i-gp/06.jpg": {
-    "width": 1440,
-    "height": 1440
-  },
-  "/media/projetos/bmw-320i-gp/07.jpg": {
-    "width": 1440,
-    "height": 1440
-  },
-  "/media/projetos/bmw-320i-gp/08.jpg": {
-    "width": 1440,
-    "height": 1440
-  },
-  "/media/projetos/bmw-320i-gp/09.jpg": {
-    "width": 1440,
-    "height": 1440
-  },
-  "/media/projetos/bmw-320i-gp/10.jpg": {
-    "width": 1440,
-    "height": 1440
-  },
   "/media/eventos/inauguracao/01.jpg": {
     "width": 1080,
     "height": 1080
@@ -334,5 +198,29 @@
   "/brand/kaiju-mark.png": {
     "width": 534,
     "height": 125
+  },
+  "/media/servicos/ar-condicionado.jpg": {
+    "width": 720,
+    "height": 800
+  },
+  "/media/avaliacoes/fabio-1.jpg": {
+    "width": 1600,
+    "height": 1200
+  },
+  "/media/avaliacoes/fabio-2.jpg": {
+    "width": 1600,
+    "height": 1200
+  },
+  "/media/avaliacoes/fabio-3.jpg": {
+    "width": 1600,
+    "height": 1200
+  },
+  "/media/avaliacoes/fabio-4.jpg": {
+    "width": 1600,
+    "height": 1200
+  },
+  "/media/avaliacoes/mirele-1.jpg": {
+    "width": 1600,
+    "height": 1200
   }
 }

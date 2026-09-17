@@ -1,13 +1,14 @@
 # Kaiju Performance — site
 
 Site da Kaiju Performance (Bauru/SP), feito em Next.js 16 (App Router), TypeScript e CSS Modules.
-Todo o conteúdo veio do Instagram oficial [@kaijuperformancebauru](https://www.instagram.com/kaijuperformancebauru/).
+Conteúdo do Instagram oficial [@kaijuperformancebauru](https://www.instagram.com/kaijuperformancebauru/), das avaliações da Kaiju no Google e do catálogo de remap da Armada Performance (pedido do cliente).
 
 ```bash
 npm install
 npm run dev      # http://localhost:3000
-npm run build    # gera as 47 páginas estáticas
+npm run build    # gera as páginas estáticas (uma por versão de remap)
 npm run media    # reprocessa fotos e vídeos (ver "Mídia")
+npm run armada   # regenera src/content/data/armada.json
 ```
 
 ## Estrutura
@@ -16,33 +17,38 @@ npm run media    # reprocessa fotos e vídeos (ver "Mídia")
 src/
   app/                    rotas
     page.tsx              página inicial (monta as seções)
-    remap/                tabela de ganhos + /remap/[slug] (ficha por modelo)
-    projetos/             lista + /projetos/[slug]
+    remap/                tabela com busca + /remap/[slug] (ficha por versão)
     sitemap.ts, robots.ts SEO
   components/
-    sections/             seções da página inicial (Hero, About, Services…)
-    StageSheet.tsx        ficha de ganhos (Original / Stage 1 / Stage 2)
-    RemapFinder.tsx       seletor de carro da home
+    sections/             seções da página inicial (Hero, About, Services, Reviews…)
+    StageSheet.tsx        ficha de ganhos (Original / Stage 1 / 2 / 3)
+    RemapFinder.tsx       seletor da home (busca no computador; marca → modelo → versão no celular)
+    RemapTable.tsx        tabela de /remap com busca e filtro por marca
     Photo.tsx             imagem com dimensões automáticas
   content/                DADOS — é aqui que se edita o site
-    site.ts               nome, WhatsApp, endereço, redes
-    vehicles.ts           modelos e números de remap
-    projects.ts           carros/projetos
+    site.ts               nome, CNPJ, WhatsApp, endereço, redes, link do Google
+    vehicles.ts           junta as fichas da Kaiju e da Armada (catálogo final)
+    vehicles-kaiju.ts     28 fichas publicadas pela Kaiju no Instagram
+    data/armada.json      versões da Armada (gerado, não editar à mão)
+    reviews.ts            avaliações do Google
     services.ts           serviços, processo, Stage 1 x Stage 2
-    events.ts             eventos e parceiros
+    events.ts             eventos
     types.ts              formato de cada tipo de conteúdo
     media-dimensions.json gerado pelo script de mídia
   lib/whatsapp.ts         links e mensagens prontas do WhatsApp
-scripts/import-media.mjs  otimiza fotos, corta vídeos, gera logo/OG/ícone
+scripts/
+  import-media.mjs        otimiza fotos, corta vídeos, gera logo/OG/ícone
+  import-armada.mjs       converte o catálogo extraído da Armada
 public/media/             mídia já otimizada
 ```
 
 ## Como adicionar conteúdo
 
-- **Novo modelo de remap:** copie um item em `src/content/vehicles.ts`. A página `/remap/<slug>` aparece sozinha, entra na tabela, no seletor da home e no sitemap.
-- **Novo projeto:** coloque as fotos em `public/media/projetos/<pasta>/01.jpg, 02.jpg…`, rode `npm run media` se vierem do `_research`, e adicione um item em `src/content/projects.ts`. `featured: true` leva o carro para os destaques da home.
+- **Nova ficha de remap da Kaiju:** copie um item em `src/content/vehicles-kaiju.ts` e indique o modelo (agrupamento) em `KAIJU_FAMILY`, dentro de `vehicles.ts`. A página `/remap/<slug>` aparece sozinha, entra na tabela, no seletor e no sitemap.
+- **Catálogo da Armada:** `node ../_research/armada/crawl.mjs` baixa de novo e `npm run armada` converte. Versões que repetem uma ficha da Kaiju ficam em `DUPLICATES_OF_KAIJU` (em `scripts/import-armada.mjs`) e são descartadas: vale a da Kaiju.
+- **Nova avaliação do Google:** adicione um item em `src/content/reviews.ts`. As fotos vão em `../_research/avaliacoes/` e entram com `npm run media`.
 - **Novo serviço ou evento:** `src/content/services.ts` e `src/content/events.ts`.
-- **Telefone, endereço, horário:** `src/content/site.ts`.
+- **Telefone, endereço, CNPJ, horário:** `src/content/site.ts`.
 
 Os arquivos de `src/content` usam os tipos de `types.ts`. Um painel administrativo ou CMS no futuro só precisa devolver objetos nesses formatos.
 
@@ -62,7 +68,7 @@ O vídeo começa a carregar só depois da primeira pintura, pausa quando a aba f
 | concreto | `#c9c6bf` | galpão onde a Kaiju fotografa os carros (ficha de ganhos) |
 
 Tipos: Saira (itálico condensado, títulos), Archivo (texto), Chivo Mono (rótulos e dados).
-O “letreiro” (branco com contorno vermelho, classe `.letreiro`) repete o desenho do logotipo e é usado no nome de cada projeto.
+O “letreiro” (branco com contorno vermelho, classe `.letreiro`) repete o desenho do logotipo.
 
 ## Pendências para confirmar com a Kaiju
 

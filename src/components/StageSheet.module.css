@@ -72,6 +72,10 @@
   background: var(--vermelho);
 }
 
+.stage3 .bar {
+  background: repeating-linear-gradient(-60deg, var(--vermelho) 0 5px, var(--vermelho-escuro) 5px 8px);
+}
+
 .value {
   min-width: 96px;
   text-align: right;
@@ -87,7 +91,8 @@
   line-height: 1;
 }
 
-.stage2 .num {
+.stage2 .num,
+.stage3 .num {
   color: var(--vermelho);
 }
 
@@ -101,18 +106,28 @@
   font-size: 11.5px;
 }
 
-.stage2 .gain {
+.stage2 .gain,
+.stage3 .gain {
   color: var(--vermelho-escuro);
   font-weight: 700;
 }
 
 .upgrades {
   display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 16px;
-  align-items: baseline;
+  gap: 10px;
   padding-top: 18px;
   border-top: 1px solid rgb(18 18 18 / 0.25);
+}
+
+.upgrades > div {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 16px;
+  align-items: baseline;
+}
+
+.upgrades dd {
+  margin: 0;
 }
 
 .upgrades ul {
@@ -149,8 +164,8 @@
   .num {
     font-size: 26px;
   }
-  .upgrades {
+  .upgrades > div {
     grid-template-columns: 1fr;
-    gap: 8px;
+    gap: 4px;
   }
 }

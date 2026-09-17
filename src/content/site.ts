@@ -6,6 +6,7 @@ export const site = {
   name: 'Kaiju Performance',
   url: 'https://site-kaiju-performace.vercel.app', // trocar quando houver domínio próprio
   category: 'Oficina automotiva',
+  cnpj: '66.763.604/0001-06',
   city: 'Bauru',
   state: 'SP',
   // bio do Instagram
@@ -34,6 +35,8 @@ export const site = {
     instagram: 'https://www.instagram.com/kaijuperformancebauru/',
     instagramHandle: '@kaijuperformancebauru',
     facebook: 'https://www.facebook.com/571001329430727',
+    // perfil da oficina no Google Maps (id do lugar tirado dos links das avaliações)
+    googleReviews: 'https://www.google.com/maps?cid=14668745525081589795',
   },
 } as const;
 
