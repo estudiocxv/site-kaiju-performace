@@ -4,7 +4,7 @@
  */
 export const site = {
   name: 'Kaiju Performance',
-  url: 'https://www.kaijuperformance.com.br', // ajustar para o domínio definitivo
+  url: 'https://site-kaiju-performace.vercel.app', // trocar quando houver domínio próprio
   category: 'Oficina automotiva',
   city: 'Bauru',
   state: 'SP',

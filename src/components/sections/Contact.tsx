@@ -61,11 +61,6 @@ export function Contact() {
             <MapPin size={20} />
             Como chegar
           </a>
-          <p className={styles.blue}>
-            <span className={styles.blueLight} aria-hidden="true" />
-            Chegando, procure a luz azul na frente da oficina. Quem jogou Need for Speed Underground 2 sabe: luz azul é
-            oficina de performance.
-          </p>
         </div>
       </div>
     </section>

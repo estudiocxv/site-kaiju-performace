@@ -6,7 +6,6 @@
  * giz       branco do letreiro
  * vermelho  contorno do logotipo KAIJU
  * concreto  o galpão onde a Kaiju fotografa os carros (usado na ficha de ganhos)
- * azul      a luz azul da fachada (aparece só em Contato)
  */
 :root {
   --piche: #0b0b0c;
@@ -20,7 +19,6 @@
   --concreto: #c9c6bf;
   --concreto-2: #b9b5ad;
   --concreto-tinta: #121212;
-  --azul: #2f6bff;
 
   --f-display: var(--font-saira), 'Arial Narrow', sans-serif;
   --f-body: var(--font-archivo), system-ui, sans-serif;

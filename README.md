@@ -60,7 +60,6 @@ O vídeo começa a carregar só depois da primeira pintura, pausa quando a aba f
 | giz | `#eeece7` | branco do letreiro |
 | vermelho | `#e3121b` | contorno do KAIJU |
 | concreto | `#c9c6bf` | galpão onde a Kaiju fotografa os carros (ficha de ganhos) |
-| azul | `#2f6bff` | luz azul da fachada (só no contato) |
 
 Tipos: Saira (itálico condensado, títulos), Archivo (texto), Chivo Mono (rótulos e dados).
 O “letreiro” (branco com contorno vermelho, classe `.letreiro`) repete o desenho do logotipo e é usado no nome de cada projeto.
