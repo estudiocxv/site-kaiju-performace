@@ -53,7 +53,10 @@ export const services: Service[] = [
       'Máquina de fumaça para encontrar vazamentos e ar falso',
       'Elétrica completa e reparo de chicote',
     ],
-    photo: { src: '/media/oficina/equipe-trabalhando.jpg', alt: 'Equipe da Kaiju Performance trabalhando no box' },
+    photo: {
+      src: '/media/servicos/diagnostico-eletrica.jpg',
+      alt: 'VW Amarok com o capô aberto na oficina, durante diagnóstico',
+    },
     cta: 'diagnóstico',
   },
   {

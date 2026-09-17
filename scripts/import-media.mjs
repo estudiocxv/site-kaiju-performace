@@ -93,6 +93,32 @@ async function images() {
   return manifest;
 }
 
+/** Fotos enviadas pela Kaiju (pasta _research/enviadas). */
+const FOTOS_ENVIADAS = {
+  'amarok-diagnostico': 'servicos/diagnostico-eletrica',
+};
+
+async function enviadas() {
+  const dir = path.join(root, '..', '_research', 'enviadas');
+  const manifest = {};
+  for (const [from, to] of Object.entries(FOTOS_ENVIADAS)) {
+    const src = path.join(dir, `${from}.jpg`);
+    if (!fs.existsSync(src)) {
+      console.warn('faltando', from);
+      continue;
+    }
+    const dest = path.join(OUT, `${to}.jpg`);
+    ensureDir(dest);
+    const info = await sharp(src)
+      .rotate()
+      .resize(1920, 1920, { fit: 'inside', withoutEnlargement: true })
+      .jpeg({ quality: 82, mozjpeg: true, progressive: true })
+      .toFile(dest);
+    manifest[`/media/${to}.jpg`] = { width: info.width, height: info.height };
+  }
+  return manifest;
+}
+
 /** Fotos das avaliações do Google (baixadas em _research/avaliacoes). */
 async function reviews() {
   const dir = path.join(root, '..', '_research', 'avaliacoes');
@@ -164,15 +190,16 @@ async function videos() {
 
 async function brandAssets() {
   const mark = path.join(root, 'public', 'brand', 'kaiju-mark.png');
-  const photo = path.join(OUT, 'oficina', 'equipe-trabalhando.jpg');
 
-  // imagem de compartilhamento (Open Graph)
-  const logoBuf = await sharp(mark).resize({ width: 560 }).toBuffer();
-  await sharp(photo)
-    .resize(1200, 630, { fit: 'cover', position: 'centre' })
-    .modulate({ brightness: 0.42 })
-    .composite([{ input: logoBuf, gravity: 'center', blend: 'lighten' }])
-    .jpeg({ quality: 82, mozjpeg: true })
+  // imagem de compartilhamento (Open Graph): logotipo completo sobre preto,
+  // recortado do topo de uma das artes publicadas pela Kaiju
+  const logo = await sharp(path.join(OUT, 'remap', 'fusion-ecoboost.jpg'))
+    .extract({ left: 330, top: 12, width: 600, height: 168 })
+    .resize({ width: 880 })
+    .toBuffer();
+  await sharp({ create: { width: 1200, height: 630, channels: 3, background: '#000000' } })
+    .composite([{ input: logo, gravity: 'center', blend: 'screen' }])
+    .jpeg({ quality: 88, mozjpeg: true })
     .toFile(path.join(root, 'public', 'og.jpg'));
 
   // ícone: o "K" do logotipo sobre preto
@@ -189,6 +216,7 @@ const only = process.argv[2];
 const dims = {
   ...(only && only !== 'images' ? {} : await images()),
   ...(only && only !== 'reviews' ? {} : await reviews()),
+  ...(only && only !== 'enviadas' ? {} : await enviadas()),
   ...(only && only !== 'logo' ? {} : await logo()),
   ...(only && only !== 'brand' ? {} : await brandAssets()),
   ...(only && only !== 'videos' ? {} : await videos()),
