@@ -54,8 +54,7 @@ export type Vehicle = {
 
 export type Project = {
   slug: string;
-  nickname?: string; // apelido dado pela Kaiju
-  /** nome curto para o letreiro quando o carro não tem apelido */
+  /** nome curto exibido no letreiro (ex.: "Monza 89") */
   lettering?: string;
   car: string;
   kind: 'Preparação' | 'Stage 2' | 'Revisão' | 'Carro antigo';

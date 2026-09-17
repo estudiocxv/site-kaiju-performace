@@ -8,7 +8,7 @@ import styles from './projetos.module.css';
 export const metadata: Metadata = {
   title: 'Projetos',
   description:
-    'Carros que passaram pela Kaiju Performance em Bauru/SP: Monza 89 turbo com FuelTech, Frontier e Audi A3 Stage 2, Gol Copa turbo, clássicos e importados.',
+    'Carros que passaram pela Kaiju Performance em Bauru/SP: Monza 89 turbo com FuelTech, Gol Copa 1994 turbo, Caravan 1979 e BMW 320i.',
   alternates: { canonical: '/projetos' },
 };
 
@@ -18,7 +18,7 @@ export default function ProjectsIndex() {
   return (
     <>
       <PageHead crumbs={[{ href: '/', label: 'Início' }, { label: 'Projetos' }]} title="Projetos">
-        <p>Preparações, Stage 2, clássicos e revisões. Cada carro com o que foi feito, como a Kaiju publicou.</p>
+        <p>Preparações, clássicos e revisões. Cada carro com o que foi feito, como a Kaiju publicou.</p>
       </PageHead>
 
       <div className="wrap">

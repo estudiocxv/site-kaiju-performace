@@ -63,7 +63,7 @@ O vídeo começa a carregar só depois da primeira pintura, pausa quando a aba f
 | azul | `#2f6bff` | luz azul da fachada (só no contato) |
 
 Tipos: Saira (itálico condensado, títulos), Archivo (texto), Chivo Mono (rótulos e dados).
-O “letreiro” (branco com contorno vermelho, classe `.letreiro`) repete o desenho do logotipo e é usado nos apelidos dos carros.
+O “letreiro” (branco com contorno vermelho, classe `.letreiro`) repete o desenho do logotipo e é usado no nome de cada projeto.
 
 ## Pendências para confirmar com a Kaiju
 

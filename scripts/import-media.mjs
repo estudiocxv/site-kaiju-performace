@@ -42,15 +42,7 @@ const IMAGES = {
   ...series('projetos/monza-turbo', ['56_1', '56_0', '56_2', '56_8', '56_6', '56_3', '56_5', '56_7', '56_4']),
   ...series('projetos/gol-copa-turbo', ['52_6', '52_0', '52_5', '52_1', '52_2', '52_3', '52_4', '52_7']),
   ...series('projetos/caravan-1979', ['55_0', '55_1', '55_2', '55_5', '55_3', '55_4', '55_6']),
-  ...series('projetos/phantom', ['59_2', '59_0', '59_1', '59_3', '59_4', '59_5', '59_6']),
-  ...series('projetos/black-hearth', ['60_0', '60_3', '60_1', '60_2', '60_4', '60_5', '60_6']),
-  ...series('projetos/the-brute', ['63_0', '63_2', '63_1', '63_3', '63_4', '63_5', '63_6', '63_7', '63_8']),
-  ...series('projetos/silver-samurai', ['69_5', '69_0', '69_1', '69_2', '69_3', '69_4']),
   ...series('projetos/bmw-320i-gp', ['62_0', '62_6', '62_1', '62_2', '62_3', '62_4', '62_5', '62_7', '62_8', '62_9']),
-  ...series('projetos/boiadeira', ['89_0', '89_1']),
-  ...series('projetos/the-panthon', ['87_0', '87_1']),
-  ...series('projetos/silverhawks', ['90_0', '90_1']),
-  ...series('projetos/judith', ['88_0', '88_1']),
 
   // Eventos
   ...series('eventos/inauguracao', ['80_0', '80_14', '80_12', '80_13', '80_17', '80_15', '78_1']),

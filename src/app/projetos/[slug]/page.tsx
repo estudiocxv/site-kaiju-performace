@@ -20,9 +20,8 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const p = getProject((await params).slug);
   if (!p) return {};
-  const title = p.nickname ? `${p.nickname}: ${p.car}` : p.car;
   return {
-    title,
+    title: p.car,
     description: `${p.car} na Kaiju Performance, Bauru/SP. ${p.summary}`,
     alternates: { canonical: `/projetos/${p.slug}` },
     openGraph: { images: [{ url: p.cover.src, alt: p.cover.alt }] },

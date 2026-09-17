@@ -30,7 +30,7 @@ export function Projects() {
         <h2 id="projetos-title" className={`display ${styles.title}`}>
           Carros que passaram por aqui
         </h2>
-        <p className={styles.intro}>Cada um com o nome que ganhou na oficina e o que foi feito, do jeito que a Kaiju publicou.</p>
+        <p className={styles.intro}>Preparação, turbo e clássicos, com o que foi feito em cada um, do jeito que a Kaiju publicou.</p>
       </div>
 
       <div className={`wrap ${styles.dossiers}`}>
@@ -71,21 +71,25 @@ export function Projects() {
         ))}
       </div>
 
-      <div className={`wrap ${styles.moreHead}`}>
-        <h3 className="label">Mais carros da oficina</h3>
-        <Link href="/projetos" className="link-arrow">
-          Todos os projetos <ArrowRight size={14} />
-        </Link>
-      </div>
-      <div className={styles.rail}>
-        <ul className={styles.railList}>
-          {others.map((p) => (
-            <li key={p.slug}>
-              <ProjectCardSmall slug={p.slug} />
-            </li>
-          ))}
-        </ul>
-      </div>
+      {others.length > 0 && (
+        <>
+          <div className={`wrap ${styles.moreHead}`}>
+            <h3 className="label">Mais carros da oficina</h3>
+            <Link href="/projetos" className="link-arrow">
+              Todos os projetos <ArrowRight size={14} />
+            </Link>
+          </div>
+          <div className={styles.rail}>
+            <ul className={styles.railList}>
+              {others.map((p) => (
+                <li key={p.slug}>
+                  <ProjectCardSmall slug={p.slug} />
+                </li>
+              ))}
+            </ul>
+          </div>
+        </>
+      )}
     </section>
   );
 }

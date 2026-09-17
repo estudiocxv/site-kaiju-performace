@@ -2,7 +2,7 @@ import type { Photo, Project } from './types';
 
 /**
  * Carros que passaram pela Kaiju, com o que foi feito conforme publicado
- * no Instagram. Apelidos são os usados pela própria oficina.
+ * no Instagram.
  */
 
 const photos = (slug: string, n: number, alts: string[]): Photo[] =>
@@ -42,31 +42,6 @@ export const projects: Project[] = [
     source: { shortcode: 'DOOhLozDgNH', date: '2025-09-05' },
   },
   {
-    slug: 'boiadeira-frontier-stage-2',
-    nickname: 'Boiadeira',
-    car: 'Nissan Frontier',
-    kind: 'Stage 2',
-    featured: true,
-    summary: 'Picape preparada para chegar rápido em Barretos. Stage 2 com escape direto e downpipe.',
-    highlight: '230 cv',
-    work: ['DPF e EGR delete', 'Filtro esportivo K&N', 'Escape direto', 'Downpipe e pente na turbina', 'Remap Stage 2'],
-    cover: { src: '/media/projetos/boiadeira/01.jpg', alt: 'Nissan Frontier Boiadeira com Stage 2 na Kaiju Performance' },
-    photos: photos('boiadeira', 2, ['Nissan Frontier Boiadeira de frente', 'Nissan Frontier Boiadeira de traseira']),
-    source: { shortcode: 'DH9S0TLvciB', date: '2025-04-02' },
-  },
-  {
-    slug: 'the-panthon-audi-a3-stage-2',
-    nickname: 'The Panthon',
-    car: 'Audi A3 Sportback',
-    kind: 'Stage 2',
-    featured: true,
-    summary: 'O “fantasminha” branco saiu com Stage 2 completo e o dono com um sorriso no rosto.',
-    work: ['Filtro RS Performance', 'Downpipe', 'Catback', 'Remap Stage 2'],
-    cover: { src: '/media/projetos/the-panthon/01.jpg', alt: 'Audi A3 Sportback The Panthon com Stage 2' },
-    photos: photos('the-panthon', 2, ['Audi A3 The Panthon de frente', 'Audi A3 The Panthon de traseira']),
-    source: { shortcode: 'DIMRQ63uoWF', date: '2025-04-08' },
-  },
-  {
     slug: 'gol-copa-1994-turbo',
     lettering: 'Gol Copa',
     car: 'VW Gol Copa 1994 turbo',
@@ -89,104 +64,9 @@ export const projects: Project[] = [
     source: { shortcode: 'DTddPtRD0i-', date: '2026-01-13' },
   },
   {
-    slug: 'silver-samurai-civic-si',
-    nickname: 'Silver Samurai',
-    car: 'Honda Civic Si',
-    kind: 'Revisão',
-    summary: 'Passou uns dias na Kaiju para a revisão que pedia há tempo e voltou saudável para as ruas de Bauru.',
-    work: [
-      'Troca de embreagem',
-      'Troca de óleo',
-      'Revisão do sistema elétrico',
-      'Limpeza do filtro esportivo',
-      'Revisão da suspensão e do quadro dianteiro',
-    ],
-    cover: { src: '/media/projetos/silver-samurai/01.jpg', alt: 'Honda Civic Si Silver Samurai' },
-    photos: photos('silver-samurai', 6, [
-      'Civic Si Silver Samurai de frente',
-      'Civic Si Silver Samurai no galpão',
-      'Civic Si Silver Samurai de traseira',
-      'Roda do Civic Si',
-      'Adesivo i-VTEC DOHC',
-      'Emblema Si',
-    ]),
-    source: { shortcode: 'DJryx8cPXOJ', date: '2025-05-15' },
-  },
-  {
-    slug: 'phantom-c4-lounge-thp',
-    nickname: 'Phantom',
-    car: 'Citroën C4 Lounge 1.6 THP',
-    kind: 'Revisão',
-    summary: 'O THP sombrio da Kaiju voltou à ativa com respostas mais rápidas e funcionamento liso.',
-    work: [
-      'Diagnóstico completo do sistema de injeção eletrônica',
-      'Substituição do TBI (corpo de borboleta)',
-      'Troca de óleo e filtro do motor',
-      'Reparo no chicote elétrico',
-    ],
-    cover: { src: '/media/projetos/phantom/01.jpg', alt: 'Citroën C4 Lounge THP Phantom' },
-    photos: photos('phantom', 7, [
-      'C4 Lounge Phantom de lado',
-      'C4 Lounge Phantom de frente',
-      'Roda do C4 Lounge',
-      'Emblema do C4 Lounge',
-      'Adesivo Kaiju no C4 Lounge',
-      'Interior do C4 Lounge',
-      'Detalhe do C4 Lounge',
-    ]),
-    source: { shortcode: 'DKmbi-ivS2u', date: '2025-06-07' },
-  },
-  {
-    slug: 'black-hearth-sandero-rs',
-    nickname: 'Black Hearth',
-    car: 'Renault Sandero RS 2017',
-    kind: 'Revisão',
-    summary: 'Hot hatch nacional com revisão completa à altura do DNA esportivo, e pinças pintadas no final.',
-    work: [
-      'Discos e pastilhas de freio dianteiros e traseiros',
-      'Troca de óleo e filtro do motor',
-      'Troca de óleo do câmbio manual',
-      'Troca das velas de ignição',
-      'Limpeza completa dos bicos injetores',
-      'Pintura das pinças de freio',
-    ],
-    cover: { src: '/media/projetos/black-hearth/01.jpg', alt: 'Renault Sandero RS 2017 Black Hearth' },
-    photos: photos('black-hearth', 7, [
-      'Sandero RS Black Hearth de frente',
-      'Sandero RS Black Hearth de traseira',
-      'Grade do Sandero RS',
-      'Roda do Sandero RS',
-      'Adesivo Kaiju no Sandero RS',
-      'Interior do Sandero RS',
-      'Detalhe da roda do Sandero RS',
-    ]),
-    source: { shortcode: 'DKklFmcPn2p', date: '2025-06-06' },
-  },
-  {
-    slug: 'the-brute-monza',
-    nickname: 'The Brute',
-    car: 'Chevrolet Monza',
-    kind: 'Carro antigo',
-    summary:
-      'Roscas espanadas, peças enferrujadas, trincas e um freio que não freava. Deu trabalho, mas voltou a rodar em Bauru.',
-    work: ['Sistema de freio com todos os componentes trocados e revisados', 'Linha de combustível', 'Carburador'],
-    cover: { src: '/media/projetos/the-brute/01.jpg', alt: 'Chevrolet Monza The Brute' },
-    photos: photos('the-brute', 9, [
-      'Monza The Brute de frente',
-      'Monza The Brute de lado',
-      'Monza The Brute',
-      'Monza The Brute',
-      'Roda do Monza The Brute',
-      'Emblema Monza',
-      'Detalhe do Monza The Brute',
-      'Volante do Monza The Brute',
-      'Bancos do Monza The Brute',
-    ]),
-    source: { shortcode: 'DKaO-Jgxg7T', date: '2025-06-02' },
-  },
-  {
     slug: 'caravan-1979',
     lettering: 'Caravan 79',
+    featured: true,
     car: 'Chevrolet Caravan 1979',
     kind: 'Carro antigo',
     summary: 'Caravan com motor 2.5 e carburador 228, revisada para voltar ao uso com confiabilidade.',
@@ -209,34 +89,9 @@ export const projects: Project[] = [
     source: { shortcode: 'DQ5X_90D5dV', date: '2025-11-11' },
   },
   {
-    slug: 'judith-brasilia-ap',
-    nickname: 'Judith',
-    car: 'VW Brasília com motor AP 1.6',
-    kind: 'Carro antigo',
-    summary: 'Cliente de todo mês: cada revisão ajusta um detalhe que não agradava o dono.',
-    work: [
-      'Acerto do carburador e limpeza do sistema de combustível',
-      'Ponto de ignição focado em torque e conforto',
-      'Troca da bomba d’água e revisão do arrefecimento',
-    ],
-    cover: { src: '/media/projetos/judith/01.jpg', alt: 'VW Brasília azul Judith' },
-    photos: photos('judith', 2, ['Brasília Judith de frente', 'Brasília Judith de traseira']),
-    source: { shortcode: 'DH_RuTAOlFf', date: '2025-04-03' },
-  },
-  {
-    slug: 'silverhawks-honda-fit',
-    nickname: 'SilverHawks',
-    car: 'Honda Fit',
-    kind: 'Preparação',
-    summary: 'Primeiro projeto da Kaiju na sede atual. Carro de família, com resposta de carro esperto.',
-    work: ['Filtro K&N', 'Remoção do delay do pedal do acelerador', 'Cat delete', 'Remap e remoção do limitador de velocidade'],
-    cover: { src: '/media/projetos/silverhawks/01.jpg', alt: 'Honda Fit SilverHawks' },
-    photos: photos('silverhawks', 2, ['Honda Fit SilverHawks de frente', 'Honda Fit SilverHawks de traseira']),
-    source: { shortcode: 'DH87K71PW4W', date: '2025-04-02' },
-  },
-  {
     slug: 'bmw-320i-gp-sport-2015',
     lettering: '320i GP',
+    featured: true,
     car: 'BMW 320i GP Sport 2015',
     kind: 'Revisão',
     summary: 'Revisão preventiva completa para rodar sem dor de cabeça.',
@@ -265,4 +120,4 @@ export const projects: Project[] = [
 ];
 
 export const getProject = (slug: string) => projects.find((p) => p.slug === slug);
-export const projectTitle = (p: Project) => p.nickname ?? p.lettering ?? p.car;
+export const projectTitle = (p: Project) => p.lettering ?? p.car;
