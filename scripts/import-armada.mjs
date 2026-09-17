@@ -12,6 +12,26 @@ import { fileURLToPath } from 'node:url';
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const raw = JSON.parse(fs.readFileSync(path.join(root, '..', '_research', 'armada', 'armada.json'), 'utf8'));
 
+/**
+ * Marcas que o site publica. Honda, Lamborghini, Porsche e RAM ficaram de fora
+ * a pedido da Kaiju; os dados continuam em _research/armada/armada.json, basta
+ * voltar a marca aqui para ela reaparecer.
+ */
+const BRANDS_NO_SITE = new Set([
+  'Audi',
+  'BMW',
+  'Chevrolet',
+  'Fiat',
+  'Ford',
+  'Jeep',
+  'Mercedes-Benz',
+  'Mini',
+  'Mitsubishi',
+  'Renault',
+  'Toyota',
+  'Volkswagen',
+]);
+
 /** Versões que já existem nas fichas publicadas pela Kaiju: vale a da Kaiju. */
 const DUPLICATES_OF_KAIJU = new Set([
   'audi-a3-1-4-8v',
@@ -68,6 +88,7 @@ function category(v) {
 const seen = new Map();
 const out = [];
 for (const v of raw) {
+  if (!BRANDS_NO_SITE.has(v.brand)) continue;
   const slug = v.url.split('/').filter(Boolean).pop().replace(/^reprogramacao-de-(ecu|tcu)-/, '');
   if (DUPLICATES_OF_KAIJU.has(slug)) continue;
 
