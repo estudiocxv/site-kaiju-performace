@@ -2,39 +2,35 @@
 
 import Link from 'next/link';
 import { useId, useMemo, useState } from 'react';
-import { brands, familiesOf, vehicleName, vehicles, versionsOf } from '@/content/vehicles';
+import {
+  brands,
+  familiesOf,
+  groupByFamily,
+  searchVehicles,
+  vehicleName,
+  vehicles,
+  versionsOf,
+} from '@/content/vehicles';
 import { whatsappUrl, messages } from '@/lib/whatsapp';
 import { StageSheet } from './StageSheet';
 import { ArrowRight, WhatsApp } from './icons';
 import styles from './RemapFinder.module.css';
 
-const normalize = (s: string) =>
-  s
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .toLowerCase();
-
 export function RemapFinder({ initial = 'bmw-320i-f30' }: { initial?: string }) {
   const [slug, setSlug] = useState(initial);
-  const [brand, setBrand] = useState('Todas');
+  // computador: primeiro a lista de marcas, depois os modelos da marca aberta
+  const [openBrand, setOpenBrand] = useState<string | null>(null);
   const [query, setQuery] = useState('');
   const ids = { brand: useId(), family: useId(), version: useId(), search: useId() };
 
   const vehicle = vehicles.find((v) => v.slug === slug) ?? vehicles[0];
+  const searching = query.trim().length > 0;
 
-  // lista do desktop: filtro por marca + busca por texto, agrupada por modelo
   const groups = useMemo(() => {
-    const q = normalize(query.trim());
-    const list = vehicles.filter(
-      (v) => (brand === 'Todas' || v.brand === brand) && (!q || normalize(`${v.brand} ${v.family} ${v.version}`).includes(q)),
-    );
-    const map = new Map<string, typeof list>();
-    for (const v of list) {
-      const key = `${v.brand} · ${v.family}`;
-      map.set(key, [...(map.get(key) ?? []), v]);
-    }
-    return [...map.entries()];
-  }, [brand, query]);
+    if (searching) return groupByFamily(searchVehicles(query));
+    if (openBrand) return groupByFamily(vehicles.filter((v) => v.brand === openBrand), false);
+    return [];
+  }, [searching, query, openBrand]);
 
   // celular: marca -> modelo -> versão
   const pickBrand = (b: string) => {
@@ -98,36 +94,57 @@ export function RemapFinder({ initial = 'bmw-320i-f30' }: { initial?: string }) 
             onChange={(e) => setQuery(e.target.value)}
             autoComplete="off"
           />
-          <div className={styles.brands} role="group" aria-label="Filtrar por marca">
-            {['Todas', ...brands].map((b) => (
-              <button key={b} type="button" aria-pressed={brand === b} className={styles.brand} onClick={() => setBrand(b)}>
-                {b}
+          {!searching && !openBrand && (
+            <ul className={styles.brandList} aria-label="Marcas">
+              {brands.map((b) => (
+                <li key={b}>
+                  <button type="button" className={styles.brandItem} onClick={() => setOpenBrand(b)}>
+                    <span className={styles.brandName}>{b}</span>
+                    <span className={styles.modelEngine}>
+                      {familiesOf(b).length} {familiesOf(b).length === 1 ? 'modelo' : 'modelos'} →
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {!searching && openBrand && (
+            <div className={styles.openHead}>
+              <button type="button" className={styles.back} onClick={() => setOpenBrand(null)}>
+                ← Marcas
               </button>
-            ))}
-          </div>
-          <div className={styles.list} aria-label="Versões">
-            {groups.length === 0 && <p className={styles.empty}>Nenhuma versão encontrada. Tente outro nome ou chame no WhatsApp.</p>}
-            {groups.map(([group, list]) => (
-              <div key={group}>
-                <p className={`label ${styles.group}`}>{group}</p>
-                <ul>
-                  {list.map((v) => (
-                    <li key={v.slug}>
-                      <button
-                        type="button"
-                        className={styles.model}
-                        aria-pressed={v.slug === slug}
-                        onClick={() => setSlug(v.slug)}
-                      >
-                        <span className={styles.modelName}>{v.version}</span>
-                        <span className={styles.modelEngine}>{v.stages[0].cvText ?? v.stages[0].cv} cv</span>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+              <p className={`display ${styles.openTitle}`}>{openBrand}</p>
+            </div>
+          )}
+
+          {(searching || openBrand) && (
+            <div className={styles.list} aria-label="Versões">
+              {groups.length === 0 && (
+                <p className={styles.empty}>Nenhuma versão encontrada. Tente outro nome ou chame no WhatsApp.</p>
+              )}
+              {groups.map(({ title, items }) => (
+                <div key={title}>
+                  <p className={`label ${styles.group}`}>{title}</p>
+                  <ul>
+                    {items.map((v) => (
+                      <li key={v.slug}>
+                        <button
+                          type="button"
+                          className={styles.model}
+                          aria-pressed={v.slug === slug}
+                          onClick={() => setSlug(v.slug)}
+                        >
+                          <span className={styles.modelName}>{v.version}</span>
+                          <span className={styles.modelEngine}>{v.stages[0].cvText ?? v.stages[0].cv} cv</span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

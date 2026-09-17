@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
+import { BrandGrid } from '@/components/BrandGrid';
 import { PageHead } from '@/components/PageHead';
-import { RemapTable } from '@/components/RemapTable';
+import { RemapBrowser } from '@/components/RemapBrowser';
 import { StagesExplained } from '@/components/sections/StagesExplained';
 import { WhatsAppButton } from '@/components/WhatsAppButton';
 import { brands, remapDisclaimer, vehicles } from '@/content/vehicles';
@@ -17,13 +18,15 @@ export default function RemapIndex() {
     <>
       <PageHead crumbs={[{ href: '/', label: 'Início' }, { label: 'Remap por modelo' }]} title="Remap por modelo">
         <p>
-          {vehicles.length} versões de {brands.length} marcas, com potência e torque do original e de cada stage. Busque o seu
-          carro e abra a ficha para ver as modificações indicadas.
+          {vehicles.length} versões de {brands.length} marcas, com potência e torque do original e de cada stage. Escolha a
+          marca para ver os modelos.
         </p>
       </PageHead>
 
-      <section className="wrap" aria-label="Tabela de ganhos">
-        <RemapTable />
+      <section className="wrap" aria-label="Marcas e versões">
+        <RemapBrowser>
+          <BrandGrid />
+        </RemapBrowser>
         <p className={`label muted ${styles.disclaimer}`}>{remapDisclaimer}</p>
         <div className={styles.notFound}>
           <p className="display">Seu carro não está na lista?</p>

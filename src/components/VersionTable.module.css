@@ -1,60 +1,3 @@
-.tools {
-  display: grid;
-  gap: 14px;
-  margin-bottom: 24px;
-}
-
-.search {
-  width: 100%;
-  max-width: 560px;
-  min-height: 52px;
-  padding: 0 16px;
-  border: 0;
-  border-bottom: 2px solid var(--giz);
-  border-radius: 0;
-  background: var(--grafite);
-  color: var(--giz);
-  font: inherit;
-  font-size: 17px;
-}
-
-.search::placeholder {
-  color: var(--cinza);
-}
-
-.brands {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.brand {
-  border: 1px solid var(--linha);
-  background: transparent;
-  padding: 6px 10px;
-  font-family: var(--f-mono);
-  font-size: 11.5px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  cursor: pointer;
-  color: var(--giz);
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
-}
-
-.brand:hover {
-  border-color: var(--giz);
-}
-
-.brand[aria-pressed='true'] {
-  background: var(--giz);
-  border-color: var(--giz);
-  color: var(--piche);
-}
-
-.count {
-  text-transform: none;
-}
-
 .tableWrap {
   overflow-x: auto;
   border-top: 2px solid var(--giz);
@@ -63,7 +6,7 @@
 .table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 860px;
+  min-width: 780px;
   font-size: 15px;
 }
 
@@ -75,10 +18,14 @@
   border-bottom: 1px solid var(--linha);
 }
 
-.brandRow th {
+.table tbody {
+  scroll-margin-top: calc(var(--header-h) + 16px);
+}
+
+.groupRow th {
   text-align: left;
-  font-size: 34px;
-  padding: 34px 0 10px;
+  font-size: 30px;
+  padding: 32px 0 10px;
 }
 
 .row th,
@@ -129,11 +76,6 @@ thead .hot {
   color: var(--linha);
 }
 
-.empty {
-  padding: 24px 0;
-  color: var(--cinza);
-}
-
 /* celular: cada versão vira um bloco com os números lado a lado */
 @media (max-width: 760px) {
   .tableWrap {
@@ -146,17 +88,17 @@ thead .hot {
     display: none;
   }
   .table tbody,
-  .brandRow,
-  .brandRow th {
+  .groupRow,
+  .groupRow th {
     display: block;
   }
-  .brandRow th {
-    font-size: 30px;
+  .groupRow th {
+    font-size: 26px;
     padding-top: 28px;
   }
   .row {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(var(--cols, 4), 1fr);
     gap: 4px 8px;
     padding: 14px 0;
     border-bottom: 1px solid var(--linha);
@@ -172,9 +114,6 @@ thead .hot {
     grid-column: 1 / -1;
     margin-bottom: 6px;
     font-size: 16px;
-  }
-  .type {
-    display: none;
   }
   .row td::before {
     content: attr(data-label);

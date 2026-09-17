@@ -7,7 +7,7 @@ import { StageSheet } from '@/components/StageSheet';
 import { WhatsAppButton } from '@/components/WhatsAppButton';
 import { ArrowRight } from '@/components/icons';
 import { instagramPost } from '@/content/site';
-import { cvText, getVehicle, kgfmText, remapBenefits, remapDisclaimer, vehicleName, vehicles } from '@/content/vehicles';
+import { brandSlug, cvText, getVehicle, kgfmText, remapBenefits, remapDisclaimer, vehicleName, vehicles } from '@/content/vehicles';
 import { process, stageExplained } from '@/content/services';
 import { messages } from '@/lib/whatsapp';
 import styles from './model.module.css';
@@ -54,7 +54,12 @@ export default async function VehiclePage({ params }: Props) {
   return (
     <article>
       <PageHead
-        crumbs={[{ href: '/', label: 'Início' }, { href: '/remap', label: 'Remap' }, { label: `${v.brand} ${v.family}` }]}
+        crumbs={[
+          { href: '/', label: 'Início' },
+          { href: '/remap', label: 'Remap' },
+          { href: `/remap/marcas/${brandSlug(v.brand)}`, label: v.brand },
+          { label: v.family },
+        ]}
         title={
           <>
             <span className={styles.brand}>{v.brand}</span> {v.version}

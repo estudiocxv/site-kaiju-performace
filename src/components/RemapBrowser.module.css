@@ -1,0 +1,33 @@
+.tools {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.search {
+  width: 100%;
+  max-width: 560px;
+  min-height: 52px;
+  padding: 0 16px;
+  border: 0;
+  border-bottom: 2px solid var(--giz);
+  border-radius: 0;
+  background: var(--grafite);
+  color: var(--giz);
+  font: inherit;
+  font-size: 17px;
+}
+
+.search::placeholder {
+  color: var(--cinza);
+}
+
+.count {
+  text-transform: none;
+}
+
+.empty {
+  padding: 24px 0;
+  color: var(--cinza);
+  border-top: 2px solid var(--giz);
+}

@@ -72,6 +72,36 @@ export const vehicles: Vehicle[] = [...kaijuVehicles.map(fromKaiju), ...(armada 
 
 export const brands = Array.from(new Set(vehicles.map((v) => v.brand)));
 
+/** Texto sem acentos e em minúsculas, para busca e URLs. */
+export const normalize = (s: string) =>
+  s
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase();
+
+/** "Mercedes-Benz" -> "mercedes-benz", "Citroën" -> "citroen" */
+export const brandSlug = (brand: string) =>
+  normalize(brand)
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+
+export const brandFromSlug = (slug: string) => brands.find((b) => brandSlug(b) === slug);
+
+export const searchVehicles = (query: string) => {
+  const q = normalize(query.trim());
+  return q ? vehicles.filter((v) => normalize(`${v.brand} ${v.family} ${v.version}`).includes(q)) : [];
+};
+
+/** Agrupa versões por "Marca · Modelo" (ou só modelo, se todas forem da mesma marca). */
+export function groupByFamily(list: Vehicle[], withBrand = true) {
+  const map = new Map<string, Vehicle[]>();
+  for (const v of list) {
+    const key = withBrand ? `${v.brand} · ${v.family}` : v.family;
+    map.set(key, [...(map.get(key) ?? []), v]);
+  }
+  return [...map.entries()].map(([title, items]) => ({ title, items }));
+}
+
 export const familiesOf = (brand: string) => Array.from(new Set(vehicles.filter((v) => v.brand === brand).map((v) => v.family)));
 
 export const versionsOf = (brand: string, family: string) => vehicles.filter((v) => v.brand === brand && v.family === family);

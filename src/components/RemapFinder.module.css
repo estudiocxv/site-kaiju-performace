@@ -44,33 +44,73 @@
   outline-offset: 0;
 }
 
-.brands {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
+/* passo 1: marcas */
+.brandList {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 16px;
+  max-height: 560px;
+  overflow: hidden auto;
+  border-top: 2px solid var(--concreto-tinta);
 }
 
-.brand {
-  border: 1px solid rgb(18 18 18 / 0.3);
+.brandItem {
+  width: 100%;
+  display: grid;
+  gap: 4px;
+  padding: 10px 0;
+  border: 0;
+  border-bottom: 1px solid rgb(18 18 18 / 0.16);
   background: transparent;
-  padding: 5px 8px;
-  font-family: var(--f-mono);
-  font-size: 11px;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
+  text-align: left;
   cursor: pointer;
   color: var(--concreto-tinta);
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+  transition: padding 0.25s var(--ease-out), color 0.2s;
 }
 
-.brand:hover {
-  border-color: var(--concreto-tinta);
+.brandName {
+  font-family: var(--f-display);
+  font-style: italic;
+  font-weight: 800;
+  font-stretch: 70%;
+  font-size: 21px;
+  text-transform: uppercase;
+  line-height: 1;
+  white-space: nowrap;
 }
 
-.brand[aria-pressed='true'] {
-  background: var(--concreto-tinta);
-  border-color: var(--concreto-tinta);
-  color: var(--concreto);
+.brandItem:hover {
+  padding-left: 6px;
+  color: var(--vermelho-escuro);
+}
+
+/* passo 2: modelos da marca aberta */
+.openHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.back {
+  border: 0;
+  background: none;
+  padding: 4px 0;
+  font-family: var(--f-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--concreto-tinta);
+  border-bottom: 1px solid currentColor;
+  cursor: pointer;
+}
+
+.back:hover {
+  color: var(--vermelho-escuro);
+}
+
+.openTitle {
+  font-size: 32px;
 }
 
 .list {
