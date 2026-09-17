@@ -1,0 +1,156 @@
+/* Ficha de ganhos: folha técnica sobre o cinza do galpão */
+.sheet {
+  --tinta: var(--concreto-tinta);
+  color: var(--tinta);
+  display: grid;
+  gap: 28px;
+}
+
+.top {
+  display: grid;
+  gap: 10px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--tinta);
+}
+
+.model {
+  font-size: clamp(38px, 4.6vw, 72px);
+}
+
+.model span {
+  color: var(--vermelho);
+}
+
+.meters {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.metric {
+  margin-bottom: 10px;
+}
+
+.rows {
+  display: grid;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 76px minmax(40px, 1fr) auto 48px;
+  align-items: center;
+  gap: 14px;
+  padding-block: 10px;
+  border-top: 1px solid rgb(18 18 18 / 0.18);
+}
+
+.rowLabel {
+  font-size: 11px;
+}
+
+.row dd {
+  margin: 0;
+}
+
+.track {
+  height: 14px;
+  background: rgb(18 18 18 / 0.08);
+}
+
+.bar {
+  display: block;
+  height: 100%;
+  background: var(--tinta);
+  transition: width 0.7s var(--ease-out);
+}
+
+.original .bar {
+  background: repeating-linear-gradient(-60deg, var(--tinta) 0 2px, transparent 2px 6px);
+}
+
+.stage2 .bar {
+  background: var(--vermelho);
+}
+
+.value {
+  min-width: 96px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.num {
+  font-family: var(--f-display);
+  font-style: italic;
+  font-weight: 800;
+  font-stretch: 70%;
+  font-size: 32px;
+  line-height: 1;
+}
+
+.stage2 .num {
+  color: var(--vermelho);
+}
+
+.unit {
+  font-family: var(--f-mono);
+  font-size: 12px;
+}
+
+.gain {
+  text-align: right;
+  font-size: 11.5px;
+}
+
+.stage2 .gain {
+  color: var(--vermelho-escuro);
+  font-weight: 700;
+}
+
+.upgrades {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  align-items: baseline;
+  padding-top: 18px;
+  border-top: 1px solid rgb(18 18 18 / 0.25);
+}
+
+.upgrades ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  font-size: 15px;
+}
+
+.upgrades li::before {
+  content: '+ ';
+  color: var(--vermelho);
+  font-weight: 700;
+}
+
+@media (max-width: 1100px) {
+  .meters {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 560px) {
+  .row {
+    grid-template-columns: 58px minmax(30px, 1fr) auto;
+    gap: 10px;
+  }
+  .gain {
+    display: none;
+  }
+  .value {
+    min-width: 0;
+  }
+  .num {
+    font-size: 26px;
+  }
+  .upgrades {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}

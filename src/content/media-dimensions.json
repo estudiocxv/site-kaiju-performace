@@ -1,0 +1,486 @@
+{
+  "/media/remap/fusion-ecoboost.jpg": {
+    "width": 1254,
+    "height": 1254
+  },
+  "/media/remap/jetta-tsi-audi-a3.jpg": {
+    "width": 1254,
+    "height": 1254
+  },
+  "/media/remap/virtus-nivus-tcross.jpg": {
+    "width": 1254,
+    "height": 1254
+  },
+  "/media/remap/golf-gti-jetta-tsi.jpg": {
+    "width": 1254,
+    "height": 1254
+  },
+  "/media/remap/l200-triton.jpg": {
+    "width": 1254,
+    "height": 1254
+  },
+  "/media/remap/ranger.jpg": {
+    "width": 1254,
+    "height": 1254
+  },
+  "/media/remap/s10.jpg": {
+    "width": 1254,
+    "height": 1254
+  },
+  "/media/remap/cruze.jpg": {
+    "width": 1254,
+    "height": 1254
+  },
+  "/media/remap/camaro-ss.jpg": {
+    "width": 1254,
+    "height": 1254
+  },
+  "/media/remap/hilux-sw4.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/remap/amarok.jpg": {
+    "width": 1440,
+    "height": 1728
+  },
+  "/media/remap/compass-toro.jpg": {
+    "width": 1440,
+    "height": 1728
+  },
+  "/media/remap/frontier.jpg": {
+    "width": 1440,
+    "height": 1728
+  },
+  "/media/remap/familia-prince.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/remap/bmw-f30.jpg": {
+    "width": 1440,
+    "height": 1728
+  },
+  "/media/remap/polo-up-tsi.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/servicos/bomba-de-alta-thp.jpg": {
+    "width": 1254,
+    "height": 1254
+  },
+  "/media/oficina/fueltech-carburador.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/oficina/letreiro-neon.jpg": {
+    "width": 1280,
+    "height": 720
+  },
+  "/media/oficina/painel-ferramentas.jpg": {
+    "width": 1280,
+    "height": 720
+  },
+  "/media/oficina/entrada.jpg": {
+    "width": 1280,
+    "height": 720
+  },
+  "/media/oficina/equipe-trabalhando.jpg": {
+    "width": 1280,
+    "height": 720
+  },
+  "/media/oficina/fachada.jpg": {
+    "width": 720,
+    "height": 1280
+  },
+  "/media/oficina/monza-elevador.jpg": {
+    "width": 720,
+    "height": 1280
+  },
+  "/media/oficina/motor-montado.jpg": {
+    "width": 720,
+    "height": 1280
+  },
+  "/media/oficina/box-elevadores.jpg": {
+    "width": 720,
+    "height": 1280
+  },
+  "/media/oficina/grafite.jpg": {
+    "width": 720,
+    "height": 1280
+  },
+  "/media/oficina/mural-kaiju.jpg": {
+    "width": 720,
+    "height": 1280
+  },
+  "/media/oficina/opala-ss-lavagem.jpg": {
+    "width": 720,
+    "height": 1280
+  },
+  "/media/oficina/acerto-de-mapa.jpg": {
+    "width": 720,
+    "height": 1280
+  },
+  "/media/projetos/monza-turbo/01.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/monza-turbo/02.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/monza-turbo/03.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/monza-turbo/04.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/monza-turbo/05.jpg": {
+    "width": 1440,
+    "height": 1439
+  },
+  "/media/projetos/monza-turbo/06.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/monza-turbo/07.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/monza-turbo/08.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/monza-turbo/09.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/gol-copa-turbo/01.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/gol-copa-turbo/02.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/gol-copa-turbo/03.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/gol-copa-turbo/04.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/gol-copa-turbo/05.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/gol-copa-turbo/06.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/gol-copa-turbo/07.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/gol-copa-turbo/08.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/caravan-1979/01.jpg": {
+    "width": 962,
+    "height": 723
+  },
+  "/media/projetos/caravan-1979/02.jpg": {
+    "width": 962,
+    "height": 723
+  },
+  "/media/projetos/caravan-1979/03.jpg": {
+    "width": 963,
+    "height": 727
+  },
+  "/media/projetos/caravan-1979/04.jpg": {
+    "width": 963,
+    "height": 727
+  },
+  "/media/projetos/caravan-1979/05.jpg": {
+    "width": 963,
+    "height": 727
+  },
+  "/media/projetos/caravan-1979/06.jpg": {
+    "width": 963,
+    "height": 727
+  },
+  "/media/projetos/caravan-1979/07.jpg": {
+    "width": 963,
+    "height": 727
+  },
+  "/media/projetos/phantom/01.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/phantom/02.jpg": {
+    "width": 1440,
+    "height": 1439
+  },
+  "/media/projetos/phantom/03.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/phantom/04.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/phantom/05.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/phantom/06.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/phantom/07.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/black-hearth/01.jpg": {
+    "width": 1440,
+    "height": 1439
+  },
+  "/media/projetos/black-hearth/02.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/black-hearth/03.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/black-hearth/04.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/black-hearth/05.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/black-hearth/06.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/black-hearth/07.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/the-brute/01.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/the-brute/02.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/the-brute/03.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/the-brute/04.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/the-brute/05.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/the-brute/06.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/the-brute/07.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/the-brute/08.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/the-brute/09.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/silver-samurai/01.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/silver-samurai/02.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/silver-samurai/03.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/silver-samurai/04.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/silver-samurai/05.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/silver-samurai/06.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/bmw-320i-gp/01.jpg": {
+    "width": 1440,
+    "height": 1439
+  },
+  "/media/projetos/bmw-320i-gp/02.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/bmw-320i-gp/03.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/bmw-320i-gp/04.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/bmw-320i-gp/05.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/bmw-320i-gp/06.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/bmw-320i-gp/07.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/bmw-320i-gp/08.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/bmw-320i-gp/09.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/bmw-320i-gp/10.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/boiadeira/01.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/boiadeira/02.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/the-panthon/01.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/the-panthon/02.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/silverhawks/01.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/silverhawks/02.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/judith/01.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/projetos/judith/02.jpg": {
+    "width": 1440,
+    "height": 1440
+  },
+  "/media/eventos/inauguracao/01.jpg": {
+    "width": 1080,
+    "height": 1080
+  },
+  "/media/eventos/inauguracao/02.jpg": {
+    "width": 1080,
+    "height": 1080
+  },
+  "/media/eventos/inauguracao/03.jpg": {
+    "width": 1080,
+    "height": 1080
+  },
+  "/media/eventos/inauguracao/04.jpg": {
+    "width": 1080,
+    "height": 1080
+  },
+  "/media/eventos/inauguracao/05.jpg": {
+    "width": 1080,
+    "height": 1080
+  },
+  "/media/eventos/inauguracao/06.jpg": {
+    "width": 1080,
+    "height": 1080
+  },
+  "/media/eventos/inauguracao/07.jpg": {
+    "width": 1440,
+    "height": 1800
+  },
+  "/media/eventos/expo-dapper/01.jpg": {
+    "width": 1066,
+    "height": 1332
+  },
+  "/media/eventos/expo-dapper/02.jpg": {
+    "width": 1066,
+    "height": 1332
+  },
+  "/media/eventos/expo-dapper/03.jpg": {
+    "width": 1066,
+    "height": 1332
+  },
+  "/media/eventos/expo-dapper/04.jpg": {
+    "width": 1066,
+    "height": 1332
+  },
+  "/media/eventos/expo-dapper/05.jpg": {
+    "width": 1066,
+    "height": 1332
+  },
+  "/media/eventos/expo-dapper/06.jpg": {
+    "width": 1066,
+    "height": 1332
+  },
+  "/media/eventos/expo-dapper/07.jpg": {
+    "width": 1066,
+    "height": 1332
+  },
+  "/media/eventos/expo-dapper/08.jpg": {
+    "width": 1066,
+    "height": 1332
+  },
+  "/media/eventos/expo-dapper/09.jpg": {
+    "width": 1066,
+    "height": 1332
+  },
+  "/media/eventos/expo-dapper/10.jpg": {
+    "width": 1066,
+    "height": 1332
+  },
+  "/media/video/oficina-horizontal.jpg": {
+    "width": 1280,
+    "height": 720
+  },
+  "/media/video/oficina-vertical.jpg": {
+    "width": 540,
+    "height": 960
+  },
+  "/brand/kaiju-mark.png": {
+    "width": 534,
+    "height": 125
+  }
+}

@@ -1,0 +1,37 @@
+.head {
+  padding-top: calc(var(--header-h) + clamp(40px, 7vw, 96px));
+  padding-bottom: clamp(32px, 5vw, 64px);
+  display: grid;
+  gap: 22px;
+}
+
+.crumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  color: var(--cinza);
+}
+
+.crumbs li + li::before {
+  content: '/';
+  margin-right: 6px;
+  color: var(--vermelho);
+}
+
+.crumbs a {
+  text-decoration: none;
+}
+
+.crumbs a:hover {
+  color: var(--giz);
+}
+
+.title {
+  font-size: clamp(56px, 9vw, 150px);
+}
+
+.intro {
+  max-width: 62ch;
+  color: #d4d1ca;
+  font-size: 18px;
+}

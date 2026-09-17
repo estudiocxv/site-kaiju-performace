@@ -1,0 +1,62 @@
+.section {
+  position: relative;
+  background: var(--concreto);
+  color: var(--concreto-tinta);
+  padding-block: clamp(72px, 10vw, 140px) clamp(40px, 5vw, 64px);
+}
+
+/* borda superior inclinada, como o corte do K do logotipo */
+.section::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1px;
+  height: clamp(18px, 3vw, 40px);
+  background: var(--piche);
+  clip-path: polygon(0 0, 100% 0, 100% 0, 0 100%);
+}
+
+.head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 440px);
+  gap: 18px 48px;
+  align-items: end;
+  margin-bottom: clamp(36px, 5vw, 64px);
+}
+
+.head > :first-child {
+  grid-column: 1 / -1;
+}
+
+.title {
+  font-size: clamp(48px, 7vw, 112px);
+}
+
+.intro {
+  font-size: 16px;
+}
+
+.intro a {
+  font-weight: 600;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--vermelho);
+}
+
+.disclaimer {
+  margin-top: 48px;
+  padding-top: 18px;
+  border-top: 1px solid rgb(18 18 18 / 0.25);
+  max-width: 90ch;
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+@media (max-width: 900px) {
+  .head {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,156 @@
+.tableWrap {
+  overflow-x: auto;
+  border-top: 2px solid var(--giz);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 720px;
+  font-size: 15px;
+}
+
+.table thead th {
+  text-align: left;
+  font-weight: 500;
+  color: var(--cinza);
+  padding: 14px 12px 14px 0;
+  border-bottom: 1px solid var(--linha);
+}
+
+.brandRow th {
+  text-align: left;
+  font-size: 34px;
+  padding: 34px 0 10px;
+}
+
+.row th,
+.row td {
+  text-align: left;
+  padding: 13px 12px 13px 0;
+  border-bottom: 1px solid var(--linha);
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.row th a {
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.row th a span {
+  color: var(--vermelho);
+}
+
+.row th small {
+  font-weight: 400;
+  color: var(--cinza);
+}
+
+.row td small {
+  display: block;
+  font-family: var(--f-mono);
+  font-size: 12px;
+  color: var(--cinza);
+}
+
+.row:hover {
+  background: var(--grafite);
+}
+
+.row:hover th a {
+  text-decoration: underline;
+  text-decoration-color: var(--vermelho);
+  text-underline-offset: 4px;
+}
+
+.s2 {
+  color: var(--giz);
+}
+
+td.s2 {
+  font-weight: 700;
+}
+
+thead .s2 {
+  color: var(--vermelho) !important;
+}
+
+.disclaimer {
+  margin-top: 20px;
+  text-transform: none;
+  letter-spacing: 0.01em;
+  max-width: 90ch;
+}
+
+.notFound {
+  margin-top: 56px;
+  padding: 32px;
+  background: var(--grafite);
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+}
+
+.notFound :global(.display) {
+  font-size: clamp(34px, 4vw, 56px);
+}
+
+/* celular: cada modelo vira um bloco com os três números lado a lado */
+@media (max-width: 760px) {
+  .tableWrap {
+    overflow: visible;
+  }
+  .table {
+    min-width: 0;
+  }
+  .table thead {
+    display: none;
+  }
+  .table tbody,
+  .brandRow,
+  .brandRow th {
+    display: block;
+  }
+  .brandRow th {
+    font-size: 30px;
+    padding-top: 28px;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px 10px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--linha);
+  }
+  .row th,
+  .row td {
+    border: 0;
+    padding: 0;
+    white-space: normal;
+  }
+  .row th {
+    grid-column: 1 / -1;
+    margin-bottom: 6px;
+    font-size: 16px;
+  }
+  .type {
+    display: none;
+  }
+  .row td::before {
+    content: attr(data-label);
+    display: block;
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--cinza);
+    margin-bottom: 2px;
+  }
+  td.s2::before {
+    color: var(--vermelho);
+  }
+  .notFound {
+    padding: 24px 18px;
+  }
+}

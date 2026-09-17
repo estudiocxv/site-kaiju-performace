@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kaiju Performance — site
 
-## Getting Started
-
-First, run the development server:
+Site da Kaiju Performance (Bauru/SP), feito em Next.js 16 (App Router), TypeScript e CSS Modules.
+Todo o conteúdo veio do Instagram oficial [@kaijuperformancebauru](https://www.instagram.com/kaijuperformancebauru/).
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # gera as 47 páginas estáticas
+npm run media    # reprocessa fotos e vídeos (ver "Mídia")
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Estrutura
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+src/
+  app/                    rotas
+    page.tsx              página inicial (monta as seções)
+    remap/                tabela de ganhos + /remap/[slug] (ficha por modelo)
+    projetos/             lista + /projetos/[slug]
+    sitemap.ts, robots.ts SEO
+  components/
+    sections/             seções da página inicial (Hero, About, Services…)
+    StageSheet.tsx        ficha de ganhos (Original / Stage 1 / Stage 2)
+    RemapFinder.tsx       seletor de carro da home
+    Photo.tsx             imagem com dimensões automáticas
+  content/                DADOS — é aqui que se edita o site
+    site.ts               nome, WhatsApp, endereço, redes
+    vehicles.ts           modelos e números de remap
+    projects.ts           carros/projetos
+    services.ts           serviços, processo, Stage 1 x Stage 2
+    events.ts             eventos e parceiros
+    types.ts              formato de cada tipo de conteúdo
+    media-dimensions.json gerado pelo script de mídia
+  lib/whatsapp.ts         links e mensagens prontas do WhatsApp
+scripts/import-media.mjs  otimiza fotos, corta vídeos, gera logo/OG/ícone
+public/media/             mídia já otimizada
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Como adicionar conteúdo
 
-## Learn More
+- **Novo modelo de remap:** copie um item em `src/content/vehicles.ts`. A página `/remap/<slug>` aparece sozinha, entra na tabela, no seletor da home e no sitemap.
+- **Novo projeto:** coloque as fotos em `public/media/projetos/<pasta>/01.jpg, 02.jpg…`, rode `npm run media` se vierem do `_research`, e adicione um item em `src/content/projects.ts`. `featured: true` leva o carro para os destaques da home.
+- **Novo serviço ou evento:** `src/content/services.ts` e `src/content/events.ts`.
+- **Telefone, endereço, horário:** `src/content/site.ts`.
 
-To learn more about Next.js, take a look at the following resources:
+Os arquivos de `src/content` usam os tipos de `types.ts`. Um painel administrativo ou CMS no futuro só precisa devolver objetos nesses formatos.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Mídia
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+`scripts/import-media.mjs` lê os originais em `../_research/media` (baixados do Instagram) e grava versões otimizadas em `public/media`. O mapa `IMAGES` no topo do arquivo diz qual original vira qual arquivo do site. Os vídeos do hero são cortados e comprimidos com ffmpeg (horizontal 1280px ~3 MB; vertical 540px ~2 MB para celular em pé).
 
-## Deploy on Vercel
+O vídeo começa a carregar só depois da primeira pintura, pausa quando a aba fica em segundo plano e não carrega para quem pede menos movimento ou economia de dados.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Identidade
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Token | Cor | Origem |
+| --- | --- | --- |
+| piche | `#0b0b0c` | fundo do logotipo e das artes |
+| giz | `#eeece7` | branco do letreiro |
+| vermelho | `#e3121b` | contorno do KAIJU |
+| concreto | `#c9c6bf` | galpão onde a Kaiju fotografa os carros (ficha de ganhos) |
+| azul | `#2f6bff` | luz azul da fachada (só no contato) |
+
+Tipos: Saira (itálico condensado, títulos), Archivo (texto), Chivo Mono (rótulos e dados).
+O “letreiro” (branco com contorno vermelho, classe `.letreiro`) repete o desenho do logotipo e é usado nos apelidos dos carros.
+
+## Pendências para confirmar com a Kaiju
+
+- Domínio definitivo (`site.url` em `src/content/site.ts`).
+- Número do endereço: o perfil comercial mostra **3-12**; posts da inauguração citam **3-1279**. O site usa 3-12.
+- Horário fixo de funcionamento (não publicado; o site diz “atendimento com hora marcada”).
+- Arquivo vetorial do logotipo (o atual foi extraído do vídeo institucional).
+- Autorização das fotos de terceiros creditadas (@elite_sp_cars, @lava_car_sc).

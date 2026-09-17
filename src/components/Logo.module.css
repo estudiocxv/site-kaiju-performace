@@ -1,0 +1,32 @@
+.logo {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  line-height: 1;
+}
+
+.mark {
+  width: 118px;
+  height: auto;
+}
+
+.sub {
+  font-family: var(--f-display);
+  font-style: italic;
+  font-weight: 700;
+  font-stretch: 100%;
+  font-size: 9.5px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--giz);
+  padding-left: 0.3em;
+}
+
+.lg .mark {
+  width: min(320px, 70vw);
+}
+
+.lg .sub {
+  font-size: clamp(13px, 2.6vw, 25px);
+}
