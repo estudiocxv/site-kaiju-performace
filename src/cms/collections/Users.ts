@@ -1,5 +1,9 @@
 import type { CollectionConfig } from 'payload';
+import type { Access } from 'payload';
 import { loggedIn } from '../access';
+
+/** Um único acesso ao painel: ninguém cria outro usuário pela tela. */
+const nobody: Access = () => false;
 
 export const Users: CollectionConfig = {
   slug: 'usuarios',
@@ -12,8 +16,8 @@ export const Users: CollectionConfig = {
   admin: {
     useAsTitle: 'email',
     group: 'Configurações',
-    description: 'Quem pode entrar no painel.',
+    description: 'Acesso ao painel. Aqui dá para trocar a própria senha.',
   },
-  access: { read: loggedIn, create: loggedIn, update: loggedIn, delete: loggedIn },
+  access: { read: loggedIn, create: nobody, update: loggedIn, delete: nobody },
   fields: [{ name: 'name', label: 'Nome', type: 'text' }],
 };

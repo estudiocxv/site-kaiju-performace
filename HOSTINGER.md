@@ -22,8 +22,8 @@ Na mesma tela (ou depois em **Configurações → Variáveis de ambiente**), cad
 | Nome | Valor |
 | --- | --- |
 | `PAYLOAD_SECRET` | uma chave nova e longa (peça para o Claude gerar; não reutilize a do computador) |
-| `ADMIN_EMAIL` | e-mail do dono (ou `admin@kaijuperformance.pro` até ele mandar o dele) |
-| `ADMIN_PASSWORD` | senha inicial do painel (ele troca depois em Usuários) |
+| `ADMIN_EMAIL` | `gabrielhprib@outlook.com` (único acesso ao painel) |
+| `ADMIN_PASSWORD` | a senha do painel — **você digita**, não fica em nenhum arquivo |
 | `DATABASE_URI` | `file:/home/SEU_USUARIO/kaiju-data/kaiju.db` |
 | `MEDIA_DIR` | `/home/SEU_USUARIO/kaiju-data/media` |
 | `SITE_URL` | `https://www.kaijuperformance.pro` |

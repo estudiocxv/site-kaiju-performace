@@ -101,7 +101,7 @@ direto pelo painel. `npm run armada` regenera `src/cms/seed/data/armada.json`.
 
 ## Pendências
 
-- E-mail do dono para o login definitivo (hoje: `admin@kaijuperformance.pro`, trocar em Usuários).
+- Acesso ao painel: `gabrielhprib@outlook.com` (único usuário).
 - "Esqueci a senha" precisa de um e-mail de envio (SMTP da Hostinger). Sem isso, a senha é trocada por quem
   administra o servidor.
 - Número do endereço: o perfil comercial mostra **3-12**; posts da inauguração citam **3-1279**. O site usa 3-12.
