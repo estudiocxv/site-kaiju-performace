@@ -1,7 +1,7 @@
 'use client';
 
 import { useId, useState } from 'react';
-import { groupByFamily, searchVehicles } from '@/content/vehicles';
+import { groupByFamily, searchVehicles, type VehicleSummary } from '@/content/vehicles';
 import { VersionTable } from './VersionTable';
 import styles from './RemapBrowser.module.css';
 
@@ -9,10 +9,10 @@ import styles from './RemapBrowser.module.css';
  * /remap: sem busca mostra as marcas (children); com busca mostra direto
  * as versões encontradas em todas as marcas.
  */
-export function RemapBrowser({ children }: { children: React.ReactNode }) {
+export function RemapBrowser({ vehicles, children }: { vehicles: VehicleSummary[]; children: React.ReactNode }) {
   const [query, setQuery] = useState('');
   const searchId = useId();
-  const results = searchVehicles(query);
+  const results = searchVehicles(vehicles, query);
   const searching = query.trim().length > 0;
 
   return (

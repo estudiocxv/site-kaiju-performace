@@ -3,17 +3,12 @@
 import { useEffect, useRef, useState } from 'react';
 import styles from './Hero.module.css';
 
-const SOURCES = {
-  wide: '/media/video/oficina-horizontal.mp4',
-  tall: '/media/video/oficina-vertical.mp4',
-};
-
 /**
  * Vídeo da oficina carregado depois da primeira pintura.
  * Celular em pé recebe o corte vertical; quem pede menos movimento
  * ou economia de dados fica só com o quadro estático.
  */
-export function HeroVideo() {
+export function HeroVideo({ wide, tall }: { wide?: string; tall?: string }) {
   const ref = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
 
@@ -24,9 +19,11 @@ export function HeroVideo() {
     const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
     if (reduce || saveData) return;
 
-    const tall = window.matchMedia('(max-aspect-ratio: 4/5)').matches;
+    const portrait = window.matchMedia('(max-aspect-ratio: 4/5)').matches;
+    const src = (portrait ? tall : wide) ?? wide ?? tall;
+    if (!src) return;
     const start = () => {
-      video.src = tall ? SOURCES.tall : SOURCES.wide;
+      video.src = src;
       video.play().catch(() => {});
     };
     // Safari não tem requestIdleCallback
@@ -38,7 +35,7 @@ export function HeroVideo() {
       document.removeEventListener('visibilitychange', pause);
       clearTimeout(timer);
     };
-  }, []);
+  }, [wide, tall]);
 
   return (
     <video

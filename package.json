@@ -2,16 +2,26 @@
   "name": "site",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run migrate && npm run seed && next build",
     "start": "next start",
     "lint": "eslint",
+    "migrate": "payload migrate",
+    "seed": "payload run src/cms/seed/run.ts",
+    "generate:types": "payload generate:types",
+    "generate:importmap": "payload generate:importmap",
     "media": "node scripts/import-media.mjs",
     "armada": "node scripts/import-armada.mjs"
   },
   "dependencies": {
+    "@payloadcms/db-sqlite": "^3.90.0",
+    "@payloadcms/next": "^3.90.0",
+    "@payloadcms/ui": "^3.90.0",
+    "graphql": "^16.14.2",
     "next": "16.3.5",
+    "payload": "^3.90.0",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },

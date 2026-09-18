@@ -1,5 +1,5 @@
-import { reviews } from '@/content/reviews';
-import { site } from '@/content/site';
+import { getHome, getReviews, getSite } from '@/content/cms';
+import { Lines } from '../Lines';
 import { Photo } from '../Photo';
 import { ArrowRight, Star } from '../icons';
 import styles from './Reviews.module.css';
@@ -14,20 +14,22 @@ function Stars({ n }: { n: number }) {
   );
 }
 
-export function Reviews() {
+export async function Reviews() {
+  const [reviews, { reviews: head }, site] = await Promise.all([getReviews(), getHome(), getSite()]);
+  if (reviews.length === 0) return null;
   return (
     <section id="avaliacoes" className={styles.section} aria-labelledby="avaliacoes-title">
       <div className={`wrap ${styles.head}`}>
-        <p className="label muted">Avaliações no Google</p>
+        {head.label && <p className="label muted">{head.label}</p>}
         <h2 id="avaliacoes-title" className={`display ${styles.title}`}>
-          Quem já trouxe o carro
+          <Lines text={head.title} />
         </h2>
-        <p className={styles.intro}>Avaliações 5 estrelas de clientes da Kaiju, como foram publicadas no Google.</p>
+        {head.intro && <p className={styles.intro}>{head.intro}</p>}
       </div>
 
       <ul className={`wrap ${styles.grid}`}>
         {reviews.map((r) => (
-          <li key={r.author} className={`reveal ${styles.review}`}>
+          <li key={r.url} className={`reveal ${styles.review}`}>
             <Stars n={r.rating} />
             <blockquote className={styles.text}>
               <p>{r.text}</p>
@@ -53,12 +55,14 @@ export function Reviews() {
         ))}
       </ul>
 
-      <div className={`wrap ${styles.more}`}>
-        <a className="btn btn--ghost" href={site.social.googleReviews} target="_blank" rel="noopener noreferrer">
-          Ver mais avaliações no Google
-          <ArrowRight />
-        </a>
-      </div>
+      {site.social.googleReviews && (
+        <div className={`wrap ${styles.more}`}>
+          <a className="btn btn--ghost" href={site.social.googleReviews} target="_blank" rel="noopener noreferrer">
+            {head.moreButton || 'Ver mais avaliações no Google'}
+            <ArrowRight />
+          </a>
+        </div>
+      )}
     </section>
   );
 }

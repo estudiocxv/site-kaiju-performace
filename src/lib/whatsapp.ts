@@ -1,8 +1,6 @@
-import { site } from '@/content/site';
-
-/** Link do WhatsApp oficial com mensagem opcional já escrita. */
-export function whatsappUrl(message?: string) {
-  const base = `https://wa.me/${site.whatsapp.number}`;
+/** Link do WhatsApp oficial com mensagem opcional já escrita. O número vem do painel (Dados da empresa). */
+export function whatsappUrl(number: string, message?: string) {
+  const base = `https://wa.me/${number}`;
   return message ? `${base}?text=${encodeURIComponent(message)}` : base;
 }
 

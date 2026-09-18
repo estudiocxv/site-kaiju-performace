@@ -1,14 +1,17 @@
 import Link from 'next/link';
-import { brands, brandSlug, familiesOf, vehicles } from '@/content/vehicles';
+import { getVehicles } from '@/content/cms';
+import { brandsOf, brandSlug, familiesOf } from '@/content/vehicles';
 import styles from './BrandGrid.module.css';
 
 /** Grade com as marcas; cada uma abre a página com os modelos dela. */
-export function BrandGrid() {
+export async function BrandGrid() {
+  const vehicles = await getVehicles();
+  const brands = brandsOf(vehicles);
   return (
     <ul className={styles.grid}>
       {brands.map((b) => {
         const versions = vehicles.filter((v) => v.brand === b).length;
-        const models = familiesOf(b).length;
+        const models = familiesOf(vehicles, b).length;
         return (
           <li key={b}>
             <Link href={`/remap/marcas/${brandSlug(b)}`} className={styles.brand}>

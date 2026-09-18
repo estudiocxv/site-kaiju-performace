@@ -6,22 +6,21 @@ import { Photo } from '@/components/Photo';
 import { StageSheet } from '@/components/StageSheet';
 import { WhatsAppButton } from '@/components/WhatsAppButton';
 import { ArrowRight } from '@/components/icons';
-import { instagramPost } from '@/content/site';
-import { brandSlug, cvText, getVehicle, kgfmText, remapBenefits, remapDisclaimer, vehicleName, vehicles } from '@/content/vehicles';
-import { process, stageExplained } from '@/content/services';
+import { getHome, getRemapTexts, getVehicles } from '@/content/cms';
+import { brandSlug, cvText, kgfmText, vehicleName } from '@/content/vehicles';
 import { messages } from '@/lib/whatsapp';
 import styles from './model.module.css';
 
 type Props = { params: Promise<{ slug: string }> };
 
-export const dynamicParams = false;
-
-export function generateStaticParams() {
-  return vehicles.map((v) => ({ slug: v.slug }));
+export async function generateStaticParams() {
+  return (await getVehicles()).map((v) => ({ slug: v.slug }));
 }
 
+const getVehicle = async (slug: string) => (await getVehicles()).find((v) => v.slug === slug);
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const v = getVehicle((await params).slug);
+  const v = await getVehicle((await params).slug);
   if (!v) return {};
   const name = vehicleName(v);
   const [original, ...tuned] = v.stages;
@@ -30,22 +29,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `Remap ${name}: ${tuned.map((s) => s.name).join(', ')}`,
     description: `${name}: original ${cvText(original)} cv e ${kgfmText(original)} kgfm; ${top.name} até ${cvText(top)} cv e ${kgfmText(top)} kgfm. Remap na Kaiju Performance, Bauru/SP.`,
     alternates: { canonical: `/remap/${v.slug}` },
-    ...(v.poster ? { openGraph: { images: [{ url: v.poster.src, width: 1254, height: 1254, alt: v.poster.alt }] } } : {}),
+    ...(v.poster
+      ? { openGraph: { images: [{ url: v.poster.src, width: v.poster.width, height: v.poster.height, alt: v.poster.alt }] } }
+      : {}),
   };
 }
 
-const date = (iso: string) => new Date(`${iso}T12:00:00`).toLocaleDateString('pt-BR');
-
-const stageHint: Record<string, string> = {
-  'Stage 1': stageExplained.stage1.lead,
-  'Stage 2': stageExplained.stage2.lead,
-  'Stage 3': 'Etapa para projetos mais completos, com mais modificações no conjunto.',
-};
+const date = (iso: string) => new Date(iso).toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' });
 
 export default async function VehiclePage({ params }: Props) {
-  const v = getVehicle((await params).slug);
+  const [vehicles, home, texts] = await Promise.all([getVehicles(), getHome(), getRemapTexts()]);
+  const { slug } = await params;
+  const v = vehicles.find((x) => x.slug === slug);
   if (!v) notFound();
 
+  const { stages: stageExplained, process } = home;
+  const stageHint: Record<string, string> = {
+    'Stage 1': stageExplained.stage1.lead,
+    'Stage 2': stageExplained.stage2.lead,
+    'Stage 3': stageExplained.stage3Hint ?? '',
+  };
   const i = vehicles.indexOf(v);
   const prev = vehicles[(i - 1 + vehicles.length) % vehicles.length];
   const next = vehicles[(i + 1) % vehicles.length];
@@ -91,12 +94,18 @@ export default async function VehiclePage({ params }: Props) {
       <section className={styles.sheetSection} aria-label="Ficha de ganhos">
         <div className={`wrap ${styles.sheetGrid}`}>
           <StageSheet vehicle={v} headingLevel={2} hideTitle />
-          {v.poster && v.source ? (
+          {v.poster ? (
             <figure className={styles.poster}>
-              <a href={instagramPost(v.source.shortcode)} target="_blank" rel="noopener noreferrer">
+              {v.instagram ? (
+                <a href={v.instagram} target="_blank" rel="noopener noreferrer">
+                  <Photo photo={v.poster} sizes="(max-width: 900px) 100vw, 34vw" />
+                </a>
+              ) : (
                 <Photo photo={v.poster} sizes="(max-width: 900px) 100vw, 34vw" />
-              </a>
-              <figcaption className="label">Arte publicada no Instagram da Kaiju em {date(v.source.date)}</figcaption>
+              )}
+              {v.instagramDate && (
+                <figcaption className="label">Arte publicada no Instagram da Kaiju em {date(v.instagramDate)}</figcaption>
+              )}
             </figure>
           ) : v.engine ? (
             <aside className={styles.engine}>
@@ -115,14 +124,11 @@ export default async function VehiclePage({ params }: Props) {
               {v.publishedResult.title}
             </h2>
             <p>{v.publishedResult.text}</p>
-            <a
-              className="link-arrow"
-              href={instagramPost(v.publishedResult.source.shortcode)}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Ver o vídeo no Instagram
-            </a>
+            {v.publishedResult.instagram && (
+              <a className="link-arrow" href={v.publishedResult.instagram} target="_blank" rel="noopener noreferrer">
+                Ver o vídeo no Instagram
+              </a>
+            )}
           </div>
         </section>
       )}
@@ -131,7 +137,7 @@ export default async function VehiclePage({ params }: Props) {
         <div>
           <h2 className={`display ${styles.h2}`}>O que muda no carro</h2>
           <ul className={styles.list}>
-            {remapBenefits[v.category].map((b) => (
+            {texts.benefits[v.category].map((b) => (
               <li key={b}>{b}</li>
             ))}
           </ul>
@@ -146,7 +152,7 @@ export default async function VehiclePage({ params }: Props) {
               </div>
             ))}
           </dl>
-          <p className={styles.warning}>{stageExplained.warning}</p>
+          {stageExplained.warning && <p className={styles.warning}>{stageExplained.warning}</p>}
         </div>
       </section>
 
@@ -155,7 +161,7 @@ export default async function VehiclePage({ params }: Props) {
           Como a Kaiju faz
         </h2>
         <ol>
-          {process.map((p) => (
+          {process.steps.map((p) => (
             <li key={p.title}>
               <strong>{p.title}.</strong> <span className="muted">{p.text}</span>
             </li>
@@ -169,7 +175,7 @@ export default async function VehiclePage({ params }: Props) {
             {n}
           </p>
         ))}
-        <p className="label muted">{remapDisclaimer}</p>
+        <p className="label muted">{texts.disclaimer}</p>
       </div>
 
       <nav className={`wrap ${styles.pager}`} aria-label="Outras versões">

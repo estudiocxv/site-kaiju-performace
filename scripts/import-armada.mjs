@@ -1,6 +1,6 @@
 /**
  * Converte o catálogo extraído da Armada Performance (_research/armada/armada.json)
- * para src/content/data/armada.json, no formato de versão usado pelo site.
+ * para src/cms/seed/data/armada.json, no formato de versão usado pelo site.
  *
  * Uso: npm run armada
  * Para atualizar os dados: node ../_research/armada/crawl.mjs e depois este script.
@@ -122,7 +122,7 @@ out.forEach((v) => {
   if (count[v.brand + v.version] > 1) v.version += ` ${v.stages[0].cvText ?? v.stages[0].cv} cv`;
 });
 
-const dest = path.join(root, 'src', 'content', 'data', 'armada.json');
+const dest = path.join(root, 'src', 'cms', 'seed', 'data', 'armada.json');
 fs.mkdirSync(path.dirname(dest), { recursive: true });
 fs.writeFileSync(dest, JSON.stringify(out, null, 1) + '\n');
 console.log('versões da Armada:', out.length, '| marcas:', new Set(out.map((v) => v.brand)).size);

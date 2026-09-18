@@ -1,21 +1,16 @@
 /**
- * Tipos do conteúdo do site.
+ * Tipos do conteúdo que as páginas recebem.
  *
- * Todo o conteúdo mora em src/content como dados tipados. Um futuro painel
- * administrativo (ou CMS) só precisa devolver objetos nestes formatos para
- * as páginas continuarem funcionando.
+ * Os dados vêm do painel (/admin) e são convertidos para estes formatos em
+ * src/content/cms.ts. Os componentes não conhecem o banco, só estes tipos.
  */
 
-/** Referência a um post do Instagram usado como fonte da informação. */
-export type InstagramSource = {
-  shortcode: string;
-  date: string; // AAAA-MM-DD
-};
-
 export type Photo = {
-  src: string; // caminho em /public
+  src: string;
   alt: string;
   credit?: string; // @perfil quando a foto é de terceiros
+  width?: number;
+  height?: number;
 };
 
 export type VehicleCategory = 'turbo-gasolina' | 'diesel' | 'aspirado';
@@ -51,14 +46,12 @@ export type Vehicle = {
   stages: Stage[];
   notes?: string[];
   /** resultado de um carro real publicado pela Kaiju, quando existir */
-  publishedResult?: {
-    title: string;
-    text: string;
-    source: InstagramSource;
-  };
-  /** arte técnica publicada no Instagram (só fichas da Kaiju) */
+  publishedResult?: { title: string; text: string; instagram?: string };
+  /** arte técnica publicada no Instagram */
   poster?: Photo;
-  source?: InstagramSource;
+  /** post de onde saíram os números, e a data dele (ISO) */
+  instagram?: string;
+  instagramDate?: string;
 };
 
 export type Service = {
@@ -77,7 +70,7 @@ export type KaijuEvent = {
   place: string;
   text: string;
   photos: Photo[];
-  source: InstagramSource;
+  instagram?: string;
 };
 
 export type Review = {

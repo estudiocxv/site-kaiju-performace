@@ -1,5 +1,4 @@
-import type { Vehicle } from '@/content/types';
-import { cvText, gain, kgfmText } from '@/content/vehicles';
+import { cvText, gain, kgfmText, type VehicleSummary as Vehicle } from '@/content/vehicles';
 import styles from './StageSheet.module.css';
 
 type Metric = 'cv' | 'kgfm';

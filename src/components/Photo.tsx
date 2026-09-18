@@ -1,8 +1,5 @@
 import Image, { type ImageProps } from 'next/image';
-import dimensions from '@/content/media-dimensions.json';
 import type { Photo as PhotoData } from '@/content/types';
-
-const dims = dimensions as Record<string, { width: number; height: number }>;
 
 type Props = Omit<ImageProps, 'src' | 'alt' | 'width' | 'height'> & {
   photo: PhotoData;
@@ -10,15 +7,22 @@ type Props = Omit<ImageProps, 'src' | 'alt' | 'width' | 'height'> & {
 };
 
 /**
- * Imagem da biblioteca de mídia. Usa as dimensões geradas por
- * scripts/import-media.mjs para evitar layout shift.
+ * Imagem da biblioteca de mídia do painel. Usa largura e altura do arquivo
+ * enviado para reservar o espaço certo e evitar que a página pule.
  */
 export function Photo({ photo, fill, sizes = '100vw', quality = 70, ...rest }: Props) {
   if (fill) {
     return <Image src={photo.src} alt={photo.alt} fill sizes={sizes} quality={quality} {...rest} />;
   }
-  const d = dims[photo.src] ?? { width: 1600, height: 1200 };
   return (
-    <Image src={photo.src} alt={photo.alt} width={d.width} height={d.height} sizes={sizes} quality={quality} {...rest} />
+    <Image
+      src={photo.src}
+      alt={photo.alt}
+      width={photo.width ?? 1600}
+      height={photo.height ?? 1200}
+      sizes={sizes}
+      quality={quality}
+      {...rest}
+    />
   );
 }

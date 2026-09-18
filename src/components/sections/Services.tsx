@@ -1,20 +1,20 @@
-import { services } from '@/content/services';
+import { getHome, getServices, getSite } from '@/content/cms';
+import { Lines } from '../Lines';
 import { whatsappUrl, messages } from '@/lib/whatsapp';
 import { Photo } from '../Photo';
 import { ArrowRight } from '../icons';
 import styles from './Services.module.css';
 
-export function Services() {
+export async function Services() {
+  const [services, { services: head }, site] = await Promise.all([getServices(), getHome(), getSite()]);
   return (
     <section id="servicos" className={styles.section} aria-labelledby="servicos-title">
       <div className={`wrap ${styles.head}`}>
-        <p className="label muted">Serviços</p>
+        {head.label && <p className="label muted">{head.label}</p>}
         <h2 id="servicos-title" className={`display ${styles.title}`}>
-          Mecânica, tecnologia <br />e performance
+          <Lines text={head.title} />
         </h2>
-        <p className={styles.intro}>
-          O mesmo lugar resolve a revisão do dia a dia, o diagnóstico que ninguém achou e o projeto turbo.
-        </p>
+        {head.intro && <p className={styles.intro}>{head.intro}</p>}
       </div>
 
       <ul className={`wrap ${styles.list}`}>
@@ -35,7 +35,7 @@ export function Services() {
             {s.cta && (
               <a
                 className={styles.ask}
-                href={whatsappUrl(messages.service(s.cta))}
+                href={whatsappUrl(site.whatsapp.number, messages.service(s.cta))}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`Pedir orçamento de ${s.name} no WhatsApp`}

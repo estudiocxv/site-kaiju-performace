@@ -1,12 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { mapsQuery } from '@/content/site';
 import { MapPin } from './icons';
 import styles from './sections/Contact.module.css';
 
 /** O mapa do Google só carrega quando a pessoa pede. Mantém a página leve. */
-export function MapEmbed() {
+export function MapEmbed({ mapsQuery }: { mapsQuery: string }) {
   const [on, setOn] = useState(false);
 
   if (on) {

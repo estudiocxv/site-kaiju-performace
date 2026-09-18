@@ -1,0 +1,11 @@
+/* Painel com as cores da Kaiju: vermelho do letreiro nos botões e links. */
+.btn--style-primary {
+  background-color: #e3121b;
+  border-color: #e3121b;
+}
+
+.btn--style-primary:hover,
+.btn--style-primary:focus-visible {
+  background-color: #a80d14;
+  border-color: #a80d14;
+}

@@ -1,24 +1,24 @@
-import { fullAddress, mapsQuery, site } from '@/content/site';
+import { getHome, getSite } from '@/content/cms';
+import { Lines } from '../Lines';
 import { whatsappUrl, messages } from '@/lib/whatsapp';
 import { MapEmbed } from '../MapEmbed';
 import { Instagram, MapPin, WhatsApp } from '../icons';
 import styles from './Contact.module.css';
 
-export function Contact() {
+export async function Contact() {
+  const [site, { contact }] = await Promise.all([getSite(), getHome()]);
+  const { fullAddress, mapsQuery } = site;
   return (
     <section id="contato" className={styles.section} aria-labelledby="contato-title">
       <div className={`wrap ${styles.grid}`}>
         <div className={styles.main}>
-          <p className="label muted">Contato</p>
+          {contact.label && <p className="label muted">{contact.label}</p>}
           <h2 id="contato-title" className={`display ${styles.title}`}>
-            Traz o carro. <br />A gente conversa.
+            <Lines text={contact.title} />
           </h2>
-          <p className={styles.lead}>
-            Orçamento pelo WhatsApp. Conta o modelo, o ano e o que você quer do carro: revisão, diagnóstico, remap ou
-            projeto.
-          </p>
+          {contact.lead && <p className={styles.lead}>{contact.lead}</p>}
 
-          <a className={styles.phone} href={whatsappUrl(messages.default)} target="_blank" rel="noopener noreferrer">
+          <a className={styles.phone} href={whatsappUrl(site.whatsapp.number, messages.default)} target="_blank" rel="noopener noreferrer">
             <WhatsApp size={28} />
             <span className="display">{site.whatsapp.display}</span>
           </a>
@@ -54,7 +54,7 @@ export function Contact() {
 
         <div className={styles.side}>
           <div className={styles.mapBox}>
-            <MapEmbed />
+            <MapEmbed mapsQuery={mapsQuery} />
           </div>
           <a
             className="btn btn--ghost"

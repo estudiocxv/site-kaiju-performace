@@ -225,8 +225,5 @@ const dims = {
   ...(only && only !== 'videos' ? {} : await videos()),
 };
 
-const dimsFile = path.join(root, 'src', 'content', 'media-dimensions.json');
-const prev = fs.existsSync(dimsFile) ? JSON.parse(fs.readFileSync(dimsFile, 'utf8')) : {};
-ensureDir(dimsFile);
-fs.writeFileSync(dimsFile, JSON.stringify({ ...prev, ...dims }, null, 2) + '\n');
+// as dimensões agora vêm do painel (o Payload lê cada arquivo enviado)
 console.log('imagens:', Object.keys(dims).length);

@@ -1,3 +1,4 @@
+import { withPayload } from '@payloadcms/next/withPayload';
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
@@ -6,6 +7,12 @@ const nextConfig: NextConfig = {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 828, 1080, 1280, 1600, 1920],
     minimumCacheTTL: 60 * 60 * 24 * 30,
+    // fotos do painel (/api/midia/file/...) e arquivos fixos de /public
+    localPatterns: [{ pathname: '/api/midia/file/**' }, { pathname: '/media/**' }, { pathname: '/brand/**' }, { pathname: '/*' }],
+  },
+  experimental: {
+    // o site e o painel têm layouts raiz diferentes; o 404 geral fica em app/global-not-found.tsx
+    globalNotFound: true,
   },
   async headers() {
     return [
@@ -18,4 +25,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withPayload(nextConfig, { devBundleServerPackages: false });

@@ -1,20 +1,19 @@
-import { stageExplained } from '@/content/services';
+import { getHome } from '@/content/cms';
+import { Lines } from '../Lines';
 import styles from './StagesExplained.module.css';
 
-export function StagesExplained({ compact = false }: { compact?: boolean }) {
-  const { stage1, stage2, warning } = stageExplained;
+export async function StagesExplained({ compact = false }: { compact?: boolean }) {
+  const { stages } = await getHome();
+  const { stage1, stage2, warning } = stages;
   return (
     <section className={`${styles.section} ${compact ? styles.compact : ''}`} aria-labelledby="stages-title">
       <div className="wrap">
         <div className={styles.head}>
-          <p className="label muted">Remap</p>
+          {stages.label && <p className="label muted">{stages.label}</p>}
           <h2 id="stages-title" className={`display ${styles.title}`}>
-            Stage 1 ou Stage 2?
+            <Lines text={stages.title} />
           </h2>
-          <p className={styles.intro}>
-            Muda tudo no resultado do carro. A escolha depende do que já está instalado e do que você quer do carro no dia a
-            dia.
-          </p>
+          {stages.intro && <p className={styles.intro}>{stages.intro}</p>}
         </div>
 
         <div className={styles.cols}>
@@ -31,10 +30,12 @@ export function StagesExplained({ compact = false }: { compact?: boolean }) {
           ))}
         </div>
 
-        <p className={`reveal ${styles.warning}`}>
-          <strong className="label">Atenção</strong>
-          {warning}
-        </p>
+        {warning && (
+          <p className={`reveal ${styles.warning}`}>
+            <strong className="label">Atenção</strong>
+            {warning}
+          </p>
+        )}
       </div>
     </section>
   );

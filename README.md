@@ -1,62 +1,84 @@
-# Kaiju Performance — site
+# Kaiju Performance — site e painel
 
-Site da Kaiju Performance (Bauru/SP), feito em Next.js 16 (App Router), TypeScript e CSS Modules.
-Conteúdo do Instagram oficial [@kaijuperformancebauru](https://www.instagram.com/kaijuperformancebauru/), das avaliações da Kaiju no Google e do catálogo de remap da Armada Performance (pedido do cliente).
+Site da Kaiju Performance (Bauru/SP) em Next.js 16 (App Router), TypeScript e CSS Modules, com painel
+administrativo em **/admin** feito com [Payload CMS 3](https://payloadcms.com) e banco SQLite.
+Conteúdo inicial tirado do Instagram oficial [@kaijuperformancebauru](https://www.instagram.com/kaijuperformancebauru/),
+das avaliações da Kaiju no Google e do catálogo de remap da Armada Performance (pedido do cliente).
 
 ```bash
 npm install
-npm run dev      # http://localhost:3000
-npm run build    # gera as páginas estáticas (uma por versão de remap)
-npm run media    # reprocessa fotos e vídeos (ver "Mídia")
-npm run armada   # regenera src/content/data/armada.json
+cp .env.example .env     # e preencha PAYLOAD_SECRET, ADMIN_EMAIL e ADMIN_PASSWORD
+npm run build            # cria o banco, carrega o conteúdo inicial e gera as páginas
+npm run dev              # http://localhost:3000  ·  painel em http://localhost:3000/admin
 ```
+
+## Como o painel funciona
+
+O dono entra em `/admin` e edita tudo pelo navegador. **O que ele salva vai direto para o site**: as páginas
+são geradas uma vez e ficam guardadas; cada vez que algo é salvo no painel, o cache é descartado
+(`src/cms/revalidate.ts`) e a página é refeita na próxima visita, em menos de um segundo.
+
+| No painel | O que muda no site |
+| --- | --- |
+| Remap → Catálogo do remap | as 302 versões: marca, modelo, anos, números de cada stage, peças, ficha, arte. "Aparece no site" esconde sem apagar |
+| Remap → Páginas de remap | aviso dos valores, "seu carro não está na lista?", benefícios por tipo de motor |
+| Conteúdo → Serviços | lista de serviços (arrastar muda a ordem), foto, itens, texto do WhatsApp |
+| Conteúdo → Avaliações do Google | avaliações, estrelas, fotos, link |
+| Conteúdo → Eventos | seção "Na rua" |
+| Conteúdo → Fotos e vídeos | biblioteca de mídia: enviar, recortar, ponto de foco, descrição (alt) |
+| Textos do site → Página inicial | topo (título, vídeo, botões), a oficina, processo, cabeçalho de cada seção, Stage 1 × 2, contato |
+| Configurações → Dados da empresa | WhatsApp (todos os botões), endereço, CNPJ, atendimento, redes, endereço do site |
+| Configurações → Google e compartilhamento | título e descrição no Google, prévia do link no WhatsApp |
+| Configurações → Usuários | quem pode entrar no painel, troca de senha |
 
 ## Estrutura
 
 ```
 src/
-  app/                    rotas
-    page.tsx              página inicial (monta as seções)
-    remap/                tabela com busca + /remap/[slug] (ficha por versão)
-    sitemap.ts, robots.ts SEO
-  components/
-    sections/             seções da página inicial (Hero, About, Services, Reviews…)
-    StageSheet.tsx        ficha de ganhos (Original / Stage 1 / 2 / 3)
-    RemapFinder.tsx       seletor da home (busca no computador; marca → modelo → versão no celular)
-    RemapTable.tsx        tabela de /remap com busca e filtro por marca
-    Photo.tsx             imagem com dimensões automáticas
-  content/                DADOS — é aqui que se edita o site
-    site.ts               nome, CNPJ, WhatsApp, endereço, redes, link do Google
-    vehicles.ts           junta as fichas da Kaiju e da Armada (catálogo final)
-    vehicles-kaiju.ts     28 fichas publicadas pela Kaiju no Instagram
-    data/armada.json      versões da Armada (gerado, não editar à mão)
-    reviews.ts            avaliações do Google
-    services.ts           serviços, processo, Stage 1 x Stage 2
-    events.ts             eventos
+  app/
+    (site)/               o site: layout, página inicial, /remap, /remap/marcas/[marca], /remap/[slug]
+    (payload)/            o painel (/admin) e a API (/api) — arquivos padrão do Payload
+    global-not-found.tsx  404 de endereços inexistentes (o site e o painel têm layouts separados)
+    sitemap.ts, robots.ts
+  cms/                    PAINEL
+    collections/          veículos, serviços, avaliações, eventos, mídia, usuários
+    globals/              página inicial, textos do remap, dados da empresa, SEO
+    components/           logo do painel, atalhos da tela inicial, rótulo das etapas
+    seed/                 conteúdo que o site tinha antes do painel (carregado uma vez)
+    revalidate.ts         "salvou no painel, atualiza o site"
+  content/
+    cms.ts                lê o banco e entrega no formato dos componentes (getSite, getVehicles…)
+    vehicles.ts           funções do catálogo (busca, agrupamento, ganhos)
     types.ts              formato de cada tipo de conteúdo
-    media-dimensions.json gerado pelo script de mídia
-  lib/whatsapp.ts         links e mensagens prontas do WhatsApp
-scripts/
-  import-media.mjs        otimiza fotos, corta vídeos, gera logo/OG/ícone
-  import-armada.mjs       converte o catálogo extraído da Armada
-public/media/             mídia já otimizada
+  components/             seções e peças do site
+  migrations/             estrutura do banco (gerado por `npx payload migrate:create`)
+  payload.config.ts       configuração do painel
+  payload-types.ts        tipos gerados (`npm run generate:types`)
+public/                   logotipo, ícone, imagem de compartilhamento e mídia original do seed
+data/                     (local, fora do git) banco kaiju.db e fotos enviadas
 ```
 
-## Como adicionar conteúdo
+### Scripts
 
-- **Nova ficha de remap da Kaiju:** copie um item em `src/content/vehicles-kaiju.ts` e indique o modelo (agrupamento) em `KAIJU_FAMILY`, dentro de `vehicles.ts`. A página `/remap/<slug>` aparece sozinha, entra na tabela, no seletor e no sitemap.
-- **Catálogo da Armada:** `node ../_research/armada/crawl.mjs` baixa de novo e `npm run armada` converte. Versões que repetem uma ficha da Kaiju ficam em `DUPLICATES_OF_KAIJU` (em `scripts/import-armada.mjs`) e são descartadas: vale a da Kaiju.
-- **Nova avaliação do Google:** adicione um item em `src/content/reviews.ts`. As fotos vão em `../_research/avaliacoes/` e entram com `npm run media`.
-- **Novo serviço ou evento:** `src/content/services.ts` e `src/content/events.ts`.
-- **Telefone, endereço, CNPJ, horário:** `src/content/site.ts`.
+| Comando | Faz |
+| --- | --- |
+| `npm run build` | `migrate` + `seed` + `next build` |
+| `npm run migrate` | cria/atualiza as tabelas do banco |
+| `npm run seed` | preenche o que estiver vazio (não duplica nem sobrescreve o que o dono mudou) |
+| `npm run generate:types` | atualiza `payload-types.ts` depois de mudar um campo |
+| `npx payload migrate:create nome` | gera a migração depois de mudar um campo (obrigatório para ir ao ar) |
 
-Os arquivos de `src/content` usam os tipos de `types.ts`. Um painel administrativo ou CMS no futuro só precisa devolver objetos nesses formatos.
+Mudou um campo em `src/cms`? Rode `npm run generate:types` e `npx payload migrate:create descricao`, e
+suba a migração junto. Na Hostinger ela roda sozinha no próximo build.
 
-## Mídia
+## Hospedagem (Hostinger Business)
 
-`scripts/import-media.mjs` lê os originais em `../_research/media` (baixados do Instagram) e grava versões otimizadas em `public/media`. O mapa `IMAGES` no topo do arquivo diz qual original vira qual arquivo do site. Os vídeos do hero são cortados e comprimidos com ffmpeg (horizontal 1280px ~3 MB; vertical 540px ~2 MB para celular em pé).
+Passo a passo completo em [HOSTINGER.md](HOSTINGER.md). O essencial:
 
-O vídeo começa a carregar só depois da primeira pintura, pausa quando a aba fica em segundo plano e não carrega para quem pede menos movimento ou economia de dados.
+- **Banco e fotos ficam fora da pasta do site** (`DATABASE_URI` e `MEDIA_DIR`), porque a Hostinger apaga a
+  pasta do build a cada deploy.
+- Build: `npm run build` · Start: `npm run start` · Node 22.
+- A Vercel não serve para esta versão: lá o disco é somente leitura, então o painel não teria onde salvar.
 
 ## Identidade
 
@@ -70,9 +92,17 @@ O vídeo começa a carregar só depois da primeira pintura, pausa quando a aba f
 Tipos: Saira (itálico condensado, títulos), Archivo (texto), Chivo Mono (rótulos e dados).
 O “letreiro” (branco com contorno vermelho, classe `.letreiro`) repete o desenho do logotipo.
 
-## Pendências para confirmar com a Kaiju
+## Mídia original
 
-- Domínio definitivo (`site.url` em `src/content/site.ts`).
+`scripts/import-media.mjs` lê os originais em `../_research/media` (baixados do Instagram) e grava versões
+otimizadas em `public/media`, que o seed envia para o painel. Depois da primeira carga, fotos novas entram
+direto pelo painel. `npm run armada` regenera `src/cms/seed/data/armada.json`.
+
+## Pendências
+
+- E-mail do dono para o login definitivo (hoje: `admin@kaijuperformance.pro`, trocar em Usuários).
+- "Esqueci a senha" precisa de um e-mail de envio (SMTP da Hostinger). Sem isso, a senha é trocada por quem
+  administra o servidor.
 - Número do endereço: o perfil comercial mostra **3-12**; posts da inauguração citam **3-1279**. O site usa 3-12.
 - Horário fixo de funcionamento (não publicado; o site diz “atendimento com hora marcada”).
 - Arquivo vetorial do logotipo (o atual foi extraído do vídeo institucional).

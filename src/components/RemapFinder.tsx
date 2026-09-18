@@ -3,20 +3,29 @@
 import Link from 'next/link';
 import { useId, useMemo, useState } from 'react';
 import {
-  brands,
-  familiesOf,
+  brandsOf,
+  familiesOf as familiesIn,
   groupByFamily,
   searchVehicles,
   vehicleName,
-  vehicles,
-  versionsOf,
+  versionsOf as versionsIn,
+  type VehicleSummary,
 } from '@/content/vehicles';
 import { whatsappUrl, messages } from '@/lib/whatsapp';
 import { StageSheet } from './StageSheet';
 import { ArrowRight, WhatsApp } from './icons';
 import styles from './RemapFinder.module.css';
 
-export function RemapFinder({ initial = 'bmw-320i-f30' }: { initial?: string }) {
+type Props = {
+  vehicles: VehicleSummary[];
+  whatsappNumber: string;
+  initial?: string;
+};
+
+export function RemapFinder({ vehicles, whatsappNumber, initial = 'bmw-320i-f30' }: Props) {
+  const brands = useMemo(() => brandsOf(vehicles), [vehicles]);
+  const familiesOf = (b: string) => familiesIn(vehicles, b);
+  const versionsOf = (b: string, f: string) => versionsIn(vehicles, b, f);
   const [slug, setSlug] = useState(initial);
   // computador: primeiro a lista de marcas, depois os modelos da marca aberta
   const [openBrand, setOpenBrand] = useState<string | null>(null);
@@ -27,10 +36,10 @@ export function RemapFinder({ initial = 'bmw-320i-f30' }: { initial?: string }) 
   const searching = query.trim().length > 0;
 
   const groups = useMemo(() => {
-    if (searching) return groupByFamily(searchVehicles(query));
+    if (searching) return groupByFamily(searchVehicles(vehicles, query));
     if (openBrand) return groupByFamily(vehicles.filter((v) => v.brand === openBrand), false);
     return [];
-  }, [searching, query, openBrand]);
+  }, [vehicles, searching, query, openBrand]);
 
   // celular: marca -> modelo -> versão
   const pickBrand = (b: string) => {
@@ -151,7 +160,7 @@ export function RemapFinder({ initial = 'bmw-320i-f30' }: { initial?: string }) 
       <div className={styles.result} aria-live="polite">
         <StageSheet vehicle={vehicle} />
         <div className={styles.actions}>
-          <a className="btn" href={whatsappUrl(messages.remap(vehicleName(vehicle)))} target="_blank" rel="noopener noreferrer">
+          <a className="btn" href={whatsappUrl(whatsappNumber, messages.remap(vehicleName(vehicle)))} target="_blank" rel="noopener noreferrer">
             <WhatsApp size={20} />
             Orçamento para este carro
           </a>

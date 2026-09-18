@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { site } from '@/content/site';
 import { whatsappUrl, messages } from '@/lib/whatsapp';
 import { Logo } from './Logo';
 import { WhatsApp } from './icons';
@@ -17,7 +16,12 @@ const nav = [
   { href: '/#contato', label: 'Contato' },
 ];
 
-export function SiteHeader() {
+type Props = {
+  whatsapp: { display: string; number: string };
+  place: string;
+};
+
+export function SiteHeader({ whatsapp, place }: Props) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -61,9 +65,9 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <a className={styles.cta} href={whatsappUrl(messages.default)} target="_blank" rel="noopener noreferrer">
+        <a className={styles.cta} href={whatsappUrl(whatsapp.number, messages.default)} target="_blank" rel="noopener noreferrer">
           <WhatsApp size={18} />
-          <span>{site.whatsapp.display}</span>
+          <span>{whatsapp.display}</span>
         </a>
 
         <button
@@ -88,12 +92,12 @@ export function SiteHeader() {
         </nav>
         <div className={styles.sheetFoot}>
           <p className="label muted">Orçamentos no WhatsApp</p>
-          <a className="btn" href={whatsappUrl(messages.default)} target="_blank" rel="noopener noreferrer">
+          <a className="btn" href={whatsappUrl(whatsapp.number, messages.default)} target="_blank" rel="noopener noreferrer">
             <WhatsApp size={20} />
-            {site.whatsapp.display}
+            {whatsapp.display}
           </a>
           <p className="label muted">
-            {site.address.district} · {site.address.city}/{site.address.state}
+            {place}
           </p>
         </div>
       </div>

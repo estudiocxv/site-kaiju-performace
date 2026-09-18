@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# painel: banco SQLite e fotos enviadas (na Hostinger ficam fora do projeto)
+/data/
+!.env.example

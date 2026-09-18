@@ -6,7 +6,7 @@ import { WhatsApp } from './icons';
 import styles from './MobileCta.module.css';
 
 /** Barra fixa de WhatsApp no celular, aparece depois da primeira tela. */
-export function MobileCta() {
+export function MobileCta({ whatsappNumber }: { whatsappNumber: string }) {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ export function MobileCta() {
   return (
     <a
       className={`${styles.bar} ${show ? styles.show : ''}`}
-      href={whatsappUrl(messages.default)}
+      href={whatsappUrl(whatsappNumber, messages.default)}
       target="_blank"
       rel="noopener noreferrer"
       tabIndex={show ? 0 : -1}

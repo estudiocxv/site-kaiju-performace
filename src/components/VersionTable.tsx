@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import type { Stage, Vehicle } from '@/content/types';
-import { cvText, kgfmText } from '@/content/vehicles';
+import type { Stage } from '@/content/types';
+import { cvText, kgfmText, type VehicleSummary as Vehicle } from '@/content/vehicles';
 import styles from './VersionTable.module.css';
 
 const ALL_COLS = ['Original', 'Stage 1', 'Stage 2', 'Stage 3'] as const;

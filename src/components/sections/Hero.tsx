@@ -1,34 +1,38 @@
 import Link from 'next/link';
 import { getImageProps } from 'next/image';
-import { site } from '@/content/site';
+import { getHome, getSite } from '@/content/cms';
+import type { Photo } from '@/content/types';
 import { HeroVideo } from '../HeroVideo';
 import { WhatsAppButton } from '../WhatsAppButton';
 import { ArrowRight } from '../icons';
 import styles from '../Hero.module.css';
 
-function Poster() {
+function Poster({ wide: wideImg, tall: tallImg }: { wide?: Photo; tall?: Photo }) {
+  const main = wideImg ?? tallImg;
+  if (!main) return null;
   const common = { alt: '', sizes: '100vw', quality: 70 };
-  const {
-    props: { srcSet: tall },
-  } = getImageProps({ ...common, src: '/media/video/oficina-vertical.jpg', width: 540, height: 960 });
+  const tall = tallImg
+    ? getImageProps({ ...common, src: tallImg.src, width: tallImg.width ?? 540, height: tallImg.height ?? 960 }).props.srcSet
+    : undefined;
   const {
     props: { srcSet: wide, ...rest },
-  } = getImageProps({ ...common, src: '/media/video/oficina-horizontal.jpg', width: 1280, height: 720, preload: true });
+  } = getImageProps({ ...common, src: main.src, width: main.width ?? 1280, height: main.height ?? 720, preload: true });
   return (
     <picture>
-      <source media="(max-aspect-ratio: 4/5)" srcSet={tall} />
+      {tall && <source media="(max-aspect-ratio: 4/5)" srcSet={tall} />}
       <source srcSet={wide} />
       <img {...rest} className={styles.poster} alt="" fetchPriority="high" />
     </picture>
   );
 }
 
-export function Hero() {
+export async function Hero() {
+  const [{ hero }, site] = await Promise.all([getHome(), getSite()]);
   return (
     <section className={styles.hero} aria-labelledby="hero-title">
       <div className={styles.media}>
-        <Poster />
-        <HeroVideo />
+        <Poster wide={hero.posterWide} tall={hero.posterTall} />
+        <HeroVideo wide={hero.videoWide?.src} tall={hero.videoTall?.src} />
       </div>
 
       <div className={`wrap ${styles.content}`}>
@@ -37,25 +41,22 @@ export function Hero() {
         </p>
 
         <h1 id="hero-title" className={`display ${styles.title}`}>
-          <span className={styles.line}>Seu carro.</span>
+          <span className={styles.line}>{hero.line1}</span>
           <span className={styles.line}>
-            Nosso{' '}
-            <em className="letreiro" data-text="projeto.">
-              projeto.
+            {hero.line2}{' '}
+            <em className="letreiro" data-text={hero.highlight}>
+              {hero.highlight}
             </em>
           </span>
         </h1>
 
         <div className={styles.foot}>
-          <p className={styles.lead}>
-            Remap, preparação e mecânica para nacionais, importados, turbo e carros antigos. Do carro original que precisa
-            voltar a funcionar ao projeto que busca mais potência.
-          </p>
+          <p className={styles.lead}>{hero.lead}</p>
 
           <div className={styles.actions}>
-            <WhatsAppButton>Pedir orçamento</WhatsAppButton>
+            <WhatsAppButton>{hero.primaryButton}</WhatsAppButton>
             <Link href="/remap" className="btn btn--ghost">
-              Ganhos por modelo
+              {hero.secondaryButton}
               <ArrowRight />
             </Link>
           </div>
