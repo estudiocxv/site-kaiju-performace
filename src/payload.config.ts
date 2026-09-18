@@ -74,9 +74,10 @@ export default buildConfig({
   }),
   sharp,
   plugins: [
-    // Fotos e vídeos do painel no Vercel Blob. Sem o token (no computador), ficam em data/media.
+    // Fotos e vídeos do painel no Vercel Blob, só junto com o banco na nuvem (versão oficial).
+    // No computador e nas prévias da Vercel (banco em arquivo) ficam em data/media e não gastam o Blob.
     vercelBlobStorage({
-      enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
+      enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN) && !databaseUrl.startsWith('file:'),
       token: process.env.BLOB_READ_WRITE_TOKEN,
       alwaysInsertFields: true,
       collections: { midia: { disablePayloadAccessControl: true } },
