@@ -20,7 +20,8 @@ são geradas uma vez e ficam guardadas; cada vez que algo é salvo no painel, o 
 
 | No painel | O que muda no site |
 | --- | --- |
-| Remap → Catálogo do remap | as 302 versões: marca, modelo, anos, números de cada stage, peças, ficha, arte. "Aparece no site" esconde sem apagar |
+| Remap → Catálogo do remap | as 302 versões: marca e modelo (escolhidos na lista, com + para criar), anos, números de cada stage, peças (uma por linha), especificações, arte. "Aparece no site" esconde sem apagar |
+| Remap → Marcas / Modelos | criar e renomear marcas e modelos (renomear muda em todas as versões). Não deixa apagar marca com modelos nem modelo com versões |
 | Remap → Páginas de remap | aviso dos valores, "seu carro não está na lista?", benefícios por tipo de motor |
 | Conteúdo → Serviços | lista de serviços (arrastar muda a ordem), foto, itens, texto do WhatsApp |
 | Conteúdo → Avaliações do Google | avaliações, estrelas, fotos, link |
@@ -41,7 +42,7 @@ src/
     global-not-found.tsx  404 de endereços inexistentes (o site e o painel têm layouts separados)
     sitemap.ts, robots.ts
   cms/                    PAINEL
-    collections/          veículos, serviços, avaliações, eventos, mídia, usuários
+    collections/          versões, marcas, modelos, serviços, avaliações, eventos, mídia, usuários
     globals/              página inicial, textos do remap, dados da empresa, SEO
     components/           logo do painel, atalhos da tela inicial, rótulo das etapas
     seed/                 conteúdo que o site tinha antes do painel (carregado uma vez)

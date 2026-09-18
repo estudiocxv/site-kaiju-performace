@@ -6,8 +6,10 @@ import { pt } from '@payloadcms/translations/languages/pt';
 import { buildConfig } from 'payload';
 import sharp from 'sharp';
 
+import { Brands } from './cms/collections/Brands';
 import { Events } from './cms/collections/Events';
 import { Media } from './cms/collections/Media';
+import { Models } from './cms/collections/Models';
 import { Reviews } from './cms/collections/Reviews';
 import { Services } from './cms/collections/Services';
 import { Users } from './cms/collections/Users';
@@ -56,7 +58,7 @@ export default buildConfig({
     theme: 'dark',
   },
   i18n: { supportedLanguages: { pt }, fallbackLanguage: 'pt' },
-  collections: [Vehicles, Services, Reviews, Events, Media, Users],
+  collections: [Vehicles, Brands, Models, Services, Reviews, Events, Media, Users],
   globals: [Home, RemapTexts, Company, Seo],
   db: sqliteAdapter({
     client: { url: databaseUrl },

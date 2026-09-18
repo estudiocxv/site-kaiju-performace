@@ -20,7 +20,7 @@ const sectionHead = (opts: { intro?: boolean } = {}): Field[] => [
 const stageFields: Field[] = [
   { name: 'name', label: 'Nome', type: 'text', required: true },
   { name: 'lead', label: 'Frase', type: 'textarea', required: true, admin: { rows: 2 } },
-  { name: 'points', label: 'Pontos', type: 'text', hasMany: true, admin: { description: 'Digite e aperte Enter para cada ponto.' } },
+  { name: 'points', label: 'Pontos', type: 'textarea', admin: { rows: 4, description: 'Um ponto por linha.' } },
 ];
 
 export const Home: GlobalConfig = {

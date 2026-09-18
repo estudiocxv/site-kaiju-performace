@@ -60,6 +60,13 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
+        },
+        "upgrades": {
+          "name": "upgrades",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
         }
       },
       "indexes": {
@@ -278,16 +285,16 @@
           "notNull": false,
           "autoincrement": false
         },
-        "brand": {
-          "name": "brand",
-          "type": "text",
+        "brand_id": {
+          "name": "brand_id",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "family": {
-          "name": "family",
-          "type": "text",
+        "family_id": {
+          "name": "family_id",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -391,7 +398,14 @@
         "veiculos_brand_idx": {
           "name": "veiculos_brand_idx",
           "columns": [
-            "brand"
+            "brand_id"
+          ],
+          "isUnique": false
+        },
+        "veiculos_family_idx": {
+          "name": "veiculos_family_idx",
+          "columns": [
+            "family_id"
           ],
           "isUnique": false
         },
@@ -418,6 +432,32 @@
         }
       },
       "foreignKeys": {
+        "veiculos_brand_id_marcas_id_fk": {
+          "name": "veiculos_brand_id_marcas_id_fk",
+          "tableFrom": "veiculos",
+          "tableTo": "marcas",
+          "columnsFrom": [
+            "brand_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "veiculos_family_id_modelos_id_fk": {
+          "name": "veiculos_family_id_modelos_id_fk",
+          "tableFrom": "veiculos",
+          "tableTo": "modelos",
+          "columnsFrom": [
+            "family_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
         "veiculos_poster_id_midia_id_fk": {
           "name": "veiculos_poster_id_midia_id_fk",
           "tableFrom": "veiculos",
@@ -436,8 +476,8 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
-    "veiculos_texts": {
-      "name": "veiculos_texts",
+    "marcas": {
+      "name": "marcas",
       "columns": {
         "id": {
           "name": "id",
@@ -446,57 +486,134 @@
           "notNull": true,
           "autoincrement": false
         },
-        "order": {
-          "name": "order",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "parent_id": {
-          "name": "parent_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "path": {
-          "name": "path",
+        "name": {
+          "name": "name",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "text": {
-          "name": "text",
+        "updated_at": {
+          "name": "updated_at",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))"
         }
       },
       "indexes": {
-        "veiculos_texts_order_parent": {
-          "name": "veiculos_texts_order_parent",
+        "marcas_name_idx": {
+          "name": "marcas_name_idx",
           "columns": [
-            "order",
-            "parent_id"
+            "name"
+          ],
+          "isUnique": true
+        },
+        "marcas_updated_at_idx": {
+          "name": "marcas_updated_at_idx",
+          "columns": [
+            "updated_at"
+          ],
+          "isUnique": false
+        },
+        "marcas_created_at_idx": {
+          "name": "marcas_created_at_idx",
+          "columns": [
+            "created_at"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "modelos": {
+      "name": "modelos",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "brand_id": {
+          "name": "brand_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))"
+        }
+      },
+      "indexes": {
+        "modelos_brand_idx": {
+          "name": "modelos_brand_idx",
+          "columns": [
+            "brand_id"
+          ],
+          "isUnique": false
+        },
+        "modelos_updated_at_idx": {
+          "name": "modelos_updated_at_idx",
+          "columns": [
+            "updated_at"
+          ],
+          "isUnique": false
+        },
+        "modelos_created_at_idx": {
+          "name": "modelos_created_at_idx",
+          "columns": [
+            "created_at"
           ],
           "isUnique": false
         }
       },
       "foreignKeys": {
-        "veiculos_texts_parent_fk": {
-          "name": "veiculos_texts_parent_fk",
-          "tableFrom": "veiculos_texts",
-          "tableTo": "veiculos",
+        "modelos_brand_id_marcas_id_fk": {
+          "name": "modelos_brand_id_marcas_id_fk",
+          "tableFrom": "modelos",
+          "tableTo": "marcas",
           "columnsFrom": [
-            "parent_id"
+            "brand_id"
           ],
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
+          "onDelete": "set null",
           "onUpdate": "no action"
         }
       },
@@ -1585,6 +1702,20 @@
           "notNull": false,
           "autoincrement": false
         },
+        "marcas_id": {
+          "name": "marcas_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "modelos_id": {
+          "name": "modelos_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "servicos_id": {
           "name": "servicos_id",
           "type": "integer",
@@ -1650,6 +1781,20 @@
           ],
           "isUnique": false
         },
+        "payload_locked_documents_rels_marcas_id_idx": {
+          "name": "payload_locked_documents_rels_marcas_id_idx",
+          "columns": [
+            "marcas_id"
+          ],
+          "isUnique": false
+        },
+        "payload_locked_documents_rels_modelos_id_idx": {
+          "name": "payload_locked_documents_rels_modelos_id_idx",
+          "columns": [
+            "modelos_id"
+          ],
+          "isUnique": false
+        },
         "payload_locked_documents_rels_servicos_id_idx": {
           "name": "payload_locked_documents_rels_servicos_id_idx",
           "columns": [
@@ -1706,6 +1851,32 @@
           "tableTo": "veiculos",
           "columnsFrom": [
             "veiculos_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "payload_locked_documents_rels_marcas_fk": {
+          "name": "payload_locked_documents_rels_marcas_fk",
+          "tableFrom": "payload_locked_documents_rels",
+          "tableTo": "marcas",
+          "columnsFrom": [
+            "marcas_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "payload_locked_documents_rels_modelos_fk": {
+          "name": "payload_locked_documents_rels_modelos_fk",
+          "tableFrom": "payload_locked_documents_rels",
+          "tableTo": "modelos",
+          "columnsFrom": [
+            "modelos_id"
           ],
           "columnsTo": [
             "id"
@@ -2443,6 +2614,13 @@
           "notNull": true,
           "autoincrement": false
         },
+        "stages_stage1_points": {
+          "name": "stages_stage1_points",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "stages_stage2_name": {
           "name": "stages_stage2_name",
           "type": "text",
@@ -2455,6 +2633,13 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false
+        },
+        "stages_stage2_points": {
+          "name": "stages_stage2_points",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         },
         "stages_stage3_hint": {
@@ -2691,74 +2876,6 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
-    "pagina_inicial_texts": {
-      "name": "pagina_inicial_texts",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "order": {
-          "name": "order",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "parent_id": {
-          "name": "parent_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "path": {
-          "name": "path",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "text": {
-          "name": "text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        }
-      },
-      "indexes": {
-        "pagina_inicial_texts_order_parent": {
-          "name": "pagina_inicial_texts_order_parent",
-          "columns": [
-            "order",
-            "parent_id"
-          ],
-          "isUnique": false
-        }
-      },
-      "foreignKeys": {
-        "pagina_inicial_texts_parent_fk": {
-          "name": "pagina_inicial_texts_parent_fk",
-          "tableFrom": "pagina_inicial_texts",
-          "tableTo": "pagina_inicial",
-          "columnsFrom": [
-            "parent_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
     "textos_remap": {
       "name": "textos_remap",
       "columns": {
@@ -2790,6 +2907,27 @@
           "notNull": false,
           "autoincrement": false
         },
+        "benefits_turbo": {
+          "name": "benefits_turbo",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "benefits_diesel": {
+          "name": "benefits_diesel",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "benefits_aspirado": {
+          "name": "benefits_aspirado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "updated_at": {
           "name": "updated_at",
           "type": "text",
@@ -2807,74 +2945,6 @@
       },
       "indexes": {},
       "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
-    "textos_remap_texts": {
-      "name": "textos_remap_texts",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "order": {
-          "name": "order",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "parent_id": {
-          "name": "parent_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "path": {
-          "name": "path",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "text": {
-          "name": "text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        }
-      },
-      "indexes": {
-        "textos_remap_texts_order_parent": {
-          "name": "textos_remap_texts_order_parent",
-          "columns": [
-            "order",
-            "parent_id"
-          ],
-          "isUnique": false
-        }
-      },
-      "foreignKeys": {
-        "textos_remap_texts_parent_fk": {
-          "name": "textos_remap_texts_parent_fk",
-          "tableFrom": "textos_remap_texts",
-          "tableTo": "textos_remap",
-          "columnsFrom": [
-            "parent_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
@@ -3141,6 +3211,13 @@
           "notNull": false,
           "autoincrement": false
         },
+        "keywords": {
+          "name": "keywords",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "updated_at": {
           "name": "updated_at",
           "type": "text",
@@ -3183,74 +3260,6 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
-    },
-    "seo_texts": {
-      "name": "seo_texts",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "order": {
-          "name": "order",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "parent_id": {
-          "name": "parent_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "path": {
-          "name": "path",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "text": {
-          "name": "text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        }
-      },
-      "indexes": {
-        "seo_texts_order_parent": {
-          "name": "seo_texts_order_parent",
-          "columns": [
-            "order",
-            "parent_id"
-          ],
-          "isUnique": false
-        }
-      },
-      "foreignKeys": {
-        "seo_texts_parent_fk": {
-          "name": "seo_texts_parent_fk",
-          "tableFrom": "seo_texts",
-          "tableTo": "seo",
-          "columnsFrom": [
-            "parent_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
     }
   },
   "views": {},
@@ -3262,6 +3271,6 @@
   "internal": {
     "indexes": {}
   },
-  "id": "135457fd-1c0b-4e11-97bd-4a48f71fc8a8",
+  "id": "707f2c3d-eee2-49ca-9955-382597c2270b",
   "prevId": "00000000-0000-0000-0000-000000000000"
 }

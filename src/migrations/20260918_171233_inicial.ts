@@ -10,6 +10,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	\`kgfm\` numeric NOT NULL,
   	\`cv_text\` text,
   	\`kgfm_text\` text,
+  	\`upgrades\` text,
   	FOREIGN KEY (\`_parent_id\`) REFERENCES \`veiculos\`(\`id\`) ON UPDATE no action ON DELETE cascade
   );
   `)
@@ -42,8 +43,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	\`slug\` text,
   	\`origin\` text DEFAULT 'kaiju',
   	\`title\` text,
-  	\`brand\` text NOT NULL,
-  	\`family\` text NOT NULL,
+  	\`brand_id\` integer NOT NULL,
+  	\`family_id\` integer NOT NULL,
   	\`version\` text NOT NULL,
   	\`years\` text,
   	\`category\` text DEFAULT 'turbo-gasolina' NOT NULL,
@@ -56,24 +57,39 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	\`published_result_instagram\` text,
   	\`updated_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL,
   	\`created_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL,
+  	FOREIGN KEY (\`brand_id\`) REFERENCES \`marcas\`(\`id\`) ON UPDATE no action ON DELETE set null,
+  	FOREIGN KEY (\`family_id\`) REFERENCES \`modelos\`(\`id\`) ON UPDATE no action ON DELETE set null,
   	FOREIGN KEY (\`poster_id\`) REFERENCES \`midia\`(\`id\`) ON UPDATE no action ON DELETE set null
   );
   `)
   await db.run(sql`CREATE UNIQUE INDEX \`veiculos_slug_idx\` ON \`veiculos\` (\`slug\`);`)
-  await db.run(sql`CREATE INDEX \`veiculos_brand_idx\` ON \`veiculos\` (\`brand\`);`)
+  await db.run(sql`CREATE INDEX \`veiculos_brand_idx\` ON \`veiculos\` (\`brand_id\`);`)
+  await db.run(sql`CREATE INDEX \`veiculos_family_idx\` ON \`veiculos\` (\`family_id\`);`)
   await db.run(sql`CREATE INDEX \`veiculos_poster_idx\` ON \`veiculos\` (\`poster_id\`);`)
   await db.run(sql`CREATE INDEX \`veiculos_updated_at_idx\` ON \`veiculos\` (\`updated_at\`);`)
   await db.run(sql`CREATE INDEX \`veiculos_created_at_idx\` ON \`veiculos\` (\`created_at\`);`)
-  await db.run(sql`CREATE TABLE \`veiculos_texts\` (
+  await db.run(sql`CREATE TABLE \`marcas\` (
   	\`id\` integer PRIMARY KEY NOT NULL,
-  	\`order\` integer NOT NULL,
-  	\`parent_id\` integer NOT NULL,
-  	\`path\` text NOT NULL,
-  	\`text\` text,
-  	FOREIGN KEY (\`parent_id\`) REFERENCES \`veiculos\`(\`id\`) ON UPDATE no action ON DELETE cascade
+  	\`name\` text NOT NULL,
+  	\`updated_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL,
+  	\`created_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL
   );
   `)
-  await db.run(sql`CREATE INDEX \`veiculos_texts_order_parent\` ON \`veiculos_texts\` (\`order\`,\`parent_id\`);`)
+  await db.run(sql`CREATE UNIQUE INDEX \`marcas_name_idx\` ON \`marcas\` (\`name\`);`)
+  await db.run(sql`CREATE INDEX \`marcas_updated_at_idx\` ON \`marcas\` (\`updated_at\`);`)
+  await db.run(sql`CREATE INDEX \`marcas_created_at_idx\` ON \`marcas\` (\`created_at\`);`)
+  await db.run(sql`CREATE TABLE \`modelos\` (
+  	\`id\` integer PRIMARY KEY NOT NULL,
+  	\`brand_id\` integer NOT NULL,
+  	\`name\` text NOT NULL,
+  	\`updated_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL,
+  	\`created_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL,
+  	FOREIGN KEY (\`brand_id\`) REFERENCES \`marcas\`(\`id\`) ON UPDATE no action ON DELETE set null
+  );
+  `)
+  await db.run(sql`CREATE INDEX \`modelos_brand_idx\` ON \`modelos\` (\`brand_id\`);`)
+  await db.run(sql`CREATE INDEX \`modelos_updated_at_idx\` ON \`modelos\` (\`updated_at\`);`)
+  await db.run(sql`CREATE INDEX \`modelos_created_at_idx\` ON \`modelos\` (\`created_at\`);`)
   await db.run(sql`CREATE TABLE \`servicos_items\` (
   	\`_order\` integer NOT NULL,
   	\`_parent_id\` integer NOT NULL,
@@ -236,6 +252,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	\`parent_id\` integer NOT NULL,
   	\`path\` text NOT NULL,
   	\`veiculos_id\` integer,
+  	\`marcas_id\` integer,
+  	\`modelos_id\` integer,
   	\`servicos_id\` integer,
   	\`avaliacoes_id\` integer,
   	\`eventos_id\` integer,
@@ -243,6 +261,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	\`usuarios_id\` integer,
   	FOREIGN KEY (\`parent_id\`) REFERENCES \`payload_locked_documents\`(\`id\`) ON UPDATE no action ON DELETE cascade,
   	FOREIGN KEY (\`veiculos_id\`) REFERENCES \`veiculos\`(\`id\`) ON UPDATE no action ON DELETE cascade,
+  	FOREIGN KEY (\`marcas_id\`) REFERENCES \`marcas\`(\`id\`) ON UPDATE no action ON DELETE cascade,
+  	FOREIGN KEY (\`modelos_id\`) REFERENCES \`modelos\`(\`id\`) ON UPDATE no action ON DELETE cascade,
   	FOREIGN KEY (\`servicos_id\`) REFERENCES \`servicos\`(\`id\`) ON UPDATE no action ON DELETE cascade,
   	FOREIGN KEY (\`avaliacoes_id\`) REFERENCES \`avaliacoes\`(\`id\`) ON UPDATE no action ON DELETE cascade,
   	FOREIGN KEY (\`eventos_id\`) REFERENCES \`eventos\`(\`id\`) ON UPDATE no action ON DELETE cascade,
@@ -254,6 +274,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_parent_idx\` ON \`payload_locked_documents_rels\` (\`parent_id\`);`)
   await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_path_idx\` ON \`payload_locked_documents_rels\` (\`path\`);`)
   await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_veiculos_id_idx\` ON \`payload_locked_documents_rels\` (\`veiculos_id\`);`)
+  await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_marcas_id_idx\` ON \`payload_locked_documents_rels\` (\`marcas_id\`);`)
+  await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_modelos_id_idx\` ON \`payload_locked_documents_rels\` (\`modelos_id\`);`)
   await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_servicos_id_idx\` ON \`payload_locked_documents_rels\` (\`servicos_id\`);`)
   await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_avaliacoes_id_idx\` ON \`payload_locked_documents_rels\` (\`avaliacoes_id\`);`)
   await db.run(sql`CREATE INDEX \`payload_locked_documents_rels_eventos_id_idx\` ON \`payload_locked_documents_rels\` (\`eventos_id\`);`)
@@ -357,8 +379,10 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	\`stages_intro\` text,
   	\`stages_stage1_name\` text NOT NULL,
   	\`stages_stage1_lead\` text NOT NULL,
+  	\`stages_stage1_points\` text,
   	\`stages_stage2_name\` text NOT NULL,
   	\`stages_stage2_lead\` text NOT NULL,
+  	\`stages_stage2_points\` text,
   	\`stages_stage3_hint\` text,
   	\`stages_warning\` text,
   	\`remap_label\` text,
@@ -388,35 +412,18 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.run(sql`CREATE INDEX \`pagina_inicial_hero_hero_poster_tall_idx\` ON \`pagina_inicial\` (\`hero_poster_tall_id\`);`)
   await db.run(sql`CREATE INDEX \`pagina_inicial_about_about_main_photo_idx\` ON \`pagina_inicial\` (\`about_main_photo_id\`);`)
   await db.run(sql`CREATE INDEX \`pagina_inicial_about_about_second_photo_idx\` ON \`pagina_inicial\` (\`about_second_photo_id\`);`)
-  await db.run(sql`CREATE TABLE \`pagina_inicial_texts\` (
-  	\`id\` integer PRIMARY KEY NOT NULL,
-  	\`order\` integer NOT NULL,
-  	\`parent_id\` integer NOT NULL,
-  	\`path\` text NOT NULL,
-  	\`text\` text,
-  	FOREIGN KEY (\`parent_id\`) REFERENCES \`pagina_inicial\`(\`id\`) ON UPDATE no action ON DELETE cascade
-  );
-  `)
-  await db.run(sql`CREATE INDEX \`pagina_inicial_texts_order_parent\` ON \`pagina_inicial_texts\` (\`order\`,\`parent_id\`);`)
   await db.run(sql`CREATE TABLE \`textos_remap\` (
   	\`id\` integer PRIMARY KEY NOT NULL,
   	\`disclaimer\` text NOT NULL,
   	\`not_listed_title\` text,
   	\`not_listed_text\` text,
+  	\`benefits_turbo\` text,
+  	\`benefits_diesel\` text,
+  	\`benefits_aspirado\` text,
   	\`updated_at\` text,
   	\`created_at\` text
   );
   `)
-  await db.run(sql`CREATE TABLE \`textos_remap_texts\` (
-  	\`id\` integer PRIMARY KEY NOT NULL,
-  	\`order\` integer NOT NULL,
-  	\`parent_id\` integer NOT NULL,
-  	\`path\` text NOT NULL,
-  	\`text\` text,
-  	FOREIGN KEY (\`parent_id\`) REFERENCES \`textos_remap\`(\`id\`) ON UPDATE no action ON DELETE cascade
-  );
-  `)
-  await db.run(sql`CREATE INDEX \`textos_remap_texts_order_parent\` ON \`textos_remap_texts\` (\`order\`,\`parent_id\`);`)
   await db.run(sql`CREATE TABLE \`empresa_bio\` (
   	\`_order\` integer NOT NULL,
   	\`_parent_id\` integer NOT NULL,
@@ -457,22 +464,13 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	\`description\` text NOT NULL,
   	\`share_title\` text,
   	\`share_image_id\` integer,
+  	\`keywords\` text,
   	\`updated_at\` text,
   	\`created_at\` text,
   	FOREIGN KEY (\`share_image_id\`) REFERENCES \`midia\`(\`id\`) ON UPDATE no action ON DELETE set null
   );
   `)
   await db.run(sql`CREATE INDEX \`seo_share_image_idx\` ON \`seo\` (\`share_image_id\`);`)
-  await db.run(sql`CREATE TABLE \`seo_texts\` (
-  	\`id\` integer PRIMARY KEY NOT NULL,
-  	\`order\` integer NOT NULL,
-  	\`parent_id\` integer NOT NULL,
-  	\`path\` text NOT NULL,
-  	\`text\` text,
-  	FOREIGN KEY (\`parent_id\`) REFERENCES \`seo\`(\`id\`) ON UPDATE no action ON DELETE cascade
-  );
-  `)
-  await db.run(sql`CREATE INDEX \`seo_texts_order_parent\` ON \`seo_texts\` (\`order\`,\`parent_id\`);`)
 }
 
 export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
@@ -480,7 +478,8 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   await db.run(sql`DROP TABLE \`veiculos_specs\`;`)
   await db.run(sql`DROP TABLE \`veiculos_notes\`;`)
   await db.run(sql`DROP TABLE \`veiculos\`;`)
-  await db.run(sql`DROP TABLE \`veiculos_texts\`;`)
+  await db.run(sql`DROP TABLE \`marcas\`;`)
+  await db.run(sql`DROP TABLE \`modelos\`;`)
   await db.run(sql`DROP TABLE \`servicos_items\`;`)
   await db.run(sql`DROP TABLE \`servicos\`;`)
   await db.run(sql`DROP TABLE \`avaliacoes\`;`)
@@ -500,11 +499,8 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   await db.run(sql`DROP TABLE \`pagina_inicial_about_facts\`;`)
   await db.run(sql`DROP TABLE \`pagina_inicial_process_steps\`;`)
   await db.run(sql`DROP TABLE \`pagina_inicial\`;`)
-  await db.run(sql`DROP TABLE \`pagina_inicial_texts\`;`)
   await db.run(sql`DROP TABLE \`textos_remap\`;`)
-  await db.run(sql`DROP TABLE \`textos_remap_texts\`;`)
   await db.run(sql`DROP TABLE \`empresa_bio\`;`)
   await db.run(sql`DROP TABLE \`empresa\`;`)
   await db.run(sql`DROP TABLE \`seo\`;`)
-  await db.run(sql`DROP TABLE \`seo_texts\`;`)
 }

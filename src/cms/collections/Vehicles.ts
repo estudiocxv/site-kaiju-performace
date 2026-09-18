@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload';
+import type { CollectionConfig, PayloadRequest } from 'payload';
 import { loggedIn } from '../access';
 import { revalidateHooks } from '../revalidate';
 
@@ -10,6 +10,14 @@ const slugify = (s: string) =>
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
 
+/** Nome da marca a partir do id escolhido na lista. */
+async function brandName(req: PayloadRequest, id: unknown) {
+  if (!id) return undefined;
+  if (typeof id === 'object' && id && 'name' in id) return String((id as { name: string }).name);
+  const doc = await req.payload.findByID({ collection: 'marcas', id: id as number, depth: 0, req }).catch(() => null);
+  return doc?.name;
+}
+
 export const Vehicles: CollectionConfig = {
   slug: 'veiculos',
   labels: { singular: 'Versão do remap', plural: 'Catálogo do remap' },
@@ -18,8 +26,8 @@ export const Vehicles: CollectionConfig = {
     group: 'Remap',
     description:
       'Cada linha é uma versão de carro com os números de original, Stage 1, Stage 2 e Stage 3. Desmarque "Aparece no site" para esconder sem apagar.',
-    defaultColumns: ['title', 'family', 'category', 'published'],
-    listSearchableFields: ['title', 'brand', 'family', 'version'],
+    defaultColumns: ['title', 'brand', 'family', 'category', 'published'],
+    listSearchableFields: ['title', 'version'],
     pagination: { defaultLimit: 50 },
   },
   defaultSort: 'title',
@@ -27,10 +35,14 @@ export const Vehicles: CollectionConfig = {
   hooks: {
     ...revalidateHooks,
     beforeValidate: [
-      ({ data }) => {
+      async ({ data, req, originalDoc }) => {
         if (!data) return data;
-        if (data.brand && data.version) data.title = `${data.brand} ${data.version}`;
-        if (!data.slug && data.brand && data.version) data.slug = slugify(`${data.brand} ${data.version}`);
+        const brand = await brandName(req, data.brand ?? originalDoc?.brand);
+        const version = data.version ?? originalDoc?.version;
+        if (brand && version) {
+          data.title = `${brand} ${version}`;
+          if (!data.slug && !originalDoc?.slug) data.slug = slugify(`${brand} ${version}`);
+        }
         return data;
       },
     ],
@@ -75,17 +87,26 @@ export const Vehicles: CollectionConfig = {
         {
           name: 'brand',
           label: 'Marca',
-          type: 'text',
+          type: 'relationship',
+          relationTo: 'marcas',
           required: true,
           index: true,
-          admin: { description: 'Escreva igual às outras versões da marca. Ex.: Volkswagen, Mercedes-Benz' },
+          admin: { description: 'Escolha na lista. Marca nova? Clique no + ao lado.' },
         },
         {
           name: 'family',
           label: 'Modelo',
-          type: 'text',
+          type: 'relationship',
+          relationTo: 'modelos',
           required: true,
-          admin: { description: 'Agrupa as versões. Ex.: Golf, Série 3, Hilux' },
+          index: true,
+          // só os modelos da marca escolhida
+          filterOptions: ({ siblingData }) => {
+            const brand = (siblingData as { brand?: number | { id: number } })?.brand;
+            const id = typeof brand === 'object' && brand ? brand.id : brand;
+            return id ? { brand: { equals: id } } : false;
+          },
+          admin: { description: 'Escolha a marca primeiro. Modelo novo? Clique no + ao lado.' },
         },
       ],
     },
@@ -161,10 +182,9 @@ export const Vehicles: CollectionConfig = {
         },
         {
           name: 'upgrades',
-          label: 'Modificações da etapa',
-          type: 'text',
-          hasMany: true,
-          admin: { description: 'Digite e aperte Enter para cada peça. Ex.: Downpipe' },
+          label: 'Peças / modificações da etapa',
+          type: 'textarea',
+          admin: { rows: 3, description: 'Uma peça por linha. Ex.: Downpipe (Enter) Intercooler' },
         },
       ],
     },
@@ -172,15 +192,16 @@ export const Vehicles: CollectionConfig = {
     // ——— ficha ———
     {
       type: 'collapsible',
-      label: 'Ficha técnica',
-      admin: { initCollapsed: true },
+      label: 'Ficha técnica (especificações)',
+      admin: { initCollapsed: false },
       fields: [
         { name: 'engine', label: 'Motor (texto corrido)', type: 'textarea' },
         {
           name: 'specs',
-          label: 'Ficha em tópicos',
+          label: 'Especificações',
           type: 'array',
-          labels: { singular: 'Linha', plural: 'Linhas' },
+          labels: { singular: 'Especificação', plural: 'Especificações' },
+          admin: { description: 'Uma linha por item. Ex.: Câmbio → DSG; Tração → Dianteira.', initCollapsed: false },
           fields: [
             {
               type: 'row',

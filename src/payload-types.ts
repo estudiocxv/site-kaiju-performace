@@ -68,6 +68,8 @@ export interface Config {
   blocks: {};
   collections: {
     veiculos: Veiculo;
+    marcas: Marca;
+    modelos: Modelo;
     servicos: Servico;
     avaliacoes: Avaliacoe;
     eventos: Evento;
@@ -81,6 +83,8 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     veiculos: VeiculosSelect<false> | VeiculosSelect<true>;
+    marcas: MarcasSelect<false> | MarcasSelect<true>;
+    modelos: ModelosSelect<false> | ModelosSelect<true>;
     servicos: ServicosSelect<false> | ServicosSelect<true>;
     avaliacoes: AvaliacoesSelect<false> | AvaliacoesSelect<true>;
     eventos: EventosSelect<false> | EventosSelect<true>;
@@ -151,13 +155,13 @@ export interface Veiculo {
   origin?: ('kaiju' | 'armada') | null;
   title?: string | null;
   /**
-   * Escreva igual às outras versões da marca. Ex.: Volkswagen, Mercedes-Benz
+   * Escolha na lista. Marca nova? Clique no + ao lado.
    */
-  brand: string;
+  brand: number | Marca;
   /**
-   * Agrupa as versões. Ex.: Golf, Série 3, Hilux
+   * Escolha a marca primeiro. Modelo novo? Clique no + ao lado.
    */
-  family: string;
+  family: number | Modelo;
   /**
    * Ex.: Golf GTI 2.0 TSI
    */
@@ -184,13 +188,16 @@ export interface Veiculo {
          */
         kgfmText?: string | null;
         /**
-         * Digite e aperte Enter para cada peça. Ex.: Downpipe
+         * Uma peça por linha. Ex.: Downpipe (Enter) Intercooler
          */
-        upgrades?: string[] | null;
+        upgrades?: string | null;
         id?: string | null;
       }[]
     | null;
   engine?: string | null;
+  /**
+   * Uma linha por item. Ex.: Câmbio → DSG; Tração → Dianteira.
+   */
   specs?:
     | {
         /**
@@ -227,6 +234,40 @@ export interface Veiculo {
     text?: string | null;
     instagram?: string | null;
   };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * As marcas do catálogo. Mudar o nome aqui muda em todas as versões da marca.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "marcas".
+ */
+export interface Marca {
+  id: number;
+  /**
+   * Como aparece no site. Ex.: Volkswagen, Mercedes-Benz
+   */
+  name: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Os modelos agrupam as versões na página de cada marca. Ex.: Golf, Série 3, Hilux.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "modelos".
+ */
+export interface Modelo {
+  id: number;
+  /**
+   * Não achou a marca? Clique no + para criar.
+   */
+  brand: number | Marca;
+  /**
+   * Sem a marca. Ex.: Golf, Série 3, A3 / S3 / RS3
+   */
+  name: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -395,6 +436,14 @@ export interface PayloadLockedDocument {
         value: number | Veiculo;
       } | null)
     | ({
+        relationTo: 'marcas';
+        value: number | Marca;
+      } | null)
+    | ({
+        relationTo: 'modelos';
+        value: number | Modelo;
+      } | null)
+    | ({
         relationTo: 'servicos';
         value: number | Servico;
       } | null)
@@ -505,6 +554,25 @@ export interface VeiculosSelect<T extends boolean = true> {
         text?: T;
         instagram?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "marcas_select".
+ */
+export interface MarcasSelect<T extends boolean = true> {
+  name?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "modelos_select".
+ */
+export interface ModelosSelect<T extends boolean = true> {
+  brand?: T;
+  name?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -751,17 +819,17 @@ export interface PaginaInicial {
       name: string;
       lead: string;
       /**
-       * Digite e aperte Enter para cada ponto.
+       * Um ponto por linha.
        */
-      points?: string[] | null;
+      points?: string | null;
     };
     stage2: {
       name: string;
       lead: string;
       /**
-       * Digite e aperte Enter para cada ponto.
+       * Um ponto por linha.
        */
-      points?: string[] | null;
+      points?: string | null;
     };
     /**
      * Usada nas páginas das versões que têm Stage 3 sem lista de peças.
@@ -836,17 +904,17 @@ export interface TextosRemap {
    */
   benefits?: {
     /**
-     * Digite e aperte Enter para cada benefício.
+     * Um benefício por linha.
      */
-    turbo?: string[] | null;
+    turbo?: string | null;
     /**
-     * Digite e aperte Enter para cada benefício.
+     * Um benefício por linha.
      */
-    diesel?: string[] | null;
+    diesel?: string | null;
     /**
-     * Digite e aperte Enter para cada benefício.
+     * Um benefício por linha.
      */
-    aspirado?: string[] | null;
+    aspirado?: string | null;
   };
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -932,9 +1000,9 @@ export interface Seo {
    */
   shareImage?: (number | null) | Midia;
   /**
-   * Opcional. Ex.: remap Bauru
+   * Opcional. Uma por linha. Ex.: remap Bauru
    */
-  keywords?: string[] | null;
+  keywords?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }

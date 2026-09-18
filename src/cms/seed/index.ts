@@ -74,7 +74,7 @@ const toStages = (stages: Stage[]) =>
     kgfm: s.kgfm,
     cvText: s.cvText,
     kgfmText: s.kgfmText,
-    upgrades: s.upgrades,
+    upgrades: s.upgrades?.join('\n'),
   }));
 
 function fromKaiju(k: KaijuVehicle): Vehicle {
@@ -123,6 +123,30 @@ export async function seed(payload: Payload) {
       ...kaiju.map((v) => ({ ...v, origin: 'kaiju' as const })),
       ...(armada as unknown as Vehicle[]).map((v) => ({ ...v, origin: 'armada' as const })),
     ];
+    // marcas e modelos primeiro: cada versão aponta para eles
+    const brandIds = new Map<string, number>();
+    const modelIds = new Map<string, number>();
+    for (const v of all) {
+      if (!brandIds.has(v.brand)) {
+        const found = await payload.find({ collection: 'marcas', where: { name: { equals: v.brand } }, limit: 1, depth: 0 });
+        const doc = found.docs[0] ?? (await payload.create({ collection: 'marcas', data: { name: v.brand } }));
+        brandIds.set(v.brand, doc.id as number);
+      }
+      const key = `${v.brand}|${v.family}`;
+      if (!modelIds.has(key)) {
+        const brand = brandIds.get(v.brand)!;
+        const found = await payload.find({
+          collection: 'modelos',
+          where: { and: [{ name: { equals: v.family } }, { brand: { equals: brand } }] },
+          limit: 1,
+          depth: 0,
+        });
+        const doc = found.docs[0] ?? (await payload.create({ collection: 'modelos', data: { name: v.family, brand } }));
+        modelIds.set(key, doc.id as number);
+      }
+    }
+    log(`${brandIds.size} marcas e ${modelIds.size} modelos`);
+
     for (const v of all) {
       await payload.create({
         collection: 'veiculos',
@@ -130,8 +154,8 @@ export async function seed(payload: Payload) {
           published: true,
           origin: v.origin,
           slug: v.slug,
-          brand: v.brand,
-          family: v.family,
+          brand: brandIds.get(v.brand)!,
+          family: modelIds.get(`${v.brand}|${v.family}`)!,
           version: v.version,
           years: v.years,
           category: v.category,
@@ -247,8 +271,8 @@ export async function seed(payload: Payload) {
         services: homeTexts.services,
         stages: {
           ...homeTexts.stages,
-          stage1: stageExplained.stage1,
-          stage2: stageExplained.stage2,
+          stage1: { ...stageExplained.stage1, points: stageExplained.stage1.points.join('\n') },
+          stage2: { ...stageExplained.stage2, points: stageExplained.stage2.points.join('\n') },
           warning: stageExplained.warning,
         },
         remap: homeTexts.remap,
@@ -262,7 +286,14 @@ export async function seed(payload: Payload) {
 
   const remap = await payload.findGlobal({ slug: 'textos-remap', depth: 0 });
   if (!remap.disclaimer) {
-    await payload.updateGlobal({ slug: 'textos-remap', data: remapTexts });
+    const b = remapTexts.benefits;
+    await payload.updateGlobal({
+      slug: 'textos-remap',
+      data: {
+        ...remapTexts,
+        benefits: { turbo: b.turbo.join('\n'), diesel: b.diesel.join('\n'), aspirado: b.aspirado.join('\n') },
+      },
+    });
     log('textos do remap');
   }
 
@@ -295,7 +326,7 @@ export async function seed(payload: Payload) {
 
   const seo = await payload.findGlobal({ slug: 'seo', depth: 0 });
   if (!seo.title) {
-    await payload.updateGlobal({ slug: 'seo', data: seoTexts });
+    await payload.updateGlobal({ slug: 'seo', data: { ...seoTexts, keywords: seoTexts.keywords.join('\n') } });
     log('Google e compartilhamento');
   }
 }

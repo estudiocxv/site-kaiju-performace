@@ -5,9 +5,8 @@ import { revalidateHooks } from '../revalidate';
 const benefits = (name: string, label: string) => ({
   name,
   label,
-  type: 'text' as const,
-  hasMany: true,
-  admin: { description: 'Digite e aperte Enter para cada benefício.' },
+  type: 'textarea' as const,
+  admin: { rows: 5, description: 'Um benefício por linha.' },
 });
 
 export const RemapTexts: GlobalConfig = {

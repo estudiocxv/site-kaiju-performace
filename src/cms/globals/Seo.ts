@@ -43,9 +43,8 @@ export const Seo: GlobalConfig = {
     {
       name: 'keywords',
       label: 'Palavras-chave',
-      type: 'text',
-      hasMany: true,
-      admin: { description: 'Opcional. Ex.: remap Bauru' },
+      type: 'textarea',
+      admin: { rows: 4, description: 'Opcional. Uma por linha. Ex.: remap Bauru' },
     },
   ],
 };

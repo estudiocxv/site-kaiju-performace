@@ -31,6 +31,15 @@ const photos = (list: (number | Media)[] | null | undefined) =>
 
 const texts = (list: { text: string }[] | null | undefined) => (list ?? []).map((i) => i.text);
 
+/** Campo "um por linha" do painel virando lista. */
+const lines = (text: string | null | undefined) =>
+  (text ?? '')
+    .split('\n')
+    .map((l) => l.trim())
+    .filter(Boolean);
+
+const nameOf = (rel: number | { name: string } | null | undefined) => (rel && typeof rel === 'object' ? rel.name.trim() : '');
+
 // ——— empresa ———
 
 export const getSite = cache(async () => {
@@ -94,8 +103,8 @@ export const getHome = cache(async () => {
     services: h.services,
     stages: {
       ...h.stages,
-      stage1: { ...h.stages.stage1, points: h.stages.stage1.points ?? [] },
-      stage2: { ...h.stages.stage2, points: h.stages.stage2.points ?? [] },
+      stage1: { ...h.stages.stage1, points: lines(h.stages.stage1.points) },
+      stage2: { ...h.stages.stage2, points: lines(h.stages.stage2.points) },
     },
     remap: h.remap,
     reviews: h.reviews,
@@ -109,9 +118,9 @@ export type Home = Awaited<ReturnType<typeof getHome>>;
 export const getRemapTexts = cache(async () => {
   const r: TextosRemap = await (await payload()).findGlobal({ slug: 'textos-remap', depth: 0 });
   const benefits: Record<VehicleCategory, string[]> = {
-    'turbo-gasolina': r.benefits?.turbo ?? [],
-    diesel: r.benefits?.diesel ?? [],
-    aspirado: r.benefits?.aspirado ?? [],
+    'turbo-gasolina': lines(r.benefits?.turbo),
+    diesel: lines(r.benefits?.diesel),
+    aspirado: lines(r.benefits?.aspirado),
   };
   return {
     disclaimer: r.disclaimer,
@@ -127,7 +136,7 @@ export const getSeo = cache(async () => {
     description: s.description,
     shareTitle: s.shareTitle ?? s.title,
     shareImage: toPhoto(s.shareImage),
-    keywords: s.keywords ?? [],
+    keywords: lines(s.keywords),
   };
 });
 
@@ -179,11 +188,11 @@ export const getVehicles = cache(async (): Promise<Vehicle[]> => {
   });
   return sortVehicles(
     docs
-      .filter((v) => v.slug && v.stages && v.stages.length >= 2)
+      .filter((v) => v.slug && nameOf(v.brand) && nameOf(v.family) && v.stages && v.stages.length >= 2)
       .map((v) => ({
         slug: v.slug as string,
-        brand: v.brand.trim(),
-        family: v.family.trim(),
+        brand: nameOf(v.brand),
+        family: nameOf(v.family),
         version: v.version.trim(),
         years: v.years ?? undefined,
         category: v.category as VehicleCategory,
@@ -196,7 +205,7 @@ export const getVehicles = cache(async (): Promise<Vehicle[]> => {
             kgfm: s.kgfm,
             cvText: s.cvText ?? undefined,
             kgfmText: s.kgfmText ?? undefined,
-            upgrades: s.upgrades?.length ? s.upgrades : undefined,
+            upgrades: lines(s.upgrades).length ? lines(s.upgrades) : undefined,
           }),
         ),
         notes: v.notes?.length ? texts(v.notes) : undefined,
