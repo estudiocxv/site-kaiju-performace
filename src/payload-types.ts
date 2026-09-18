@@ -287,6 +287,8 @@ export interface Midia {
    * Opcional. Perfil de quem fotografou, quando a foto não é da Kaiju. Ex.: @fotografo
    */
   credit?: string | null;
+  prefix?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -379,7 +381,7 @@ export interface Evento {
   createdAt: string;
 }
 /**
- * Quem pode entrar no painel.
+ * Acesso ao painel. Aqui dá para trocar a própria senha.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "usuarios".
@@ -631,6 +633,8 @@ export interface EventosSelect<T extends boolean = true> {
 export interface MidiaSelect<T extends boolean = true> {
   alt?: T;
   credit?: T;
+  prefix?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;

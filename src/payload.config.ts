@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { sqliteAdapter } from '@payloadcms/db-sqlite';
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob';
 import { pt } from '@payloadcms/translations/languages/pt';
 import { buildConfig } from 'payload';
 import sharp from 'sharp';
@@ -23,13 +24,17 @@ import { migrations } from './migrations';
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /**
- * Banco SQLite num arquivo só. Na Hostinger ele fica fora da pasta do build
- * (apagada a cada deploy): defina DATABASE_URI=file:/home/<usuário>/kaiju-data/kaiju.db
+ * Banco SQLite. No computador é um arquivo em data/; na Vercel é o Turso
+ * (SQLite na nuvem): DATABASE_URI=libsql://... e DATABASE_AUTH_TOKEN.
  */
-const databaseUrl = process.env.DATABASE_URI || `file:${path.resolve(process.cwd(), 'data/kaiju.db')}`;
+const databaseUrl =
+  process.env.DATABASE_URI || process.env.TURSO_DATABASE_URL || `file:${path.resolve(process.cwd(), 'data/kaiju.db')}`;
+const databaseToken = process.env.DATABASE_AUTH_TOKEN || process.env.TURSO_AUTH_TOKEN;
 
-// o SQLite cria o arquivo, mas não a pasta
-fs.mkdirSync(path.dirname(databaseUrl.replace(/^file:/, '')), { recursive: true });
+// arquivo local: o SQLite cria o arquivo, mas não a pasta
+if (databaseUrl.startsWith('file:')) {
+  fs.mkdirSync(path.dirname(databaseUrl.replace(/^file:/, '')), { recursive: true });
+}
 
 export default buildConfig({
   serverURL: process.env.NEXT_PUBLIC_SERVER_URL || '',
@@ -61,13 +66,24 @@ export default buildConfig({
   collections: [Vehicles, Brands, Models, Services, Reviews, Events, Media, Users],
   globals: [Home, RemapTexts, Company, Seo],
   db: sqliteAdapter({
-    client: { url: databaseUrl },
-    // o banco muda só por migração, igual em casa e na Hostinger
+    client: { url: databaseUrl, authToken: databaseToken },
+    // o banco muda só por migração, igual no computador e na Vercel
     push: false,
     // em produção o banco é criado e atualizado pelas migrações em src/migrations
     prodMigrations: migrations,
   }),
   sharp,
+  plugins: [
+    // Fotos e vídeos do painel no Vercel Blob. Sem o token (no computador), ficam em data/media.
+    vercelBlobStorage({
+      enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+      alwaysInsertFields: true,
+      collections: { midia: { disablePayloadAccessControl: true } },
+      // o arquivo vai do navegador direto para o Blob: a Vercel limita envios pelo servidor a 4,5 MB
+      clientUploads: true,
+    }),
+  ],
   graphQL: { disable: true },
   telemetry: false,
   typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },

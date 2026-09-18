@@ -70,16 +70,16 @@ data/                     (local, fora do git) banco kaiju.db e fotos enviadas
 | `npx payload migrate:create nome` | gera a migração depois de mudar um campo (obrigatório para ir ao ar) |
 
 Mudou um campo em `src/cms`? Rode `npm run generate:types` e `npx payload migrate:create descricao`, e
-suba a migração junto. Na Hostinger ela roda sozinha no próximo build.
+suba a migração junto. Na Vercel ela roda sozinha no próximo build.
 
-## Hospedagem (Hostinger Business)
+## Hospedagem (Vercel)
 
-Passo a passo completo em [HOSTINGER.md](HOSTINGER.md). O essencial:
+Passo a passo em [VERCEL.md](VERCEL.md). O essencial:
 
-- **Banco e fotos ficam fora da pasta do site** (`DATABASE_URI` e `MEDIA_DIR`), porque a Hostinger apaga a
-  pasta do build a cada deploy.
-- Build: `npm run build` · Start: `npm run start` · Node 22.
-- A Vercel não serve para esta versão: lá o disco é somente leitura, então o painel não teria onde salvar.
+- **Banco:** Turso (SQLite na nuvem) via `TURSO_DATABASE_URL` + `TURSO_AUTH_TOKEN`.
+- **Fotos do painel:** Vercel Blob via `BLOB_READ_WRITE_TOKEN`; o envio vai do navegador direto para o Blob
+  (sem o limite de 4,5 MB das funções da Vercel).
+- Sem essas variáveis (no computador), tudo fica em `data/`.
 
 ## Identidade
 
@@ -102,7 +102,7 @@ direto pelo painel. `npm run armada` regenera `src/cms/seed/data/armada.json`.
 ## Pendências
 
 - Acesso ao painel: `gabrielhprib@outlook.com` (único usuário).
-- "Esqueci a senha" precisa de um e-mail de envio (SMTP da Hostinger). Sem isso, a senha é trocada por quem
+- "Esqueci a senha" precisa de um e-mail de envio (ex.: SMTP do Outlook ou Resend). Sem isso, a senha é trocada por quem
   administra o servidor.
 - Número do endereço: o perfil comercial mostra **3-12**; posts da inauguração citam **3-1279**. O site usa 3-12.
 - Horário fixo de funcionamento (não publicado; o site diz “atendimento com hora marcada”).

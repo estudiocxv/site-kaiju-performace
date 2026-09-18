@@ -4,8 +4,8 @@ import { anyone, loggedIn } from '../access';
 import { revalidateHooks } from '../revalidate';
 
 /**
- * Pasta dos arquivos enviados pelo painel. Na Hostinger ela fica FORA da pasta
- * do build (que é apagada a cada deploy): defina MEDIA_DIR no hPanel.
+ * Pasta dos arquivos enviados pelo painel no computador. Na Vercel eles vão para
+ * o Vercel Blob (plugin em payload.config.ts) e esta pasta não é usada.
  */
 export const mediaDir = process.env.MEDIA_DIR || path.resolve(process.cwd(), 'data/media');
 
