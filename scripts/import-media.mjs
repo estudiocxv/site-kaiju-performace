@@ -95,14 +95,17 @@ async function images() {
 
 /** Fotos enviadas pela Kaiju (pasta _research/enviadas). */
 const FOTOS_ENVIADAS = {
-  'amarok-diagnostico': 'servicos/diagnostico-eletrica',
+  'amarok-diagnostico.jpg': 'servicos/diagnostico-eletrica',
+  'kess-gravacao.png': 'servicos/remap-stage',
+  'fusion-elevador.jpg': 'servicos/mecanica-revisao',
+  'bmw-e46.jpg': 'oficina/bmw-e46',
 };
 
 async function enviadas() {
   const dir = path.join(root, '..', '_research', 'enviadas');
   const manifest = {};
   for (const [from, to] of Object.entries(FOTOS_ENVIADAS)) {
-    const src = path.join(dir, `${from}.jpg`);
+    const src = path.join(dir, from);
     if (!fs.existsSync(src)) {
       console.warn('faltando', from);
       continue;

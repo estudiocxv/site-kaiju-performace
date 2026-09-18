@@ -226,5 +226,17 @@
   "/media/servicos/diagnostico-eletrica.jpg": {
     "width": 505,
     "height": 436
+  },
+  "/media/servicos/remap-stage.jpg": {
+    "width": 388,
+    "height": 460
+  },
+  "/media/servicos/mecanica-revisao.jpg": {
+    "width": 899,
+    "height": 1599
+  },
+  "/media/oficina/bmw-e46.jpg": {
+    "width": 468,
+    "height": 599
   }
 }

@@ -56,15 +56,15 @@ export function About() {
             <div className={`reveal-img ${styles.mainImg}`}>
               <Photo
                 photo={{
-                  src: '/media/oficina/equipe-trabalhando.jpg',
-                  alt: 'Equipe da Kaiju Performance trabalhando no box, com o painel da marca ao fundo',
+                  src: '/media/oficina/bmw-e46.jpg',
+                  alt: 'BMW Série 3 (E46) preta parada na estrada ao entardecer',
                 }}
                 fill
                 sizes="(max-width: 900px) 100vw, 55vw"
                 className={styles.cover}
               />
             </div>
-            <figcaption className="label muted">Box da Kaiju, Vila Industrial</figcaption>
+            <figcaption className="label muted">BMW Série 3 (E46)</figcaption>
           </figure>
 
           <figure className={styles.neon}>

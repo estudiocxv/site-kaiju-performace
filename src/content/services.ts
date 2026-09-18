@@ -13,7 +13,7 @@ export const services: Service[] = [
       'Pops & bangs sob medida',
       'Linha diesel, BMW, VW, Audi, Citroën, Peugeot, Fiat, Chevrolet, Ford, Jeep, Mercedes-Benz, Renault',
     ],
-    photo: { src: '/media/oficina/acerto-de-mapa.jpg', alt: 'Técnico da Kaiju acertando mapa com notebook dentro do carro' },
+    photo: { src: '/media/servicos/remap-stage.jpg', alt: 'Gravação da ECU em andamento na ferramenta de reprogramação' },
     cta: 'remap',
   },
   {
@@ -41,7 +41,7 @@ export const services: Service[] = [
       'Revisão completa',
       'Carros antigos: carburação, ignição e freios',
     ],
-    photo: { src: '/media/oficina/monza-elevador.jpg', alt: 'Monza no elevador durante revisão na Kaiju Performance' },
+    photo: { src: '/media/servicos/mecanica-revisao.jpg', alt: 'Ford Fusion no elevador da Kaiju, com um Fusca ao fundo' },
     cta: 'revisão',
   },
   {
