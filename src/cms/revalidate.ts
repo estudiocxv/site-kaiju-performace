@@ -8,6 +8,9 @@ import { revalidatePath } from 'next/cache';
 function refresh() {
   try {
     revalidatePath('/', 'layout');
+    // sitemap e robots não ficam debaixo do layout do site
+    revalidatePath('/sitemap.xml');
+    revalidatePath('/robots.txt');
   } catch {
     // rodando fora de uma requisição do Next
   }
